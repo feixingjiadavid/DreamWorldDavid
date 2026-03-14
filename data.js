@@ -32,12 +32,12 @@ const dbData = {
   "guides": [
     {
       "id": "guide-faroe",
-      "date": "2026-03-10",
-      "title": "法罗群岛：在风暴中生存的全维手册",
-      "cover": "https://images.unsplash.com/photo-1529963183134-61a90db47eaf?q=80&w=1600&auto=format&fit=crop",
-      "bilibili_bvid": "BV1xx411c7mD",
+      "title": "法罗群岛：11天拿下丹麦自由行，勇闯世界尽头",
+      "date": "2025-05-01",
+      "cover": "images/img_1773501737049.jpg",
+      "video": "BV1e5jGzJEzw",
       "short_desc": "租车自驾防风建议 / 经典机位坐标盘点",
-      "intro_desc": "这份攻略不提供任何大众化的打卡建议。它是专门为那些渴望逃离舒适区、去记录世界B面的探索者准备的。从签证的特殊标注到侧风10级的驾驶技巧，所有的细节都源自我那段用年假换来的真实探险。",
+      "intro_desc": "11天拿下丹麦，有生之年一定要去一次！\n丹麦虽然遥远但是没有那么难去\n跟着攻略\n11天拿下丹麦自由行",
       "intel": [
         {
           "title": "01 / 签证 Visa",
@@ -84,12 +84,6 @@ const dbData = {
             "🥾 5.2KM 徒步",
             "⚠️ 强风预警"
           ]
-        }
-      ],
-      "downloads": [
-        {
-          "name": "法罗群岛冬季生存装备清单.pdf",
-          "url": "#"
         }
       ]
     },
@@ -233,5 +227,5 @@ const dbData = {
     "footer": ""
   },
   "trash": [],
-  "version": "1.2"
+  "version": "1.4"
 };
