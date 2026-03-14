@@ -3,11 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>合作联系 | 戴维的梦想世界</title>
+    <title>合作联系 | DAVID EXPEDITION</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&family=JetBrains+Mono:wght@100;400&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <script src="data.js"></script>
 
     <style>
         :root {
@@ -81,7 +83,6 @@
             display: flex; align-items: center; justify-content: center;
         }
         
-        /* 替换你自己的真实二维码时，将 src="..." 替换为你本地图片的路径即可 */
         .qr-image { width: 100%; height: 100%; object-fit: cover; }
         
         /* 没有填入真实图片前的纯 CSS 占位样式 */
@@ -90,7 +91,6 @@
         .platform-name { font-size: 1.2rem; font-weight: 500; margin-bottom: 10px; font-family: var(--font-display); letter-spacing: 1px; }
         .platform-desc { font-size: 0.85rem; color: var(--text-dimmed); }
 
-        /* 响应式适配移动端 */
         @media (max-width: 900px) {
             .qr-grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
             .email-section { padding: 40px 20px; }
@@ -111,14 +111,14 @@
 
         <div class="email-section">
             <div class="email-label">商务洽谈 / 行程定制咨询请致信</div>
-            <a href="mailto:david@example.com" class="email-link">david@example.com</a>
+            <a href="mailto:david@example.com" class="email-link" id="r_email">david@example.com</a>
         </div>
 
         <div class="qr-section-title">— 扫码直达数字平台 —</div>
         
         <div class="qr-grid">
             <div class="qr-card">
-                <div class="qr-image-wrapper">
+                <div class="qr-image-wrapper" id="r_qr_bili">
                     <div class="qr-placeholder">[在此放入真实的<br>B站二维码图]</div>
                 </div>
                 <div class="platform-name">BILIBILI</div>
@@ -126,7 +126,7 @@
             </div>
 
             <div class="qr-card">
-                <div class="qr-image-wrapper">
+                <div class="qr-image-wrapper" id="r_qr_xhs">
                     <div class="qr-placeholder">[在此放入真实的<br>小红书二维码图]</div>
                 </div>
                 <div class="platform-name">XIAOHONGSHU</div>
@@ -134,7 +134,7 @@
             </div>
 
             <div class="qr-card">
-                <div class="qr-image-wrapper">
+                <div class="qr-image-wrapper" id="r_qr_douyin">
                     <div class="qr-placeholder">[在此放入真实的<br>抖音二维码图]</div>
                 </div>
                 <div class="platform-name">DOUYIN</div>
@@ -143,5 +143,34 @@
         </div>
     </main>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 确保数据库存在
+            if (typeof dbData !== 'undefined' && dbData.global) {
+                const g = dbData.global;
+                
+                // 1. 替换商务邮箱
+                const emailEl = document.getElementById('r_email');
+                if (g.email && g.email.trim() !== '') {
+                    emailEl.innerText = g.email;
+                    emailEl.href = "mailto:" + g.email;
+                }
+
+                // 2. 替换二维码图片的渲染引擎
+                function renderQRCode(elementId, imageUrl) {
+                    if (imageUrl && imageUrl.trim() !== '') {
+                        const wrapper = document.getElementById(elementId);
+                        // 如果有图片，直接把里面的占位符替换成真实的图片标签
+                        wrapper.innerHTML = `<img src="${imageUrl}" class="qr-image" alt="QR Code">`;
+                    }
+                }
+
+                // 读取三大平台的二维码
+                renderQRCode('r_qr_bili', g.qrBili);
+                renderQRCode('r_qr_xhs', g.qrXhs);
+                renderQRCode('r_qr_douyin', g.qrDouyin);
+            }
+        });
+    </script>
 </body>
 </html>
