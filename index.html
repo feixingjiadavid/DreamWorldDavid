@@ -26,6 +26,7 @@
         
         .page-wrapper { padding: 40px 6vw; max-width: 1600px; margin: 0 auto;}
         
+        /* 导航栏 */
         nav { display: flex; justify-content: space-between; align-items: center; padding-bottom: 20px; font-family: var(--font-zh); font-size: 0.95rem; font-weight: 500; letter-spacing: 1px; border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 20px; }
         .nav-brand a { color: var(--text-primary); text-decoration: none; font-weight: 500; font-size: 1.2rem; letter-spacing: 4px; transition: color 0.3s ease; }
         .nav-brand a:hover { color: var(--gold); } 
@@ -35,8 +36,11 @@
         .nav-links a:hover, .nav-links a.active { color: var(--text-primary); }
         .nav-links a.active::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--text-primary); }
 
+        /* 顶部动态巨幕 */
         .teaser-strip { position: relative; display: flex; align-items: center; width: 100%; height: 100px; border-radius: var(--radius); overflow: hidden; margin-bottom: 30px; text-decoration: none; color: var(--text-primary); border: 1px solid rgba(255,255,255,0.05); background: #111; transition: var(--transition-smooth); }
+        
         .teaser-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.2; filter: grayscale(100%); transition: all 1.2s ease; z-index: 0; pointer-events: none; border: none;}
+        
         .teaser-strip:hover .teaser-bg { opacity: 0.4; filter: grayscale(0%); transform: scale(1.02); }
         .teaser-content { position: relative; z-index: 2; width: 100%; padding: 0 40px; display: flex; justify-content: space-between; align-items: center; }
         .teaser-left { display: flex; align-items: center; gap: 20px; }
@@ -44,14 +48,24 @@
         .teaser-title { font-size: 1.4rem; font-weight: 700; letter-spacing: 2px; margin: 0; text-shadow: 0 2px 10px rgba(0,0,0,0.8);}
         .teaser-meta { font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-dimmed); letter-spacing: 1px; text-shadow: 0 2px 10px rgba(0,0,0,0.8); }
 
+        /* 个人哲学区域 (彻底修复文案不可控问题) */
         .philosophy-section { display: grid; grid-template-columns: 1.1fr 1fr; gap: 8vw; margin: 20px 0 60px 0; padding: 20px 0; align-items: start; }
+        
+        /* 核心：大标题宣言接入后台内联 CSS */
         .philosophy-statement { font-size: clamp(2.2rem, 3.5vw, 4rem); font-weight: 700; line-height: 1.25; letter-spacing: -2px; color: var(--text-primary); margin: 0; word-break: keep-all; }
+        
+        /* 这个 highlight 样式由标记处理脚本全自动应用 */
         .philosophy-statement .highlight { color: var(--gold); font-weight: 900; }
+        
         .philosophy-body { display: flex; flex-direction: column; justify-content: flex-start; height: 100%; }
+        
+        /* 核心：描述接入后台 */
         .philosophy-desc { color: #A0A0A0; font-size: 1.05rem; line-height: 1.85; font-weight: 300; text-align: justify; margin-bottom: 25px; white-space: pre-wrap;}
+        
         .philosophy-signature { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; letter-spacing: 2px; color: var(--text-primary); text-transform: uppercase; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; }
         .philosophy-signature span { display: block; font-family: var(--font-zh); font-size: 0.85rem; color: var(--text-dimmed); font-weight: 400; letter-spacing: 1px; margin-top: 5px; }
 
+        /* 推荐内容区 */
         .category-section { margin-bottom: 60px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.05); }
         .section-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 30px; }
         .section-title-zh { font-size: 1.8rem; font-weight: 700; letter-spacing: 2px; }
@@ -64,6 +78,7 @@
         .card-overlay { position: absolute; bottom: 0; left: 0; width: 100%; height: 80%; background: linear-gradient(to top, rgba(5,5,5,1) 0%, rgba(5,5,5,0.5) 45%, rgba(5,5,5,0) 100%); z-index: 1; }
         .video-card:hover .card-img { transform: scale(1.05); opacity: 0.8;}
         
+        /* 播放按钮视觉特效 */
         .play-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.8); width: 60px; height: 60px; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.3); border-radius: 50%; display: flex; justify-content: center; align-items: center; z-index: 3; opacity: 0; transition: all 0.4s ease; backdrop-filter: blur(4px); }
         .play-icon::after { content: '▶'; color: #fff; font-size: 1.2rem; margin-left: 4px; }
         .video-card:hover .play-icon { opacity: 1; transform: translate(-50%, -50%) scale(1); }
@@ -97,32 +112,28 @@
             </div>
         </nav>
 
-        <a href="iceland.html" class="teaser-strip" id="heroBanner">
+        <a href="stories.html" class="teaser-strip" id="heroBanner">
             <div id="heroMediaContainer" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:0; overflow:hidden;">
                 <img src="https://images.unsplash.com/photo-1476610182048-b716b8518aae?q=80&w=2000&auto=format&fit=crop" class="teaser-bg" alt="Hero">
             </div>
             <div class="teaser-content">
                 <div class="teaser-left">
-                    <span class="teaser-tag">COMING SOON</span>
-                    <h2 class="teaser-title" id="heroTitle">冰岛极境</h2>
+                    <span class="teaser-tag">LATEST</span>
+                    <h2 class="teaser-title" id="heroTitle">载入中...</h2>
                 </div>
-                <div class="teaser-meta" id="heroSub">APR 26 - MAY 04 // 故事正在路上...</div>
+                <div class="teaser-meta" id="heroSub">请稍候...</div>
             </div>
         </a>
 
         <section class="philosophy-section">
             <div class="statement-block">
-                <h1 class="philosophy-statement">
-                    世界不缺走马观花的打卡，<br>
-                    我用珍贵的<span class="highlight">年假</span>逃离日常，<br>
-                    去记录这个世界隐秘的<span class="highlight no-wrap">B面</span>
-                </h1>
+                <h1 class="philosophy-statement" id="renderDeclare">世界不缺打卡，我记录世界的 [B面]</h1>
             </div>
             <div class="philosophy-body">
-                <p class="philosophy-desc" id="renderBio">“互联网大厂打工人，用年假去拍世界的B面”——这是我的真实身份，也是创作的底色。作为一名冷门目的地的记录者，我用心讲述每一次旅程，拒绝平庸的叙事逻辑。无论是法罗群岛的极夜风暴，还是冰岛的无人区冰川，在这里，我将用真实的镜头和纯粹的文字，将极境最原本的故事带回现实。</p>
+                <p class="philosophy-desc" id="renderBio">这里是戴维的梦想世界。互联网大厂打工人，拒绝平庸的叙事逻辑，用心讲述冷门极境的原本故事。正在扫描大脑数据...</p>
                 <div class="philosophy-signature">
                     DAVID. 
-                    <span id="renderTags">// 冷门目的地记录者</span>
+                    <span id="renderTags"></span>
                 </div>
             </div>
         </section>
@@ -133,7 +144,7 @@
                 <div class="section-title-en">SELECTED STORIES</div>
             </div>
             <div class="video-grid" id="storiesGrid">
-                <p style="color:#666;">扫描云端数据中...</p>
+                <p style="color:#666; padding: 20px;">数据策展中...</p>
             </div>
             <div class="view-more-container"><a href="stories.html" class="btn-view-more">查看更多旅行故事 ↗</a></div>
         </div>
@@ -144,7 +155,7 @@
                 <div class="section-title-en">EXPEDITION GUIDES</div>
             </div>
             <div class="video-grid" id="guidesGrid">
-                <p style="color:#666;">扫描云端数据中...</p>
+                <p style="color:#666; padding: 20px;">数据策展中...</p>
             </div>
             <div class="view-more-container"><a href="guides.html" class="btn-view-more">查阅完整攻略知识库 ↗</a></div>
         </div>
@@ -157,21 +168,39 @@
             if (typeof dbData === 'undefined') return;
             const db = dbData;
             
-            // --- 1. 渲染全局设置 (带有非空安全判定) ---
+            // --- 核心工具脚本：处理后台敲下的颜色标记 [...] ---
+            // 它的逻辑是找到 [...] 的文字，自动加上 <span class="highlight">...</span> 
+            function parseHighlighting(rawText) {
+                if(!rawText) return '';
+                return rawText.replace(/\[(.*?)\]/g, '<span class="highlight">$1</span>').replace(/\n/g, '<br>');
+            }
+
+            // --- 1. 渲染全局设置 (带有精确安全性判定) ---
             if (db.global) {
                 const g = db.global;
                 
-                // 只有当后台填了字，才会覆盖默认文案！
+                // 巨幕同步
                 if(g.heroTitle && g.heroTitle.trim() !== '') document.getElementById('heroTitle').innerText = g.heroTitle;
                 if(g.heroSub && g.heroSub.trim() !== '') document.getElementById('heroSub').innerText = g.heroSub;
-                if(g.bio && g.bio.trim() !== '') document.getElementById('renderBio').innerText = g.bio;
                 if(g.footer && g.footer.trim() !== '') document.getElementById('renderFooter').innerText = g.footer;
                 
+                // 头像与标签
+                if(g.avatar) document.getElementById('heroMediaContainer').querySelector('img').src = g.avatar; // 把背景也换成头像，或者可以加个 About 头像
                 if(g.tags && g.tags.trim() !== '') {
                     const tagStr = g.tags.split(',').map(t => t.trim()).join(' / ');
                     document.getElementById('renderTags').innerText = `// ${tagStr}`;
                 }
 
+                //ABOUT 我配置：接入数据库并处理颜色标记
+                if(g.heroDeclare && g.heroDeclare.trim() !== '') {
+                    // 应用颜色处理脚本到大标题宣言！
+                    document.getElementById('renderDeclare').innerHTML = parseHighlighting(g.heroDeclare);
+                }
+                if(g.bio && g.bio.trim() !== '') {
+                    document.getElementById('renderBio').innerText = g.bio; // 描述段落
+                }
+
+                // 背景视频
                 const mediaBox = document.getElementById('heroMediaContainer');
                 if (g.heroVideo && g.heroVideo.trim() !== '') {
                     const vid = g.heroVideo.trim();
@@ -183,14 +212,16 @@
                 }
             }
 
-            // --- 核心智能策展引擎：获取推荐文章，缺位则用最新补齐 ---
+            // --- 核心智能策展引擎 (完美保留智能识别视频功能) ---
             function getFeaturedItems(allArray, featId1, featId2) {
                 let result = [];
                 if(!allArray || allArray.length === 0) return result;
                 
+                // 1. 先抓取主理人策展的黄金文章
                 if (featId1) { const item1 = allArray.find(i => i.id === featId1); if(item1) result.push(item1); }
                 if (featId2) { const item2 = allArray.find(i => i.id === featId2); if(item2) result.push(item2); }
                 
+                // 2. 如果不足，用最新的顶上，绝不冷场
                 if (result.length < 2) {
                     const latest = allArray.sort((a,b) => new Date(b.date) - new Date(a.date)).filter(i => !result.some(r => r.id === i.id));
                     while(result.length < 2 && latest.length > 0) {
@@ -200,55 +231,41 @@
                 return result;
             }
 
-            // --- 2. 渲染故事区 ---
-            const storiesGrid = document.getElementById('storiesGrid');
+            // --- 渲染引擎 (融合了播放按钮识别逻辑) ---
+            function renderItemsGrid(targetArray, gridId, defaultTagText) {
+                const grid = document.getElementById(gridId);
+                if (targetArray.length > 0) {
+                    grid.innerHTML = '';
+                    targetArray.forEach(item => {
+                        // 智能识别是否存在 BV 号或 mp4 视频
+                        const hasStoryVideo = item.bilibili_bvid && item.bilibili_bvid.trim() !== ''; // 故事判断
+                        const hasGuideVideo = item.video && item.video.trim() !== ''; // 攻略判断
+                        const hasVideo = hasStoryVideo || hasGuideVideo;
+                        
+                        const playIconHtml = hasVideo ? `<div class="play-icon"></div>` : '';
+                        const tagClass = item.bilibili_bvid ? 'tag-story' : 'tag-guide';
+                        const targetUrl = item.paragraphs ? 'story-detail.html' : 'guide-detail.html';
+
+                        grid.innerHTML += `
+                            <a href="${targetUrl}?id=${item.id}" class="video-card">
+                                <img src="${item.cover}" class="card-img" alt="${item.title}">
+                                <div class="card-overlay"></div>
+                                ${playIconHtml}
+                                <div class="card-content">
+                                    <span class="card-tag ${tagClass}">${defaultTagText}</span>
+                                    <h2 class="card-title">${item.title}</h2>
+                                </div>
+                            </a>
+                        `;
+                    });
+                }
+            }
+
+            // 抓取并渲染
             const targetStories = getFeaturedItems(db.stories, db.global?.featS1, db.global?.featS2);
-            
-            if (targetStories.length > 0) {
-                storiesGrid.innerHTML = '';
-                targetStories.forEach(s => {
-                    const hasVideo = s.bilibili_bvid && s.bilibili_bvid.trim() !== '';
-                    const playIconHtml = hasVideo ? `<div class="play-icon"></div>` : '';
-                    storiesGrid.innerHTML += `
-                        <a href="story-detail.html?id=${s.id}" class="video-card">
-                            <img src="${s.cover}" class="card-img" alt="${s.title}">
-                            <div class="card-overlay"></div>
-                            ${playIconHtml}
-                            <div class="card-content">
-                                <span class="card-tag">旅行故事</span>
-                                <h2 class="card-title">${s.title}</h2>
-                            </div>
-                        </a>
-                    `;
-                });
-            } else {
-                storiesGrid.innerHTML = '<p style="color:#666; padding: 20px;">暂无故事数据</p>';
-            }
-
-            // --- 3. 渲染攻略区 ---
-            const guidesGrid = document.getElementById('guidesGrid');
             const targetGuides = getFeaturedItems(db.guides, db.global?.featG1, db.global?.featG2);
-
-            if (targetGuides.length > 0) {
-                guidesGrid.innerHTML = '';
-                targetGuides.forEach(g => {
-                    const hasVideo = g.video && g.video.trim() !== '';
-                    const playIconHtml = hasVideo ? `<div class="play-icon"></div>` : '';
-                    guidesGrid.innerHTML += `
-                        <a href="guide-detail.html?id=${g.id}" class="video-card">
-                            <img src="${g.cover}" class="card-img" alt="${g.title}">
-                            <div class="card-overlay"></div>
-                            ${playIconHtml}
-                            <div class="card-content">
-                                <span class="card-tag" style="color: #38bdf8;">硬核干货</span>
-                                <h2 class="card-title">${g.title}</h2>
-                            </div>
-                        </a>
-                    `;
-                });
-            } else {
-                guidesGrid.innerHTML = '<p style="color:#666; padding: 20px;">暂无攻略数据</p>';
-            }
+            renderItemsGrid(targetStories, 'storiesGrid', '旅行故事');
+            renderItemsGrid(targetGuides, 'guidesGrid', '硬核干货');
         });
     </script>
 </body>
