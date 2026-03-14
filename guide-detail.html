@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>攻略详情 | 戴维的梦想世界</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&family=JetBrains+Mono:wght@100;300;400&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-    <script src="data.js"></script>
+    <script>document.write('<script src="data.js?v=' + new Date().getTime() + '"><\/script>');</script>
     <style>
         :root {
             --bg-base: #050505; --text-primary: #FFFFFF; --text-secondary: #AAAAAA;
@@ -13,7 +13,7 @@
             --transition-smooth: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: var(--bg-base); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; -webkit-font-smoothing: antialiased; line-height: 1.6; }
+        body { background: var(--bg-base); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; -webkit-font-smoothing: antialiased; line-height: 1.6; overflow-x: hidden;}
 
         nav { padding: 25px 6vw; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .back-btn { color: var(--text-primary); text-decoration: none; font-size: 0.95rem; font-weight: 500; letter-spacing: 1px; transition: color 0.3s; }
@@ -28,11 +28,9 @@
         .hero-desc-block { display: flex; flex-direction: column; justify-content: center; }
         .hero-desc { color: #A0A0A0; font-size: 1.05rem; line-height: 1.8; font-weight: 300; text-align: justify; margin: 0; }
 
-        /* 动态媒体框 (视频/图片通用) */
         .media-box { width: 100%; aspect-ratio: 16 / 9; background: #111; border-radius: var(--radius); overflow: hidden; margin-bottom: 60px; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 30px 60px rgba(0,0,0,0.5); }
         .media-box video, .media-box iframe, .media-box img { width: 100%; height: 100%; display: block; object-fit: cover; border: none; outline: none; }
 
-        /* 极简高级的下载区 */
         .download-section { margin-bottom: 80px; display: none; }
         .download-header { font-family: 'Inter'; font-size: 0.75rem; color: var(--text-dimmed); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 25px; display: flex; align-items: center; gap: 15px;}
         .download-header::before { content: ''; display: block; width: 30px; height: 1px; background-color: var(--gold); opacity: 0.5; }
@@ -41,7 +39,6 @@
         .btn-download::before { content: '↓'; color: var(--gold); margin-right: 15px; font-weight: 700; }
         .btn-download:hover { border-color: rgba(212, 175, 55, 0.4); transform: translateX(5px); }
 
-        /* 六宫格 */
         .section-label { font-family: 'Inter'; font-size: 0.75rem; color: var(--text-dimmed); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 25px; display: flex; align-items: center; gap: 15px;}
         .section-label::before { content: ''; display: block; width: 30px; height: 1px; background-color: var(--gold); opacity: 0.5; }
         
@@ -51,7 +48,6 @@
         .intel-card h4 { font-family: 'Inter'; font-size: 0.8rem; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 15px; }
         .intel-card p { font-size: 0.95rem; color: #CCCCCC; line-height: 1.8; font-weight: 300; margin: 0; }
 
-        /* 逐日行程 */
         .itinerary-list { display: flex; flex-direction: column; gap: 40px; }
         .day-row { display: grid; grid-template-columns: 80px 1fr; gap: 40px; padding-bottom: 50px; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .day-label { font-family: 'Inter'; font-size: 2.8rem; font-weight: 900; color: var(--gold); line-height: 1; margin-top: -5px;}
@@ -65,11 +61,40 @@
 
         #loadingState { text-align: center; color: var(--gold); letter-spacing: 2px; margin-top: 100px; font-family: 'Inter'; }
 
+        /* =========================================
+           移动端终极奢华适配 (完全不影响 PC)
+           ========================================= */
         @media (max-width: 1024px) {
             .hero-section { grid-template-columns: 1fr; gap: 30px; }
             .intel-grid { grid-template-columns: 1fr 1fr; }
             .day-row { grid-template-columns: 1fr; gap: 15px; }
             .day-label { font-size: 2rem; margin-top: 0; }
+        }
+        
+        @media (max-width: 768px) {
+            /* 1. 缩减外边距，最大化屏幕利用率 */
+            .container { padding: 20px 20px 60px 20px; }
+            nav { padding: 20px; flex-direction: column; align-items: flex-start; gap: 10px; }
+            
+            /* 2. 英雄区重构：缩小字号，取消强制两端对齐 */
+            .hero-section { grid-template-columns: 1fr; gap: 20px; margin-bottom: 30px; }
+            .hero-title-block h1 { font-size: 1.8rem; line-height: 1.3; letter-spacing: 0; }
+            .hero-desc { text-align: left; font-size: 0.95rem; line-height: 1.7; color: #999; }
+            
+            .media-box { margin-bottom: 40px; border-radius: 6px; }
+
+            /* 3. 核心修复：六宫格强制单列，消除面条感，提升卡片质感 */
+            .intel-grid { grid-template-columns: 1fr; gap: 15px; margin-bottom: 50px; } 
+            .intel-card { padding: 20px; border-radius: 6px; }
+            .intel-card h4 { font-size: 0.75rem; margin-bottom: 10px; }
+            .intel-card p { font-size: 0.95rem; line-height: 1.7; text-align: left; }
+            
+            /* 4. 行程列表重构：上下堆叠式设计，大编号在顶部 */
+            .day-row { grid-template-columns: 1fr; gap: 10px; padding-bottom: 30px;}
+            .day-label { font-size: 2rem; margin-top: 0; margin-bottom: 5px;}
+            .day-content h3 { font-size: 1.25rem; margin-bottom: 10px;}
+            .day-content p { text-align: left; font-size: 0.95rem; line-height: 1.7; margin-bottom: 15px; color: #999;}
+            .tag-pill { font-size: 0.75rem; padding: 6px 12px; }
         }
     </style>
 </head>
@@ -114,6 +139,12 @@
     </footer>
 
     <script>
+        function getFastCdnUrl(url) {
+            if (!url) return '';
+            if (url.startsWith('images/')) return `https://cdn.jsdelivr.net/gh/feixingjiadavid/DreamWorldDavid/${url}`;
+            return url;
+        }
+
         document.addEventListener("DOMContentLoaded", function() {
             const urlParams = new URLSearchParams(window.location.search);
             const guideId = urlParams.get('id');
@@ -123,7 +154,6 @@
                 return;
             }
 
-            // 安全获取数据
             const data = (typeof dbData !== 'undefined') ? dbData : null; 
             if (!data || !data.guides) return;
 
@@ -134,30 +164,23 @@
                 return;
             }
 
-            // 1. 渲染头部
             document.getElementById('renderTitle').innerHTML = guide.title.replace('：', '：<br>');
             document.getElementById('renderDesc').innerText = guide.intro_desc;
 
-            // 2. 渲染核心媒体逻辑 (视频或图片)
             const mediaBox = document.getElementById('renderMedia');
             if (guide.video && guide.video.trim() !== '') {
                 const vid = guide.video.trim();
                 if (vid.startsWith('BV') || vid.startsWith('bv')) {
-                    // 如果是 B站 BV号
                     mediaBox.innerHTML = `<iframe src="//player.bilibili.com/player.html?bvid=${vid}&page=1&high_quality=1&danmaku=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>`;
                 } else if (vid.endsWith('.mp4')) {
-                    // 如果是 mp4 链接
-                    mediaBox.innerHTML = `<video controls poster="${guide.cover}"><source src="${vid}" type="video/mp4"></video>`;
+                    mediaBox.innerHTML = `<video controls poster="${getFastCdnUrl(guide.cover)}"><source src="${vid}" type="video/mp4"></video>`;
                 } else {
-                    // 无法识别的格式，回退成图片
-                    mediaBox.innerHTML = `<img src="${guide.cover}" alt="Cover">`;
+                    mediaBox.innerHTML = `<img src="${getFastCdnUrl(guide.cover)}" alt="Cover">`;
                 }
             } else {
-                // 没有填视频，直接显示唯美封面图
-                mediaBox.innerHTML = `<img src="${guide.cover}" alt="Cover">`;
+                mediaBox.innerHTML = `<img src="${getFastCdnUrl(guide.cover)}" alt="Cover">`;
             }
 
-            // 3. 渲染附件 
             if (guide.downloads && guide.downloads.length > 0) {
                 const dlContainer = document.getElementById('downloadSection');
                 const dlList = document.getElementById('renderDownloads');
@@ -167,7 +190,6 @@
                 });
             }
 
-            // 4. 渲染六宫格
             const intelContainer = document.getElementById('renderIntel');
             if (guide.intel) {
                 guide.intel.forEach(item => {
@@ -180,7 +202,6 @@
                 });
             }
 
-            // 5. 渲染逐日行程
             const itContainer = document.getElementById('renderItinerary');
             if (guide.itinerary) {
                 guide.itinerary.forEach(day => {
@@ -198,7 +219,6 @@
                 });
             }
 
-            // 隐藏 loading 展示内容
             document.getElementById('loadingState').style.display = 'none';
             document.getElementById('mainContent').style.display = 'block';
         });
