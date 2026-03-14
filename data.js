@@ -32,7 +32,7 @@ const dbData = {
   "guides": [
     {
       "id": "guide-faroe",
-      "title": "法罗群岛：11天拿下丹麦自由行，勇闯世界尽头",
+      "title": "法罗群岛：11天勇闯世界尽头",
       "date": "2025-05-01",
       "cover": "images/img_1773501737049.jpg",
       "video": "BV1e5jGzJEzw",
