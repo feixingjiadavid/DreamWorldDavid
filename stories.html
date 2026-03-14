@@ -18,8 +18,8 @@
         .back-home { color: var(--text-primary); text-decoration: none; font-size: 0.95rem; letter-spacing: 1px; transition: color 0.3s; }
         .back-home:hover { color: var(--gold); }
 
-        .container { max-width: 1600px; margin: 0 auto; padding: 60px 6vw; }
-        .page-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 60px; gap: 40px; }
+        .container { max-width: 1600px; margin: 0 auto; padding: 60px 6vw; min-height: 80vh; }
+        .page-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 60px; gap: 40px; flex-wrap: wrap;}
         .title-area h1 { font-size: 3.5rem; font-weight: 700; letter-spacing: -1px; margin-bottom: 10px; }
         .title-area p { color: var(--text-dimmed); font-size: 1.1rem; }
 
@@ -70,15 +70,24 @@
             const grid = document.getElementById('storyGrid');
             const searchInput = document.getElementById('storySearch');
             
-            // 直接读取引入的 dbData，不报错了！
+            // 安全防护：确保数据库正确加载
+            if (typeof dbData === 'undefined' || !dbData.stories) {
+                grid.innerHTML = '<p style="color:var(--gold); font-family:Inter;">正在同步云端节点数据...</p>';
+                return;
+            }
+
             let allStories = dbData.stories;
 
-            // 按日期最新排序
+            // 按日期倒序排列（最新的在最前面）
             allStories.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-            // 渲染卡片函数
+            // 渲染卡片核心函数
             const renderCards = (stories) => {
                 grid.innerHTML = ''; 
+                if (stories.length === 0) {
+                    grid.innerHTML = '<p style="color:var(--text-dimmed);">未能找到相关探险记录。</p>';
+                    return;
+                }
                 stories.forEach(story => {
                     const cardHTML = `
                         <a href="story-detail.html?id=${story.id}" class="story-card">
@@ -94,10 +103,10 @@
                 });
             };
 
-            // 初始渲染全部
+            // 初始渲染全部故事
             renderCards(allStories);
 
-            // 搜索实时过滤
+            // 搜索框实时过滤引擎
             searchInput.addEventListener('input', (e) => {
                 const term = e.target.value.toLowerCase();
                 const filtered = allStories.filter(story => story.title.toLowerCase().includes(term));
