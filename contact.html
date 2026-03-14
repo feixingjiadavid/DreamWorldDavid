@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&family=JetBrains+Mono:wght@100;400&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
     
-    <script src="data.js"></script>
+    <script>document.write('<script src="data.js?v=' + new Date().getTime() + '"><\/script>');</script>
 
     <style>
         :root {
@@ -23,10 +23,9 @@
         body { 
             background-color: var(--bg-base); color: var(--text-primary); 
             font-family: var(--font-zh); -webkit-font-smoothing: antialiased;
-            display: flex; flex-direction: column; min-height: 100vh;
+            display: flex; flex-direction: column; min-height: 100vh; overflow-x: hidden;
         }
         
-        /* 顶部极简返回导航 */
         nav { 
             padding: 40px 5vw; width: 100%; position: absolute; top: 0; left: 0;
             border-bottom: 1px solid rgba(255,255,255,0.03); z-index: 10;
@@ -36,21 +35,18 @@
             font-size: 0.8rem; display: inline-flex; align-items: center; gap: 10px; 
             letter-spacing: 1px; transition: opacity 0.3s ease;
         }
-        .back-btn:hover { opacity: 0.6; }
+        .back-btn:hover { opacity: 0.6; color: #D4AF37; }
 
-        /* 核心内容区 */
         main { 
             flex: 1; display: flex; flex-direction: column; 
             align-items: center; justify-content: center; 
             padding: 120px 5vw 80px 5vw; max-width: 1200px; margin: 0 auto; width: 100%;
         }
 
-        /* 头部文案 */
         .contact-header { text-align: center; margin-bottom: 80px; }
         .contact-title { font-size: 2.5rem; font-weight: 500; letter-spacing: 2px; margin-bottom: 15px; }
         .contact-subtitle { font-family: var(--font-mono); color: var(--text-dimmed); font-size: 0.9rem; letter-spacing: 4px; text-transform: uppercase; }
 
-        /* 巨型邮箱展示区 */
         .email-section { 
             text-align: center; margin-bottom: 100px; padding: 50px; 
             background: linear-gradient(145deg, #111 0%, #0a0a0a 100%);
@@ -65,7 +61,6 @@
         }
         .email-link:hover { color: #D4AF37; transform: scale(1.02); }
 
-        /* 三大平台二维码矩阵 */
         .qr-section-title { font-size: 1rem; color: var(--text-dimmed); margin-bottom: 40px; letter-spacing: 2px; text-align: center; }
         .qr-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; width: 100%; }
         
@@ -74,9 +69,8 @@
             border-radius: 16px; padding: 40px 30px; text-align: center;
             transition: var(--transition-smooth);
         }
-        .qr-card:hover { border-color: rgba(255,255,255,0.15); transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
+        .qr-card:hover { border-color: rgba(212,175,55,0.4); transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
 
-        /* 真实的二维码图片占位符 */
         .qr-image-wrapper { 
             width: 160px; height: 160px; margin: 0 auto 25px auto; 
             background-color: #1A1A1A; border-radius: 8px; overflow: hidden;
@@ -84,16 +78,41 @@
         }
         
         .qr-image { width: 100%; height: 100%; object-fit: cover; }
-        
-        /* 没有填入真实图片前的纯 CSS 占位样式 */
         .qr-placeholder { font-family: var(--font-mono); font-size: 0.7rem; color: #555; text-align: center; padding: 20px; }
 
         .platform-name { font-size: 1.2rem; font-weight: 500; margin-bottom: 10px; font-family: var(--font-display); letter-spacing: 1px; }
         .platform-desc { font-size: 0.85rem; color: var(--text-dimmed); }
 
-        @media (max-width: 900px) {
-            .qr-grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
-            .email-section { padding: 40px 20px; }
+        /* =========================================
+           移动端高级适配 (保护 PC 端)
+           ========================================= */
+        @media (max-width: 1024px) {
+            .qr-grid { gap: 20px; }
+        }
+        
+        @media (max-width: 768px) {
+            nav { padding: 20px 5vw; position: relative; border-bottom: none; }
+            .back-btn { font-size: 0.85rem; }
+            
+            main { padding: 40px 5vw 60px 5vw; }
+            
+            .contact-header { margin-bottom: 50px; }
+            .contact-title { font-size: 1.8rem; margin-bottom: 10px; }
+            .contact-subtitle { font-size: 0.75rem; letter-spacing: 2px; }
+
+            .email-section { padding: 30px 20px; margin-bottom: 60px; border-radius: 12px; }
+            .email-label { font-size: 0.8rem; margin-bottom: 15px; }
+            /* 防止超长邮箱撑爆屏幕 */
+            .email-link { font-size: 1.6rem; word-break: break-all; letter-spacing: 0; }
+
+            .qr-section-title { font-size: 0.85rem; margin-bottom: 30px; }
+            
+            /* 二维码卡片变为优雅的单列 */
+            .qr-grid { grid-template-columns: 1fr; gap: 20px; max-width: 380px; margin: 0 auto;}
+            .qr-card { padding: 30px 20px; border-radius: 12px; }
+            .qr-image-wrapper { width: 140px; height: 140px; margin-bottom: 20px; }
+            .platform-name { font-size: 1.1rem; }
+            .platform-desc { font-size: 0.8rem; }
         }
     </style>
 </head>
@@ -111,7 +130,7 @@
 
         <div class="email-section">
             <div class="email-label">商务洽谈 / 行程定制咨询请致信</div>
-            <a href="mailto:david@example.com" class="email-link" id="r_email">david@example.com</a>
+            <a href="mailto:david@example.com" class="email-link" id="r_email">载入中...</a>
         </div>
 
         <div class="qr-section-title">— 扫码直达数字平台 —</div>
@@ -119,7 +138,7 @@
         <div class="qr-grid">
             <div class="qr-card">
                 <div class="qr-image-wrapper" id="r_qr_bili">
-                    <div class="qr-placeholder">[在此放入真实的<br>B站二维码图]</div>
+                    <div class="qr-placeholder">[B站二维码]</div>
                 </div>
                 <div class="platform-name">BILIBILI</div>
                 <div class="platform-desc">中长篇 Vlog / 航拍纪实</div>
@@ -127,7 +146,7 @@
 
             <div class="qr-card">
                 <div class="qr-image-wrapper" id="r_qr_xhs">
-                    <div class="qr-placeholder">[在此放入真实的<br>小红书二维码图]</div>
+                    <div class="qr-placeholder">[小红书二维码]</div>
                 </div>
                 <div class="platform-name">XIAOHONGSHU</div>
                 <div class="platform-desc">碎片路书 / 摄影器材心得</div>
@@ -135,7 +154,7 @@
 
             <div class="qr-card">
                 <div class="qr-image-wrapper" id="r_qr_douyin">
-                    <div class="qr-placeholder">[在此放入真实的<br>抖音二维码图]</div>
+                    <div class="qr-placeholder">[抖音二维码]</div>
                 </div>
                 <div class="platform-name">DOUYIN</div>
                 <div class="platform-desc">高燃混剪 / 短视效纪实</div>
@@ -144,28 +163,29 @@
     </main>
 
     <script>
+        function getFastCdnUrl(url) {
+            if (!url) return '';
+            if (url.startsWith('images/')) return `https://cdn.jsdelivr.net/gh/feixingjiadavid/DreamWorldDavid/${url}`;
+            return url;
+        }
+
         document.addEventListener("DOMContentLoaded", function() {
-            // 确保数据库存在
             if (typeof dbData !== 'undefined' && dbData.global) {
                 const g = dbData.global;
                 
-                // 1. 替换商务邮箱
                 const emailEl = document.getElementById('r_email');
                 if (g.email && g.email.trim() !== '') {
                     emailEl.innerText = g.email;
                     emailEl.href = "mailto:" + g.email;
                 }
 
-                // 2. 替换二维码图片的渲染引擎
                 function renderQRCode(elementId, imageUrl) {
                     if (imageUrl && imageUrl.trim() !== '') {
                         const wrapper = document.getElementById(elementId);
-                        // 如果有图片，直接把里面的占位符替换成真实的图片标签
-                        wrapper.innerHTML = `<img src="${imageUrl}" class="qr-image" alt="QR Code">`;
+                        wrapper.innerHTML = `<img src="${getFastCdnUrl(imageUrl)}" class="qr-image" alt="QR Code">`;
                     }
                 }
 
-                // 读取三大平台的二维码
                 renderQRCode('r_qr_bili', g.qrBili);
                 renderQRCode('r_qr_xhs', g.qrXhs);
                 renderQRCode('r_qr_douyin', g.qrDouyin);
