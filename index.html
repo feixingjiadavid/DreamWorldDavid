@@ -50,6 +50,7 @@
         .philosophy-statement .highlight { color: var(--gold); font-weight: 900; }
         .philosophy-body { display: flex; flex-direction: column; justify-content: flex-start; height: 100%; }
         .philosophy-desc { color: #A0A0A0; font-size: 1.05rem; line-height: 1.85; font-weight: 300; text-align: justify; margin-bottom: 25px; white-space: pre-wrap;}
+        
         .philosophy-signature { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; letter-spacing: 2px; color: var(--text-primary); text-transform: uppercase; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; }
         .philosophy-signature span { display: block; font-family: var(--font-zh); font-size: 0.85rem; color: var(--text-dimmed); font-weight: 400; letter-spacing: 1px; margin-top: 5px; text-transform: none; }
 
@@ -111,13 +112,13 @@
 
         <section class="philosophy-section">
             <div class="statement-block">
-                <h1 class="philosophy-statement" id="renderDeclare">世界不缺打卡，我记录世界的 [B面]</h1>
+                <h1 class="philosophy-statement" id="renderDeclare">世界不缺走马观花的打卡，<br>我用珍贵的<span class="highlight">年假</span>逃离日常，<br>去记录这个世界隐秘的<span class="highlight no-wrap">B面</span></h1>
             </div>
             <div class="philosophy-body">
-                <p class="philosophy-desc" id="renderBio">这里是戴维的梦想世界。互联网大厂打工人，拒绝平庸的叙事逻辑，用心讲述冷门极境的原本故事。正在扫描大脑数据...</p>
+                <p class="philosophy-desc" id="renderBio">“互联网大厂打工人，用年假去拍世界的B面”——这是我的真实身份，也是创作的底色。作为一名冷门目的地的记录者，我用心讲述每一次旅程，拒绝平庸的叙事逻辑。无论是法罗群岛的极夜风暴，还是冰岛的无人区冰川，在这里，我将用真实的镜头和纯粹的文字，将极境最原本的故事带回现实。</p>
                 <div class="philosophy-signature">
-                    <span id="renderName">DAVID.</span>
-                    <span id="renderTags">// 数字游民,探索记录者</span>
+                    <div id="renderName" style="display:inline;">DAVID.</div>
+                    <span id="renderTags">// 冷门目的地记录者</span>
                 </div>
             </div>
         </section>
@@ -170,7 +171,6 @@
                     document.getElementById('renderTags').innerText = `// ${tagStr}`;
                 }
 
-                // 核心修改：接管名字
                 if(g.signatureName && g.signatureName.trim() !== '') {
                     document.getElementById('renderName').innerText = g.signatureName;
                 }
