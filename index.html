@@ -35,7 +35,6 @@
         .nav-links a:hover, .nav-links a.active { color: var(--text-primary); }
         .nav-links a.active::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--text-primary); }
 
-        /* --- 修正版：图片横幅样式 --- */
         .teaser-strip { position: relative; display: flex; align-items: center; width: 100%; height: 100px; border-radius: var(--radius); overflow: hidden; margin-bottom: 30px; text-decoration: none; color: var(--text-primary); border: 1px solid rgba(255,255,255,0.05); background: #111; transition: var(--transition-smooth); }
         .teaser-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.2; filter: grayscale(100%); transition: all 1.2s ease; z-index: 0; pointer-events: none;}
         .teaser-strip:hover .teaser-bg { opacity: 0.4; filter: grayscale(0%); transform: scale(1.02); }
@@ -52,7 +51,7 @@
         .philosophy-body { display: flex; flex-direction: column; justify-content: flex-start; height: 100%; }
         .philosophy-desc { color: #A0A0A0; font-size: 1.05rem; line-height: 1.85; font-weight: 300; text-align: justify; margin-bottom: 25px; white-space: pre-wrap;}
         .philosophy-signature { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; letter-spacing: 2px; color: var(--text-primary); text-transform: uppercase; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; }
-        .philosophy-signature span { display: block; font-family: var(--font-zh); font-size: 0.85rem; color: var(--text-dimmed); font-weight: 400; letter-spacing: 1px; margin-top: 5px; }
+        .philosophy-signature span { display: block; font-family: var(--font-zh); font-size: 0.85rem; color: var(--text-dimmed); font-weight: 400; letter-spacing: 1px; margin-top: 5px; text-transform: none; }
 
         .category-section { margin-bottom: 60px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.05); }
         .section-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 30px; }
@@ -103,7 +102,9 @@
             <img src="https://images.unsplash.com/photo-1476610182048-b716b8518aae?q=80&w=2000&auto=format&fit=crop" class="teaser-bg" id="heroBannerImg" alt="Banner">
             <div class="teaser-content">
                 <div class="teaser-left">
-                    <span class="teaser-tag">COMING SOON</span> <h2 class="teaser-title" id="heroTitle">冰岛极境</h2> </div>
+                    <span class="teaser-tag">COMING SOON</span> 
+                    <h2 class="teaser-title" id="heroTitle">冰岛极境</h2> 
+                </div>
                 <div class="teaser-meta">故事正在路上...</div>
             </div>
         </a>
@@ -115,7 +116,7 @@
             <div class="philosophy-body">
                 <p class="philosophy-desc" id="renderBio">这里是戴维的梦想世界。互联网大厂打工人，拒绝平庸的叙事逻辑，用心讲述冷门极境的原本故事。正在扫描大脑数据...</p>
                 <div class="philosophy-signature">
-                    DAVID. 
+                    <span id="renderName">DAVID.</span>
                     <span id="renderTags">// 数字游民,探索记录者</span>
                 </div>
             </div>
@@ -156,19 +157,22 @@
                 return rawText.replace(/\[(.*?)\]/g, '<span class="highlight">$1</span>').replace(/\n/g, '<br>');
             }
 
-            // --- 1. 渲染全局设置 ---
             if (db.global) {
                 const g = db.global;
                 
-                // 核心修复：纯净 Banner 横幅数据接管
                 if(g.heroTitle && g.heroTitle.trim() !== '') document.getElementById('heroTitle').innerText = g.heroTitle;
-                if(g.heroBanner && g.heroBanner.trim() !== '') document.getElementById('heroBannerImg').src = g.heroBanner; // 仅接管图片 URL
+                if(g.heroBanner && g.heroBanner.trim() !== '') document.getElementById('heroBannerImg').src = g.heroBanner; 
 
                 if(g.footer && g.footer.trim() !== '') document.getElementById('renderFooter').innerText = g.footer;
                 
                 if(g.tags && g.tags.trim() !== '') {
                     const tagStr = g.tags.split(',').map(t => t.trim()).join(' / ');
                     document.getElementById('renderTags').innerText = `// ${tagStr}`;
+                }
+
+                // 核心修改：接管名字
+                if(g.signatureName && g.signatureName.trim() !== '') {
+                    document.getElementById('renderName').innerText = g.signatureName;
                 }
 
                 if(g.heroDeclare && g.heroDeclare.trim() !== '') {
@@ -179,7 +183,6 @@
                 }
             }
 
-            // --- 2. 核心智能策展引擎 ---
             function getFeaturedItems(allArray, featId1, featId2) {
                 let result = [];
                 if(!allArray || allArray.length === 0) return result;
@@ -196,7 +199,6 @@
                 return result;
             }
 
-            // --- 渲染引擎 ---
             function renderItemsGrid(targetArray, gridId, defaultTagText) {
                 const grid = document.getElementById(gridId);
                 if (targetArray.length > 0) {
