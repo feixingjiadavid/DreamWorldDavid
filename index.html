@@ -30,19 +30,16 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         html { scroll-behavior: smooth; }
-        /* 隐藏超出部分防止水平滚动条 */
         body { background-color: var(--bg-base); color: var(--text-primary); font-family: var(--font-zh); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
         
-        /* 优化 2：首屏加载幕布 (防闪烁) */
+        /* 加载幕布 */
         #init-loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--bg-base); z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.8s ease, visibility 0.8s ease; }
         .loader-brand { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; letter-spacing: 6px; color: var(--gold); animation: breath 2s infinite ease-in-out; text-transform: uppercase;}
         @keyframes breath { 0% { opacity: 0.3; transform: scale(0.98); } 50% { opacity: 1; transform: scale(1); } 100% { opacity: 0.3; transform: scale(0.98); } }
-        /* 当 body 加上 loaded 类时，幕布优雅淡出 */
         body.loaded #init-loader { opacity: 0; visibility: hidden; }
 
         .page-wrapper { padding: 40px 6vw; max-width: 1600px; margin: 0 auto;}
         
-        /* 导航栏 */
         nav { display: flex; justify-content: space-between; align-items: center; padding-bottom: 20px; font-family: var(--font-zh); font-size: 0.95rem; font-weight: 500; letter-spacing: 1px; border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 20px; }
         .nav-brand a { color: var(--text-primary); text-decoration: none; font-weight: 500; font-size: 1.2rem; letter-spacing: 4px; transition: color 0.3s ease; }
         .nav-brand a:hover { color: var(--gold); } 
@@ -58,7 +55,7 @@
         
         .teaser-content { position: relative; z-index: 2; width: 100%; padding: 0 40px; display: flex; justify-content: space-between; align-items: center; }
         .teaser-left { display: flex; align-items: center; gap: 20px; }
-        .teaser-tag { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 2px; color: var(--gold); background: rgba(212, 175, 55, 0.1); padding: 4px 10px; border-radius: 4px;}
+        .teaser-tag { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 2px; color: var(--gold); background: rgba(212, 175, 55, 0.1); padding: 4px 10px; border-radius: 4px; white-space: nowrap;}
         .teaser-title { font-size: 1.4rem; font-weight: 700; letter-spacing: 2px; margin: 0; text-shadow: 0 2px 10px rgba(0,0,0,0.8);}
         .teaser-meta { font-family: var(--font-zh); font-size: 0.85rem; color: var(--text-dimmed); letter-spacing: 2px; text-shadow: 0 2px 10px rgba(0,0,0,0.8); }
 
@@ -97,20 +94,51 @@
 
         .site-footer { background-color: #0A0A0A; border-top: 1px solid rgba(255,255,255,0.03); padding: 40px 5vw; margin-top: 40px; text-align: center; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-dimmed); text-transform: uppercase; letter-spacing: 2px; }
 
-        /* 优化 3：移动端细节排版防挤压 */
+        /* =========================================
+           核心优化：移动端 (竖屏手机) 的终极适配
+           ========================================= */
+        
+        /* 平板尺寸过渡 */
         @media (max-width: 1024px) {
             .philosophy-section { grid-template-columns: 1fr; gap: 40px; }
             .video-grid { grid-template-columns: 1fr; }
         }
+
+        /* 手机尺寸 (iPhone / 安卓竖屏) */
         @media (max-width: 768px) {
-            /* 手机端导航条支持横向滑动，防止文字重叠折行 */
-            nav { flex-direction: column; align-items: flex-start; gap: 20px; }
-            .nav-links { width: 100%; overflow-x: auto; padding-bottom: 5px; gap: 30px; }
-            .nav-links::-webkit-scrollbar { display: none; } /* 隐藏滚动条保持美观 */
-            
-            .teaser-content { flex-direction: column; align-items: flex-start; gap: 10px; padding: 0 20px; }
+            /* 1. 缩减页面的整体边距，留出更多空间给内容 */
+            .page-wrapper { padding: 25px 5vw; }
+
+            /* 2. 导航栏防拥挤：改为横向滚动，不折行 */
+            nav { flex-direction: column; align-items: flex-start; gap: 20px; border-bottom: none; }
+            .nav-links { width: 100%; overflow-x: auto; padding-bottom: 10px; gap: 25px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+            .nav-links::-webkit-scrollbar { display: none; } /* 隐藏滚动条但保留滑动功能 */
+
+            /* 3. 横幅防溢出：解除 100px 高度限制，改为内容自适应撑开 */
+            .teaser-strip { height: auto; min-height: 100px; padding: 25px 0; }
+            .teaser-content { flex-direction: column; align-items: flex-start; gap: 15px; padding: 0 25px; }
+            .teaser-left { gap: 15px; flex-wrap: wrap; }
             .teaser-meta { align-self: flex-start; }
-            .card-title { font-size: 1.5rem; }
+
+            /* 4. 宣言区域：缩减恐怖的大字号，缩减行高 */
+            .philosophy-section { margin: 10px 0 40px 0; gap: 30px; }
+            .philosophy-statement { font-size: 2rem; line-height: 1.35; letter-spacing: -1px; }
+            .philosophy-desc { font-size: 0.95rem; }
+
+            /* 5. 卡片区域：缩小卡片内边距，优化标题大小 */
+            .category-section { padding-top: 20px; margin-bottom: 40px; }
+            .section-header { flex-direction: column; gap: 8px; margin-bottom: 25px; }
+            .section-title-zh { font-size: 1.5rem; }
+            
+            .video-card { padding: 25px; min-height: 250px; aspect-ratio: auto; }
+            .card-title { font-size: 1.4rem; }
+            
+            /* 播放按钮在手机上稍微缩小 */
+            .play-icon { width: 50px; height: 50px; }
+            .play-icon::after { font-size: 1rem; margin-left: 3px; }
+
+            /* 按钮适配 */
+            .btn-view-more { padding: 12px 25px; font-size: 0.85rem; width: 100%; text-align: center;}
         }
     </style>
 </head>
@@ -160,7 +188,8 @@
                 <h2 class="section-title-zh">旅行故事</h2>
                 <div class="section-title-en">SELECTED STORIES</div>
             </div>
-            <div class="video-grid" id="storiesGrid"></div>
+            <div class="video-grid" id="storiesGrid">
+                </div>
             <div class="view-more-container"><a href="stories.html" class="btn-view-more">查看更多旅行故事 ↗</a></div>
         </div>
 
@@ -177,20 +206,22 @@
     <footer class="site-footer" id="renderFooter">© 2026 DAVID EXPEDITION. ALL RIGHTS RESERVED.</footer>
 
     <script>
-        // 优化 4：图片全球 CDN 加速引擎
-        // 只要是传到你 GitHub 里的相对路径图，自动转为 jsDelivr 极速通道
+        // CDN 极速分发引擎
         function getFastCdnUrl(url) {
             if (!url) return '';
-            // 假设你的用户名是 feixingjiadavid，仓库是 DreamWorldDavid
+            // 如果你的 GitHub 名称和仓库不是这两个，请在这里修改！
             if (url.startsWith('images/')) {
                 return `https://cdn.jsdelivr.net/gh/feixingjiadavid/DreamWorldDavid/${url}`;
             }
-            return url; // 如果是外链（unsplash等），保持不变
+            return url;
         }
 
         document.addEventListener("DOMContentLoaded", function() {
-            // 兜底机制：即使没有数据，也要移除 Loading 幕布
+            // 安全退出：无论成功失败，最多 2.5 秒后必须强行关掉幕布
+            const loaderTimeout = setTimeout(() => { document.body.classList.add('loaded'); }, 2500);
+            
             function removeLoader() {
+                clearTimeout(loaderTimeout);
                 setTimeout(() => { document.body.classList.add('loaded'); }, 300);
             }
 
@@ -198,6 +229,7 @@
                 removeLoader();
                 return;
             }
+            
             const db = dbData;
             
             function parseHighlighting(rawText) {
@@ -205,16 +237,12 @@
                 return rawText.replace(/\[(.*?)\]/g, '<span class="highlight">$1</span>').replace(/\n/g, '<br>');
             }
 
-            // --- 渲染全局设置 ---
+            // 1. 渲染全局设置
             if (db.global) {
                 const g = db.global;
                 
                 if(g.heroTitle && g.heroTitle.trim() !== '') document.getElementById('heroTitle').innerText = g.heroTitle;
-                
-                // 接入 CDN 渲染横幅图
-                if(g.heroBanner && g.heroBanner.trim() !== '') {
-                    document.getElementById('heroBannerImg').src = getFastCdnUrl(g.heroBanner); 
-                }
+                if(g.heroBanner && g.heroBanner.trim() !== '') document.getElementById('heroBannerImg').src = getFastCdnUrl(g.heroBanner); 
 
                 if(g.footer && g.footer.trim() !== '') document.getElementById('renderFooter').innerText = g.footer;
                 
@@ -235,7 +263,7 @@
                 }
             }
 
-            // --- 智能策展引擎 ---
+            // 2. 智能策展引擎
             function getFeaturedItems(allArray, featId1, featId2) {
                 let result = [];
                 if(!allArray || allArray.length === 0) return result;
@@ -252,7 +280,7 @@
                 return result;
             }
 
-            // --- 渲染展位卡片 ---
+            // 3. 卡片渲染
             function renderItemsGrid(targetArray, gridId, defaultTagText) {
                 const grid = document.getElementById(gridId);
                 if (targetArray.length > 0) {
@@ -265,8 +293,6 @@
                         const playIconHtml = hasVideo ? `<div class="play-icon"></div>` : '';
                         const tagClass = item.bilibili_bvid ? 'tag-story' : 'tag-guide';
                         const targetUrl = item.paragraphs ? 'story-detail.html' : 'guide-detail.html';
-
-                        // 接入 CDN 渲染封面图
                         const finalCoverUrl = getFastCdnUrl(item.cover);
 
                         grid.innerHTML += `
@@ -289,7 +315,7 @@
             renderItemsGrid(targetStories, 'storiesGrid', '旅行故事');
             renderItemsGrid(targetGuides, 'guidesGrid', '硬核干货');
 
-            // 一切渲染完毕后，揭开幕布
+            // 4. 数据组装完毕，揭开幕布
             removeLoader();
         });
     </script>
