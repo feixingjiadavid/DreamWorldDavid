@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>攻略指南 | 戴维的梦想世界</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Noto+Sans+SC:wght@300;500;700&display=swap" rel="stylesheet">
+    <script src="data.js"></script>
+    <style>
+        :root { --bg: #050505; --text: #fff; --gold: #D4AF37; --dim: #888; --radius: 4px; }
+        body { background: var(--bg); color: var(--text); font-family: 'Noto Sans SC', sans-serif; margin: 0; padding: 40px 6vw; -webkit-font-smoothing: antialiased; }
+        
+        nav { display: flex; justify-content: space-between; align-items: center; padding-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 40px; }
+        .back-home { color: var(--text); text-decoration: none; font-size: 0.9rem; letter-spacing: 1px; transition: color 0.3s;}
+        .back-home:hover { color: var(--gold); }
+        
+        /* 统一头部样式，支持搜索框并排 */
+        .page-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 60px; gap: 40px; }
+        .title-area h1 { font-size: 3.5rem; font-weight: 700; letter-spacing: -1px; margin-bottom: 10px; margin-top: 0;}
+        .title-area p { margin: 0; }
+
+        /* 搜索框样式（与故事页完全一致） */
+        .search-wrapper { position: relative; width: 100%; max-width: 400px; }
+        #guideSearch { width: 100%; background: transparent; border: none; border-bottom: 2px solid rgba(255,255,255,0.1); padding: 12px 0; color: #fff; font-size: 1.1rem; outline: none; transition: border-color 0.3s; font-family: 'Noto Sans SC', sans-serif;}
+        #guideSearch:focus { border-color: var(--gold); }
+        .search-wrapper::after { content: 'SEARCH'; position: absolute; right: 0; top: 15px; font-size: 0.7rem; color: var(--dim); letter-spacing: 2px; font-family: 'Inter'; }
+        
+        /* 卡片网格布局 */
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+        
+        .guide-card { background: #111; border-radius: var(--radius); overflow: hidden; text-decoration: none; color: inherit; border: 1px solid rgba(255,255,255,0.03); transition: 0.5s cubic-bezier(0.16, 1, 0.3, 1); display: block;}
+        .guide-card:hover { border-color: rgba(212, 175, 55, 0.4); transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.6);}
+        
+        .cover { width: 100%; aspect-ratio: 16/9; background: #222; object-fit: cover; opacity: 0.8; transition: 0.5s; }
+        .guide-card:hover .cover { opacity: 1; transform: scale(1.02); }
+        
+        .content { padding: 30px; }
+        .tag { color: var(--gold); font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 15px; display: block; font-family: 'Inter'; font-weight: 700;}
+        .title { font-size: 1.6rem; font-weight: 700; margin-bottom: 15px; line-height: 1.3; }
+        .desc { color: var(--dim); font-size: 0.95rem; line-height: 1.7; }
+
+        .no-results { color: var(--dim); font-family: 'Inter'; letter-spacing: 2px; grid-column: 1 / -1; font-size: 0.8rem;}
+        
+        @media (max-width: 1024px) { 
+            .grid { grid-template-columns: 1fr 1fr; } 
+        }
+        @media (max-width: 768px) { 
+            .page-header { flex-direction: column; align-items: flex-start; }
+            .grid { grid-template-columns: 1fr; } 
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="back-home">← 首页 / HOME</a>
+        <div style="font-family: 'Inter'; font-size: 0.75rem; letter-spacing: 2px; color: var(--dim);">EXPEDITION GUIDES</div>
+    </nav>
+
+    <header class="page-header">
+        <div class="title-area">
+            <h1>攻略指南</h1>
+            <p style="color:var(--dim)">硬核干货储备：从签证策略到无人区驾驶指南</p>
+        </div>
+        <div class="search-wrapper">
+            <input type="text" id="guideSearch" placeholder="搜索目的地或关键词...">
+        </div>
+    </header>
+
+    <div class="grid" id="guidesGrid"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const grid = document.getElementById('guidesGrid');
+            const searchInput = document.getElementById('guideSearch');
+            
+            // 数据源
+            let allGuides = dbData.guides;
+            allGuides.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            // 渲染函数
+            const renderCards = (guides) => {
+                grid.innerHTML = '';
+                
+                // 搜索不到内容时的提示
+                if(guides.length === 0) {
+                    grid.innerHTML = '<div class="no-results">NO MATCHING GUIDES FOUND.</div>';
+                    return;
+                }
+
+                guides.forEach(guide => {
+                    const cardHTML = `
+                        <a href="guide-detail.html?id=${guide.id}" class="guide-card">
+                            <img src="${guide.cover}" class="cover" alt="${guide.title}">
+                            <div class="content">
+                                <span class="tag">Expedition Guide</span>
+                                <div class="title">${guide.title.replace('：', '：<br>')}</div>
+                                <p class="desc">${guide.short_desc}</p>
+                            </div>
+                        </a>
+                    `;
+                    grid.insertAdjacentHTML('beforeend', cardHTML);
+                });
+            };
+
+            // 初始渲染
+            renderCards(allGuides);
+
+            // 实时搜索过滤
+            searchInput.addEventListener('input', (e) => {
+                const term = e.target.value.toLowerCase();
+                const filtered = allGuides.filter(guide => 
+                    guide.title.toLowerCase().includes(term) || 
+                    guide.short_desc.toLowerCase().includes(term)
+                );
+                renderCards(filtered);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>戴维的梦想世界 | 探险纪实</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&family=JetBrains+Mono:wght@100;300;400&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-base: #050505; --text-primary: #FFFFFF; --text-dimmed: #888888;
+            --font-display: 'Inter', sans-serif; --font-mono: 'JetBrains Mono', monospace;
+            --font-zh: 'Noto Sans SC', sans-serif; --radius: 8px; 
+            --transition-smooth: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            --gold: #D4AF37;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        html { scroll-behavior: smooth; }
+        body { background-color: var(--bg-base); color: var(--text-primary); font-family: var(--font-zh); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+        
+        .page-wrapper { padding: 40px 6vw; max-width: 1600px; margin: 0 auto;}
+        
+        /* 导航栏：压缩底部间距 */
+        nav { display: flex; justify-content: space-between; align-items: center; padding-bottom: 20px; font-family: var(--font-zh); font-size: 0.95rem; font-weight: 500; letter-spacing: 1px; border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 20px; }
+        .nav-brand a { color: var(--text-primary); text-decoration: none; font-weight: 500; font-size: 1.2rem; letter-spacing: 4px; transition: color 0.3s ease; }
+        .nav-brand a:hover { color: var(--gold); } 
+        
+        .nav-links { display: flex; gap: 50px; align-items: center; font-family: var(--font-zh); font-size: 0.95rem;}
+        .nav-links a { color: var(--text-dimmed); text-decoration: none; position: relative; padding-bottom: 6px; transition: color 0.3s ease; letter-spacing: 1px;}
+        .nav-links a:hover, .nav-links a.active { color: var(--text-primary); }
+        .nav-links a.active::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--text-primary); }
+
+        /* 预告横幅：压缩上下间距，提升屏效 */
+        .teaser-strip { position: relative; display: flex; align-items: center; width: 100%; height: 100px; border-radius: var(--radius); overflow: hidden; margin-bottom: 30px; text-decoration: none; color: var(--text-primary); border: 1px solid rgba(255,255,255,0.05); background: #111; transition: var(--transition-smooth); }
+        .teaser-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.2; filter: grayscale(100%); transition: all 1.2s ease; z-index: 0; }
+        .teaser-strip:hover .teaser-bg { opacity: 0.4; filter: grayscale(0%); transform: scale(1.02); }
+        .teaser-content { position: relative; z-index: 2; width: 100%; padding: 0 40px; display: flex; justify-content: space-between; align-items: center; }
+        .teaser-left { display: flex; align-items: center; gap: 20px; }
+        .teaser-tag { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 2px; color: var(--gold); background: rgba(212, 175, 55, 0.1); padding: 4px 10px; border-radius: 4px;}
+        .teaser-title { font-size: 1.4rem; font-weight: 700; letter-spacing: 2px; margin: 0; }
+        .teaser-meta { font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-dimmed); letter-spacing: 1px; }
+
+        /* =========================================
+           终极修复：左右高度 1:1 刚性对齐
+           ========================================= */
+        .philosophy-section {
+            display: grid;
+            grid-template-columns: 1.1fr 1fr;
+            gap: 8vw;
+            margin: 20px 0 60px 0; /* 彻底删掉红框空隙 */
+            padding: 20px 0;
+            align-items: start; /* 顶部对齐起始线 */
+        }
+
+        .philosophy-statement {
+            /* 调整字号和行高，确保三行文字的物理高度与右侧精准匹配 */
+            font-size: clamp(2.2rem, 3.5vw, 4rem);
+            font-weight: 700;
+            line-height: 1.25;
+            letter-spacing: -2px; 
+            color: var(--text-primary);
+            margin: 0;
+            word-break: keep-all;
+        }
+        .philosophy-statement .highlight { color: var(--gold); font-weight: 900; }
+
+        .philosophy-body {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            height: 100%; /* 撑开高度以便对齐 */
+        }
+
+        .philosophy-desc {
+            color: #A0A0A0;
+            font-size: 1.05rem;
+            line-height: 1.85; /* 精准微调行高以对齐左侧 */
+            font-weight: 300;
+            text-align: justify;
+            margin-bottom: 25px; /* 段落与署名的间距 */
+        }
+
+        .philosophy-signature {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--text-primary);
+            text-transform: uppercase;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 20px;
+        }
+
+        .philosophy-signature span {
+            display: block; font-family: var(--font-zh); font-size: 0.85rem;
+            color: var(--text-dimmed); font-weight: 400; letter-spacing: 1px; margin-top: 5px;
+        }
+
+        /* 视频/故事板块 */
+        .category-section {
+            margin-bottom: 60px; /* 压缩板块间距 */
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .section-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 30px; }
+        .section-title-zh { font-size: 1.8rem; font-weight: 700; letter-spacing: 2px; }
+        .section-title-en { font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-dimmed); letter-spacing: 4px; text-transform: uppercase; }
+
+        .video-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; margin-bottom: 40px; }
+        .video-card { position: relative; border-radius: var(--radius); overflow: hidden; aspect-ratio: 16 / 9; background-color: #111; display: flex; flex-direction: column; justify-content: flex-end; padding: 40px; cursor: pointer; border: 1px solid rgba(255,255,255,0.03); transition: var(--transition-smooth); }
+        .video-card:hover { border-color: rgba(212, 175, 55, 0.4); transform: translateY(-5px); }
+        .card-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 1.5s ease; z-index: 0; opacity: 0.6; }
+        .card-overlay { position: absolute; bottom: 0; left: 0; width: 100%; height: 80%; background: linear-gradient(to top, rgba(5,5,5,1) 0%, rgba(5,5,5,0.5) 45%, rgba(5,5,5,0) 100%); z-index: 1; }
+        .play-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.8); width: 60px; height: 60px; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.3); border-radius: 50%; display: flex; justify-content: center; align-items: center; z-index: 3; opacity: 0; transition: all 0.4s ease; backdrop-filter: blur(4px); }
+        .play-icon::after { content: '▶'; color: #fff; font-size: 1.2rem; margin-left: 4px; }
+        .video-card:hover .play-icon { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        .card-content { position: relative; z-index: 2; pointer-events: none;}
+        .card-tag { font-family: var(--font-zh); font-size: 0.8rem; font-weight: 500; letter-spacing: 2px; margin-bottom: 12px; display: inline-block; padding: 4px 8px; border-radius: 4px; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);}
+        .card-title { font-size: 2rem; font-weight: 700; line-height: 1.3; text-shadow: 0 4px 10px rgba(0,0,0,0.8);}
+
+        .view-more-container { text-align: center; }
+        .btn-view-more { display: inline-block; padding: 14px 35px; background: transparent; border: 1px solid rgba(255,255,255,0.2); color: var(--text-primary); font-family: var(--font-zh); font-size: 0.95rem; font-weight: 500; letter-spacing: 2px; border-radius: 40px; text-decoration: none; transition: all 0.3s ease; }
+        .btn-view-more:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-3px); }
+
+        .site-footer { background-color: #0A0A0A; border-top: 1px solid rgba(255,255,255,0.03); padding: 40px 5vw; margin-top: 40px; text-align: center; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-dimmed); text-transform: uppercase; letter-spacing: 2px; }
+
+        /* 全屏视频弹窗保持 */
+        .video-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.95); z-index: 9999; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; backdrop-filter: blur(10px); }
+        .video-modal.active { opacity: 1; pointer-events: auto; }
+        .modal-content { position: relative; width: 90vw; max-width: 1400px; aspect-ratio: 16 / 9; background: #000; border-radius: 12px; overflow: hidden; transform: scale(0.95); transition: transform 0.4s ease; }
+        .video-modal.active .modal-content { transform: scale(1); }
+        .modal-video-player { width: 100%; height: 100%; display: block; outline: none; }
+        .close-modal { position: absolute; top: -50px; right: 0; color: #fff; font-size: 2rem; cursor: pointer; transition: color 0.3s; }
+        .close-modal:hover { color: var(--gold); }
+
+        @media (max-width: 1024px) {
+            .philosophy-section { grid-template-columns: 1fr; gap: 40px; }
+            .video-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-wrapper">
+        <nav>
+            <div class="nav-brand"><a href="index.html">欢迎来到戴维的梦想世界</a></div>
+            <div class="nav-links">
+                <a href="index.html" class="active">首页</a>
+                <a href="stories.html">旅行故事</a>
+                <a href="guides.html">攻略指南</a>
+                <a href="contact.html">合作联系</a>
+            </div>
+        </nav>
+
+        <a href="iceland.html" class="teaser-strip">
+            <img src="https://images.unsplash.com/photo-1476610182048-b716b8518aae?q=80&w=2000&auto=format&fit=crop" class="teaser-bg" alt="Iceland">
+            <div class="teaser-content">
+                <div class="teaser-left">
+                    <span class="teaser-tag">COMING SOON</span>
+                    <h2 class="teaser-title">冰岛极境</h2>
+                </div>
+                <div class="teaser-meta">APR 26 - MAY 04 // 故事正在路上...</div>
+            </div>
+        </a>
+
+        <section class="philosophy-section">
+            <div class="statement-block">
+                <h1 class="philosophy-statement">
+                    世界不缺走马观花的打卡，<br>
+                    我用珍贵的<span class="highlight">年假</span>逃离日常，<br>
+                    去记录这个世界隐秘的<span class="highlight no-wrap">B面</span>
+                </h1>
+            </div>
+            <div class="philosophy-body">
+                <p class="philosophy-desc">
+                    “互联网大厂打工人，用年假去拍世界的B面”——这是我的真实身份，也是创作的底色。作为一名冷门目的地的记录者，我用心讲述每一次旅程，拒绝平庸的叙事逻辑。无论是法罗群岛的极夜风暴，还是冰岛的无人区冰川，在这里，我将用真实的镜头和纯粹的文字，将极境最原本的故事带回现实。
+                </p>
+                <div class="philosophy-signature">
+                    DAVID. 
+                    <span>// 冷门目的地记录者</span>
+                </div>
+            </div>
+        </section>
+
+        <div class="category-section">
+            <div class="section-header">
+                <h2 class="section-title-zh">旅行故事</h2>
+                <div class="section-title-en">SELECTED STORIES</div>
+            </div>
+            <div class="video-grid">
+                <div class="video-card" data-video="https://www.w3schools.com/html/mov_bbb.mp4">
+                    <img src="https://images.unsplash.com/photo-1579707248564-91285312dc72?q=80&w=1600&auto=format&fit=crop" class="card-img" alt="法罗">
+                    <div class="card-overlay"></div><div class="play-icon"></div>
+                    <div class="card-content"><span class="card-tag tag-story">旅行记录</span><h2 class="card-title">在世界尽头拥抱风暴</h2></div>
+                </div>
+                <div class="video-card" data-video="https://www.w3schools.com/html/mov_bbb.mp4">
+                    <img src="https://images.unsplash.com/photo-1527838832700-5059252407fa?q=80&w=1600&auto=format&fit=crop" class="card-img" alt="土耳其">
+                    <div class="card-overlay"></div><div class="play-icon"></div>
+                    <div class="card-content"><span class="card-tag tag-story">旅行记录</span><h2 class="card-title">穿越异星地表</h2></div>
+                </div>
+            </div>
+            <div class="view-more-container"><a href="stories.html" class="btn-view-more">查看更多旅行故事 ↗</a></div>
+        </div>
+
+        <div class="category-section">
+            <div class="section-header">
+                <h2 class="section-title-zh">攻略指南</h2>
+                <div class="section-title-en">EXPEDITION GUIDES</div>
+            </div>
+            <div class="video-grid">
+                <div class="video-card" data-video="https://www.w3schools.com/html/mov_bbb.mp4">
+                    <img src="https://images.unsplash.com/photo-1544627142-f8314e3089d7?q=80&w=1600&auto=format&fit=crop" class="card-img" alt="攻略">
+                    <div class="card-overlay"></div><div class="play-icon"></div>
+                    <div class="card-content"><span class="card-tag tag-guide">硬核干货</span><h2 class="card-title">法罗群岛避坑指南</h2></div>
+                </div>
+                <div class="video-card" data-video="https://www.w3schools.com/html/mov_bbb.mp4">
+                    <img src="https://images.unsplash.com/photo-1588665330811-3e440409fcb4?q=80&w=1600&auto=format&fit=crop" class="card-img" alt="冰岛">
+                    <div class="card-overlay"></div><div class="play-icon"></div>
+                    <div class="card-content"><span class="card-tag tag-guide">硬核干货</span><h2 class="card-title">冰岛极境行前筹备</h2></div>
+                </div>
+            </div>
+            <div class="view-more-container"><a href="guides.html" class="btn-view-more">查阅完整攻略知识库 ↗</a></div>
+        </div>
+    </div>
+
+    <footer class="site-footer">© 2026 DAVID EXPEDITION. ALL RIGHTS RESERVED.</footer>
+
+    <div class="video-modal" id="videoModal"><div class="modal-content"><span class="close-modal" id="closeModal">&times;</span><video class="modal-video-player" id="modalPlayer" controls><source src="" type="video/mp4"></video></div></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const videoCards = document.querySelectorAll('.video-card');
+            const modal = document.getElementById('videoModal');
+            const player = document.getElementById('modalPlayer');
+            const closeBtn = document.getElementById('closeModal');
+            videoCards.forEach(card => {
+                card.addEventListener('click', function(e) {
+                    const videoSrc = this.getAttribute('data-video');
+                    if(videoSrc) { player.src = videoSrc; modal.classList.add('active'); player.play(); }
+                });
+            });
+            function closeModal() { modal.classList.remove('active'); player.pause(); player.src = ""; }
+            closeBtn.addEventListener('click', closeModal);
+            modal.addEventListener('click', function(e) { if(e.target === modal) { closeModal(); } });
+        });
+    </script>
+</body>
+</html>

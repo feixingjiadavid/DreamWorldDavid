@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>攻略详情 | 戴维的梦想世界</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&family=JetBrains+Mono:wght@100;300;400&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <script src="data.js"></script>
+    <style>
+        :root {
+            --bg-base: #050505; --text-primary: #FFFFFF; --text-secondary: #AAAAAA;
+            --text-dimmed: #888888; --gold: #D4AF37; --radius: 4px;
+            --transition-smooth: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg-base); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; -webkit-font-smoothing: antialiased; line-height: 1.6; }
+
+        nav { padding: 25px 6vw; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .back-btn { color: var(--text-primary); text-decoration: none; font-size: 0.95rem; font-weight: 500; letter-spacing: 1px; transition: color 0.3s; }
+        .back-btn:hover { color: var(--gold); }
+        .nav-meta { font-family: 'Inter'; font-size: 0.75rem; color: var(--text-dimmed); letter-spacing: 2px; text-transform: uppercase; }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 40px 6vw 100px 6vw; }
+
+        .hero-section { display: grid; grid-template-columns: 1.1fr 1fr; gap: 6vw; align-items: center; margin-bottom: 50px; }
+        .hero-title-block h1 { font-size: clamp(2.2rem, 3.5vw, 4rem); font-weight: 700; line-height: 1.3; letter-spacing: -1px; margin: 0; word-break: keep-all; }
+        .hero-tag { color: var(--gold); font-size: 0.8rem; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 15px; display: block; font-weight: 500; }
+        .hero-desc-block { display: flex; flex-direction: column; justify-content: center; }
+        .hero-desc { color: #A0A0A0; font-size: 1.05rem; line-height: 1.8; font-weight: 300; text-align: justify; margin: 0; }
+
+        .video-box { width: 100%; aspect-ratio: 16 / 9; background: #000; border-radius: var(--radius); overflow: hidden; margin-bottom: 60px; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 30px 60px rgba(0,0,0,0.5); }
+        video { width: 100%; height: 100%; display: block; object-fit: cover; outline: none; background: #000; }
+
+        /* 极简高级的下载区 */
+        .download-section { margin-bottom: 80px; display: none; }
+        .download-header { font-family: 'Inter'; font-size: 0.75rem; color: var(--text-dimmed); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 25px; display: flex; align-items: center; gap: 15px;}
+        .download-header::before { content: ''; display: block; width: 30px; height: 1px; background-color: var(--gold); opacity: 0.5; }
+        .download-list { display: flex; gap: 15px; flex-direction: column; }
+        .btn-download { display: inline-flex; align-items: center; padding: 15px 25px; background: #111; border: 1px solid rgba(255,255,255,0.05); color: var(--text-primary); text-decoration: none; border-radius: var(--radius); font-size: 0.95rem; font-weight: 400; transition: var(--transition-smooth); width: max-content; }
+        .btn-download::before { content: '↓'; color: var(--gold); margin-right: 15px; font-weight: 700; }
+        .btn-download:hover { border-color: rgba(212, 175, 55, 0.4); transform: translateX(5px); }
+
+        /* 恢复原汁原味的六宫格样式 */
+        .section-label { font-family: 'Inter'; font-size: 0.75rem; color: var(--text-dimmed); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 25px; display: flex; align-items: center; gap: 15px;}
+        .section-label::before { content: ''; display: block; width: 30px; height: 1px; background-color: var(--gold); opacity: 0.5; }
+        
+        .intel-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 100px; }
+        .intel-card { background: #0D0D0D; padding: 30px; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.03); transition: var(--transition-smooth); }
+        .intel-card:hover { border-color: rgba(212, 175, 55, 0.2); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.5);}
+        .intel-card h4 { font-family: 'Inter'; font-size: 0.8rem; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 15px; }
+        .intel-card p { font-size: 0.95rem; color: #CCCCCC; line-height: 1.8; font-weight: 300; margin: 0; }
+
+        /* 恢复原汁原味的逐日行程样式 */
+        .itinerary-list { display: flex; flex-direction: column; gap: 40px; }
+        .day-row { display: grid; grid-template-columns: 80px 1fr; gap: 40px; padding-bottom: 50px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .day-label { font-family: 'Inter'; font-size: 2.8rem; font-weight: 900; color: var(--gold); line-height: 1; margin-top: -5px;}
+        .day-content h3 { font-size: 1.6rem; font-weight: 700; margin-bottom: 15px; letter-spacing: 1px; color: #fff;}
+        .day-content p { color: #A0A0A0; font-size: 1.05rem; margin-bottom: 25px; font-weight: 300; text-align: justify; line-height: 1.8;}
+        
+        .day-tags { display: flex; gap: 12px; flex-wrap: wrap; }
+        .tag-pill { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); padding: 8px 16px; border-radius: 4px; font-size: 0.85rem; color: #DDD; font-weight: 400; display: flex; align-items: center; }
+
+        .site-footer { background-color: #0A0A0A; border-top: 1px solid rgba(255,255,255,0.03); padding: 40px 5vw; margin-top: 30px; text-align: center; font-family: 'Inter'; font-size: 0.75rem; color: var(--text-dimmed); text-transform: uppercase; letter-spacing: 2px; }
+
+        #loadingState { text-align: center; color: var(--gold); letter-spacing: 2px; margin-top: 100px; font-family: 'Inter'; }
+
+        @media (max-width: 1024px) {
+            .hero-section { grid-template-columns: 1fr; gap: 30px; }
+            .intel-grid { grid-template-columns: 1fr 1fr; }
+            .day-row { grid-template-columns: 1fr; gap: 15px; }
+            .day-label { font-size: 2rem; margin-top: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="guides.html" class="back-btn">← 返回攻略列表</a>
+        <div class="nav-meta">ITINERARY LOG // 2026</div>
+    </nav>
+
+    <div id="loadingState">读取数据中...</div>
+
+    <main class="container" id="mainContent" style="display: none;">
+        
+        <header class="hero-section">
+            <div class="hero-title-block">
+                <span class="hero-tag">Exploration Guide</span>
+                <h1 id="renderTitle">加载中...</h1>
+            </div>
+            <div class="hero-desc-block">
+                <p class="hero-desc" id="renderDesc">加载中...</p>
+            </div>
+        </header>
+
+        <section class="video-box">
+            <video id="renderVideo" controls poster="">
+                <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+            </video>
+        </section>
+
+        <section class="download-section" id="downloadSection">
+            <div class="download-header">ATTACHMENTS // 附加资料</div>
+            <div class="download-list" id="renderDownloads"></div>
+        </section>
+
+        <div class="section-label">CRITICAL INTEL</div>
+        <section class="intel-grid" id="renderIntel"></section>
+
+        <div class="section-label">ACTION PLAN</div>
+        <section class="itinerary-list" id="renderItinerary"></section>
+
+    </main>
+
+    <footer class="site-footer">
+        © 2026 DAVID EXPEDITION. ALL RIGHTS RESERVED.
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const guideId = urlParams.get('id');
+
+            if (!guideId) {
+                document.getElementById('loadingState').innerText = "ERROR: 请在网址末尾添加 ?id=xxx 指定攻略编号";
+                return;
+            }
+
+            const data = dbData; 
+            const guide = data.guides.find(g => g.id === guideId);
+
+            if (!guide) {
+                document.getElementById('loadingState').innerText = "ERROR: 找不到对应的攻略数据";
+                return;
+            }
+
+            // 渲染头部和视频
+            document.getElementById('renderTitle').innerHTML = guide.title.replace('：', '：<br>');
+            document.getElementById('renderDesc').innerText = guide.intro_desc;
+            document.getElementById('renderVideo').poster = guide.cover;
+
+            // 渲染附件 (极简样式)
+            if (guide.downloads && guide.downloads.length > 0) {
+                const dlContainer = document.getElementById('downloadSection');
+                const dlList = document.getElementById('renderDownloads');
+                dlContainer.style.display = 'block'; 
+                guide.downloads.forEach(dl => {
+                    dlList.innerHTML += `<a href="${dl.url}" target="_blank" download class="btn-download">${dl.name}</a>`;
+                });
+            }
+
+            // 渲染六宫格 (完美还原高级 UI)
+            const intelContainer = document.getElementById('renderIntel');
+            guide.intel.forEach(item => {
+                intelContainer.innerHTML += `
+                    <div class="intel-card">
+                        <h4>${item.title}</h4>
+                        <p>${item.content}</p>
+                    </div>
+                `;
+            });
+
+            // 渲染逐日行程 (完美还原大号金字 01 和精美药丸)
+            const itContainer = document.getElementById('renderItinerary');
+            guide.itinerary.forEach(day => {
+                const tagsHtml = day.tags.map(tag => `<span class="tag-pill">${tag}</span>`).join('');
+                itContainer.innerHTML += `
+                    <div class="day-row">
+                        <div class="day-label">${day.day}</div>
+                        <div class="day-content">
+                            <h3>${day.title}</h3>
+                            <p>${day.desc}</p>
+                            <div class="day-tags">${tagsHtml}</div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // 隐藏 loading 动画，展示完美内容
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>合作联系 | 戴维的梦想世界</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&family=JetBrains+Mono:wght@100;400&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-base: #060606; --text-primary: #FFFFFF; --text-dimmed: #888888;
+            --font-display: 'Inter', sans-serif; --font-mono: 'JetBrains Mono', monospace;
+            --font-zh: 'Noto Sans SC', sans-serif;
+            --transition-smooth: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background-color: var(--bg-base); color: var(--text-primary); 
+            font-family: var(--font-zh); -webkit-font-smoothing: antialiased;
+            display: flex; flex-direction: column; min-height: 100vh;
+        }
+        
+        /* 顶部极简返回导航 */
+        nav { 
+            padding: 40px 5vw; width: 100%; position: absolute; top: 0; left: 0;
+            border-bottom: 1px solid rgba(255,255,255,0.03); z-index: 10;
+        }
+        .back-btn { 
+            color: var(--text-primary); text-decoration: none; font-family: var(--font-mono); 
+            font-size: 0.8rem; display: inline-flex; align-items: center; gap: 10px; 
+            letter-spacing: 1px; transition: opacity 0.3s ease;
+        }
+        .back-btn:hover { opacity: 0.6; }
+
+        /* 核心内容区 */
+        main { 
+            flex: 1; display: flex; flex-direction: column; 
+            align-items: center; justify-content: center; 
+            padding: 120px 5vw 80px 5vw; max-width: 1200px; margin: 0 auto; width: 100%;
+        }
+
+        /* 头部文案 */
+        .contact-header { text-align: center; margin-bottom: 80px; }
+        .contact-title { font-size: 2.5rem; font-weight: 500; letter-spacing: 2px; margin-bottom: 15px; }
+        .contact-subtitle { font-family: var(--font-mono); color: var(--text-dimmed); font-size: 0.9rem; letter-spacing: 4px; text-transform: uppercase; }
+
+        /* 巨型邮箱展示区 */
+        .email-section { 
+            text-align: center; margin-bottom: 100px; padding: 50px; 
+            background: linear-gradient(145deg, #111 0%, #0a0a0a 100%);
+            border: 1px solid rgba(255,255,255,0.05); border-radius: 16px;
+            width: 100%; max-width: 800px;
+        }
+        .email-label { font-size: 0.9rem; color: var(--text-dimmed); margin-bottom: 20px; letter-spacing: 1px; }
+        .email-link { 
+            display: inline-block; font-family: var(--font-display); font-size: clamp(2rem, 5vw, 4rem); 
+            font-weight: 700; color: var(--text-primary); text-decoration: none; 
+            letter-spacing: -1px; transition: var(--transition-smooth);
+        }
+        .email-link:hover { color: #D4AF37; transform: scale(1.02); }
+
+        /* 三大平台二维码矩阵 */
+        .qr-section-title { font-size: 1rem; color: var(--text-dimmed); margin-bottom: 40px; letter-spacing: 2px; text-align: center; }
+        .qr-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; width: 100%; }
+        
+        .qr-card { 
+            background: #0D0D0D; border: 1px solid rgba(255,255,255,0.05); 
+            border-radius: 16px; padding: 40px 30px; text-align: center;
+            transition: var(--transition-smooth);
+        }
+        .qr-card:hover { border-color: rgba(255,255,255,0.15); transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
+
+        /* 真实的二维码图片占位符 */
+        .qr-image-wrapper { 
+            width: 160px; height: 160px; margin: 0 auto 25px auto; 
+            background-color: #1A1A1A; border-radius: 8px; overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
+        }
+        
+        /* 替换你自己的真实二维码时，将 src="..." 替换为你本地图片的路径即可 */
+        .qr-image { width: 100%; height: 100%; object-fit: cover; }
+        
+        /* 没有填入真实图片前的纯 CSS 占位样式 */
+        .qr-placeholder { font-family: var(--font-mono); font-size: 0.7rem; color: #555; text-align: center; padding: 20px; }
+
+        .platform-name { font-size: 1.2rem; font-weight: 500; margin-bottom: 10px; font-family: var(--font-display); letter-spacing: 1px; }
+        .platform-desc { font-size: 0.85rem; color: var(--text-dimmed); }
+
+        /* 响应式适配移动端 */
+        @media (max-width: 900px) {
+            .qr-grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
+            .email-section { padding: 40px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" class="back-btn">← 返回首页 / HOME</a>
+    </nav>
+
+    <main>
+        <div class="contact-header">
+            <h1 class="contact-title">合作与联络</h1>
+            <div class="contact-subtitle">BUSINESS & COLLABORATION</div>
+        </div>
+
+        <div class="email-section">
+            <div class="email-label">商务洽谈 / 行程定制咨询请致信</div>
+            <a href="mailto:david@example.com" class="email-link">david@example.com</a>
+        </div>
+
+        <div class="qr-section-title">— 扫码直达数字平台 —</div>
+        
+        <div class="qr-grid">
+            <div class="qr-card">
+                <div class="qr-image-wrapper">
+                    <div class="qr-placeholder">[在此放入真实的<br>B站二维码图]</div>
+                </div>
+                <div class="platform-name">BILIBILI</div>
+                <div class="platform-desc">中长篇 Vlog / 航拍纪实</div>
+            </div>
+
+            <div class="qr-card">
+                <div class="qr-image-wrapper">
+                    <div class="qr-placeholder">[在此放入真实的<br>小红书二维码图]</div>
+                </div>
+                <div class="platform-name">XIAOHONGSHU</div>
+                <div class="platform-desc">碎片路书 / 摄影器材心得</div>
+            </div>
+
+            <div class="qr-card">
+                <div class="qr-image-wrapper">
+                    <div class="qr-placeholder">[在此放入真实的<br>抖音二维码图]</div>
+                </div>
+                <div class="platform-name">DOUYIN</div>
+                <div class="platform-desc">高燃混剪 / 短视效纪实</div>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>

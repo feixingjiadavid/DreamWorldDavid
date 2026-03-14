@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>故事放映厅 | 戴维的梦想世界</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-base: #050505; --text-primary: #FFFFFF; --text-secondary: #AAAAAA;
+            --text-dimmed: #888888; --gold: #D4AF37; --radius: 4px; 
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg-base); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; -webkit-font-smoothing: antialiased; line-height: 1.8; }
+
+        /* 导航栏 */
+        nav { padding: 25px 6vw; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .back-btn { color: var(--text-primary); text-decoration: none; font-size: 0.95rem; letter-spacing: 1px; transition: color 0.3s; font-weight: 500;}
+        .back-btn:hover { color: var(--gold); }
+        .nav-meta { font-family: 'Inter'; font-size: 0.75rem; color: var(--text-dimmed); letter-spacing: 2px; text-transform: uppercase; }
+
+        .story-wrapper { max-width: 1400px; margin: 0 auto; padding: 40px 6vw 100px 6vw; }
+
+        /* 视频播放器修复：绝对视觉核心 */
+        .video-player-box { 
+            width: 100%; aspect-ratio: 16 / 9; background: #000; border-radius: var(--radius); 
+            overflow: hidden; margin-bottom: 50px; border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+        }
+        /* 确保控件正常显示 */
+        video { width: 100%; height: 100%; display: block; object-fit: cover; outline: none; background: #000; }
+
+        .story-article { display: grid; grid-template-columns: 1fr 1fr; gap: 6vw; align-items: start; }
+
+        .story-header h1 { font-size: clamp(2rem, 3vw, 3rem); font-weight: 700; line-height: 1.3; margin-bottom: 20px; letter-spacing: -1px; }
+        .story-tag { color: var(--gold); font-size: 0.8rem; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 15px; display: block; font-weight: 500; }
+
+        .story-body { border-left: 1px solid rgba(212, 175, 55, 0.2); padding-left: 5vw; }
+        .story-body p { font-size: 1.1rem; color: #CCCCCC; font-weight: 300; margin-bottom: 30px; text-align: justify; }
+
+        .action-footer { margin-top: 80px; padding-top: 40px; border-top: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; }
+        .action-text { color: var(--text-secondary); font-size: 0.95rem; }
+        .btn-link-guide { color: var(--gold); text-decoration: none; font-weight: 700; border: 1px solid var(--gold); padding: 12px 30px; border-radius: 40px; transition: all 0.3s; font-size: 0.9rem; }
+        .btn-link-guide:hover { background: var(--gold); color: #000; }
+
+        @media (max-width: 1024px) {
+            .story-article { grid-template-columns: 1fr; gap: 40px; }
+            .story-body { border-left: none; padding-left: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="stories.html" class="back-btn">← 返回故事列表</a>
+        <div class="nav-meta">NOW PLAYING</div>
+    </nav>
+
+    <main class="story-wrapper">
+        <section class="video-player-box">
+            <video controls poster="https://images.unsplash.com/photo-1579707248564-91285312dc72?q=80&w=2000&auto=format&fit=crop">
+                <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                您的浏览器不支持 HTML5 视频。
+            </video>
+        </section>
+
+        <article class="story-article">
+            <div class="story-header">
+                <span class="story-tag">EXPEDITION LOG</span>
+                <h1>法罗群岛：<br>在世界尽头拥抱风暴</h1>
+                <p style="color: var(--text-dimmed); font-size: 0.9rem;">记录于 2026.03.14 // 坐标 62°00′N</p>
+            </div>
+
+            <div class="story-body">
+                <p>这并不是一段被精心剪辑过的美好，而是法罗群岛最真实的呼吸。在那段被年假换来的珍贵时光里，我站在玄武岩峭壁边缘，感受着北大西洋能瞬间撕裂一切的狂风。</p>
+                <p>大厂的忙碌与日常在这一刻被彻底屏蔽，我唯一能听见的是自己的心跳。这就是我一直在寻找的“世界的B面”——它不温婉，不讨好，却拥有让人重获新生的原始力量。</p>
+                
+                <div class="action-footer">
+                    <div class="action-text">想去这片悬崖看看？</div>
+                    <a href="guide-detail.html" class="btn-link-guide">获取本篇详细攻略 ↗</a>
+                </div>
+            </div>
+        </article>
+    </main>
+
+</body>
+</html>
