@@ -220,5 +220,18 @@ const dbData = {
       ]
     }
   ],
-  "global": {}
+  "global": {
+    "heroTitle": "",
+    "heroSub": "",
+    "avatar": "",
+    "tags": "",
+    "bio": "",
+    "email": "davidxxxu@gmail.com",
+    "qrXhs": "",
+    "qrBili": "",
+    "qrDouyin": "",
+    "footer": ""
+  },
+  "trash": [],
+  "version": "1.2"
 };
