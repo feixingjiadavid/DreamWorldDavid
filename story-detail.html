@@ -18,50 +18,103 @@
         nav { padding: 30px 6vw; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .back-btn { color: var(--text-primary); text-decoration: none; font-size: 0.95rem; font-weight: 500; transition: color 0.3s; }
         .back-btn:hover { color: var(--gold); }
-        .nav-meta { font-family: 'Inter'; font-size: 0.75rem; color: var(--text-dimmed); letter-spacing: 2px; text-transform: uppercase; }
 
-        .container { max-width: 900px; margin: 0 auto; padding: 60px 6vw 120px 6vw; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 6vw 120px 6vw; }
 
-        /* 标题区 */
-        .story-header { margin-bottom: 50px; text-align: center; }
-        .story-meta { font-family: 'Inter'; font-size: 0.85rem; color: var(--gold); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 20px; display: block; font-weight: 700;}
-        .story-title { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 900; line-height: 1.2; letter-spacing: -1px; margin-bottom: 20px; }
-        .story-location { color: var(--text-dimmed); font-size: 1rem; display: flex; align-items: center; justify-content: center; gap: 10px; }
-
-        /* 媒体区 (B站视频或封面图) */
+        /* 媒体区 (置顶展示全宽视频或图片) */
         .media-container { width: 100%; border-radius: var(--radius); overflow: hidden; margin-bottom: 60px; background: #111; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 30px 60px rgba(0,0,0,0.5); aspect-ratio: 16/9;}
         .media-container iframe, .media-container img { width: 100%; height: 100%; object-fit: cover; display: block; border: none; }
 
-        /* 正文排版 */
-        .story-content { font-size: 1.15rem; color: #CCCCCC; font-weight: 300; text-align: justify; }
+        /* 完美还原你的双栏网格系统 */
+        .story-grid-layout { 
+            display: grid; 
+            grid-template-columns: 1fr 1.2fr; 
+            gap: 60px; 
+            align-items: start; 
+        }
+
+        /* 左侧信息栏 */
+        .story-sidebar { padding-right: 20px; }
+        .story-tag { font-family: 'Inter'; font-size: 0.8rem; color: var(--gold); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 25px; display: block; font-weight: 700;}
+        .story-title { font-size: clamp(2.2rem, 4vw, 3.5rem); font-weight: 900; line-height: 1.2; letter-spacing: -1px; margin-bottom: 25px; }
+        .story-meta { color: var(--text-dimmed); font-size: 0.9rem; display: flex; align-items: center; gap: 5px; font-weight: 300;}
+
+        /* 右侧正文区（带极简分割线） */
+        .story-article { 
+            border-left: 1px solid rgba(255,255,255,0.05); 
+            padding-left: 60px; 
+        }
+        .story-content { font-size: 1.05rem; color: #CCCCCC; font-weight: 300; text-align: justify; line-height: 1.8; margin-bottom: 60px;}
         .story-content p { margin-bottom: 30px; }
-        .story-content p:first-child::first-letter { color: var(--gold); float: left; font-size: 4.5rem; line-height: 1; padding-right: 15px; font-weight: 900; font-family: 'Noto Sans SC'; margin-top: -10px;}
 
-        .site-footer { border-top: 1px solid rgba(255,255,255,0.05); padding: 40px 0; margin-top: 100px; text-align: center; font-family: 'Inter'; font-size: 0.8rem; color: var(--text-dimmed); letter-spacing: 2px; }
+        /* 底部 CTA (Call to Action) 跳转模块 */
+        .cta-block { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            border-top: 1px solid rgba(255,255,255,0.05); 
+            padding-top: 35px; 
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .cta-text { color: var(--text-dimmed); font-size: 0.95rem; font-weight: 300;}
+        .cta-btn { 
+            padding: 12px 30px; 
+            background: transparent; 
+            color: var(--gold); 
+            border: 1px solid var(--gold); 
+            border-radius: 40px; 
+            text-decoration: none; 
+            font-size: 0.9rem; 
+            font-weight: 500;
+            transition: var(--transition); 
+            white-space: nowrap;
+        }
+        .cta-btn:hover { background: rgba(212,175,55,0.1); transform: translateX(5px); }
 
+        .site-footer { border-top: 1px solid rgba(255,255,255,0.05); padding: 40px 0; text-align: center; font-family: 'Inter'; font-size: 0.8rem; color: var(--text-dimmed); letter-spacing: 2px; }
         #loadingState { text-align: center; color: var(--gold); letter-spacing: 2px; margin-top: 100px; font-family: 'Inter'; }
+
+        /* 移动端适配 */
+        @media (max-width: 900px) {
+            .story-grid-layout { grid-template-columns: 1fr; gap: 40px; }
+            .story-article { border-left: none; padding-left: 0; }
+            .story-sidebar { padding-right: 0; }
+        }
     </style>
 </head>
 <body>
 
     <nav>
         <a href="stories.html" class="back-btn">← 返回故事列表</a>
-        <div class="nav-meta">EXPEDITION LOG</div>
     </nav>
 
     <div id="loadingState">读取神经链路中...</div>
 
     <main class="container" id="mainContent" style="display: none;">
         
-        <header class="story-header">
-            <span class="story-meta" id="r_date"></span>
-            <h1 class="story-title" id="r_title"></h1>
-            <div class="story-location">📍 <span id="r_location">未知坐标</span></div>
-        </header>
-
         <div class="media-container" id="r_media"></div>
 
-        <article class="story-content" id="r_content"></article>
+        <div class="story-grid-layout">
+            
+            <aside class="story-sidebar">
+                <span class="story-tag">EXPEDITION LOG</span>
+                <h1 class="story-title" id="r_title"></h1>
+                <div class="story-meta">
+                    记录于 <span id="r_date"></span> // 坐标 <span id="r_location">未知</span>
+                </div>
+            </aside>
+
+            <article class="story-article">
+                <div class="story-content" id="r_content"></div>
+                
+                <div class="cta-block" id="ctaContainer" style="display: none;">
+                    <span class="cta-text" id="r_cta_text"></span>
+                    <a href="#" class="cta-btn" id="r_cta_link">获取本篇详细攻略 ↗</a>
+                </div>
+            </article>
+
+        </div>
 
     </main>
 
@@ -71,7 +124,6 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // 1. 获取网址里的 ?id=xxx
             const urlParams = new URLSearchParams(window.location.search);
             const storyId = urlParams.get('id');
 
@@ -80,8 +132,9 @@
                 return;
             }
 
-            // 2. 去数据库里找这篇故事
-            const data = dbData; 
+            const data = typeof dbData !== 'undefined' ? dbData : null; 
+            if(!data || !data.stories) return;
+            
             const story = data.stories.find(s => s.id === storyId);
 
             if (!story) {
@@ -89,29 +142,33 @@
                 return;
             }
 
-            // 3. 开始把数据填入网页
-            document.getElementById('r_title').innerText = story.title;
-            document.getElementById('r_date').innerText = story.date.replace(/-/g, ' // ');
-            document.getElementById('r_location').innerText = story.location || "坐标已隐藏";
+            // 1. 填充基础信息
+            document.getElementById('r_title').innerHTML = story.title.replace('：', '：<br>');
+            document.getElementById('r_date').innerText = story.date.replace(/-/g, '.');
+            document.getElementById('r_location').innerText = story.location || "已隐藏";
 
-            // 处理视频和图片逻辑
+            // 2. 媒体处理逻辑 (BV号优先)
             const mediaBox = document.getElementById('r_media');
             if (story.bilibili_bvid && story.bilibili_bvid.trim() !== "") {
-                // 如果有 BV 号，直接嵌入无广告最高清的 B 站播放器
                 mediaBox.innerHTML = `<iframe src="//player.bilibili.com/player.html?bvid=${story.bilibili_bvid}&page=1&high_quality=1&danmaku=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>`;
             } else {
-                // 如果没有视频，就展示封面大图
                 mediaBox.innerHTML = `<img src="${story.cover}" alt="Cover">`;
             }
 
-            // 处理正文段落（回车换行还原）
+            // 3. 正文段落渲染
             const contentBox = document.getElementById('r_content');
             story.paragraphs.forEach(para => {
-                // 把后台按回车拆分的每一段，包进 <p> 标签里
                 contentBox.innerHTML += `<p>${para}</p>`;
             });
 
-            // 4. 数据填充完毕，隐藏 loading，展示真实页面
+            // 4. 底部 CTA 智能显示逻辑
+            const ctaContainer = document.getElementById('ctaContainer');
+            if (story.cta_link && story.cta_link.trim() !== "") {
+                ctaContainer.style.display = 'flex';
+                document.getElementById('r_cta_text').innerText = story.cta_text || "了解更多详情信息";
+                document.getElementById('r_cta_link').href = story.cta_link;
+            }
+
             document.getElementById('loadingState').style.display = 'none';
             document.getElementById('mainContent').style.display = 'block';
         });
