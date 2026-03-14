@@ -26,7 +26,6 @@
         
         .page-wrapper { padding: 40px 6vw; max-width: 1600px; margin: 0 auto;}
         
-        /* 导航栏 */
         nav { display: flex; justify-content: space-between; align-items: center; padding-bottom: 20px; font-family: var(--font-zh); font-size: 0.95rem; font-weight: 500; letter-spacing: 1px; border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 20px; }
         .nav-brand a { color: var(--text-primary); text-decoration: none; font-weight: 500; font-size: 1.2rem; letter-spacing: 4px; transition: color 0.3s ease; }
         .nav-brand a:hover { color: var(--gold); } 
@@ -36,7 +35,6 @@
         .nav-links a:hover, .nav-links a.active { color: var(--text-primary); }
         .nav-links a.active::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--text-primary); }
 
-        /* 预告横幅 (全自动适配视频或图片) */
         .teaser-strip { position: relative; display: flex; align-items: center; width: 100%; height: 100px; border-radius: var(--radius); overflow: hidden; margin-bottom: 30px; text-decoration: none; color: var(--text-primary); border: 1px solid rgba(255,255,255,0.05); background: #111; transition: var(--transition-smooth); }
         .teaser-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.2; filter: grayscale(100%); transition: all 1.2s ease; z-index: 0; pointer-events: none; border: none;}
         .teaser-strip:hover .teaser-bg { opacity: 0.4; filter: grayscale(0%); transform: scale(1.02); }
@@ -46,7 +44,6 @@
         .teaser-title { font-size: 1.4rem; font-weight: 700; letter-spacing: 2px; margin: 0; text-shadow: 0 2px 10px rgba(0,0,0,0.8);}
         .teaser-meta { font-family: var(--font-mono); font-size: 0.85rem; color: var(--text-dimmed); letter-spacing: 1px; text-shadow: 0 2px 10px rgba(0,0,0,0.8); }
 
-        /* 个人哲学区域 */
         .philosophy-section { display: grid; grid-template-columns: 1.1fr 1fr; gap: 8vw; margin: 20px 0 60px 0; padding: 20px 0; align-items: start; }
         .philosophy-statement { font-size: clamp(2.2rem, 3.5vw, 4rem); font-weight: 700; line-height: 1.25; letter-spacing: -2px; color: var(--text-primary); margin: 0; word-break: keep-all; }
         .philosophy-statement .highlight { color: var(--gold); font-weight: 900; }
@@ -55,7 +52,6 @@
         .philosophy-signature { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; letter-spacing: 2px; color: var(--text-primary); text-transform: uppercase; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; }
         .philosophy-signature span { display: block; font-family: var(--font-zh); font-size: 0.85rem; color: var(--text-dimmed); font-weight: 400; letter-spacing: 1px; margin-top: 5px; }
 
-        /* 推荐内容区 (完全还原你的高级卡片设计) */
         .category-section { margin-bottom: 60px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.05); }
         .section-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 30px; }
         .section-title-zh { font-size: 1.8rem; font-weight: 700; letter-spacing: 2px; }
@@ -68,7 +64,7 @@
         .card-overlay { position: absolute; bottom: 0; left: 0; width: 100%; height: 80%; background: linear-gradient(to top, rgba(5,5,5,1) 0%, rgba(5,5,5,0.5) 45%, rgba(5,5,5,0) 100%); z-index: 1; }
         .video-card:hover .card-img { transform: scale(1.05); opacity: 0.8;}
         
-        /* 恢复你的悬浮播放按钮动画 */
+        /* 播放按钮视觉特效 */
         .play-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.8); width: 60px; height: 60px; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.3); border-radius: 50%; display: flex; justify-content: center; align-items: center; z-index: 3; opacity: 0; transition: all 0.4s ease; backdrop-filter: blur(4px); }
         .play-icon::after { content: '▶'; color: #fff; font-size: 1.2rem; margin-left: 4px; }
         .video-card:hover .play-icon { opacity: 1; transform: translate(-50%, -50%) scale(1); }
@@ -159,11 +155,10 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // 确保数据库正常连接
             if (typeof dbData === 'undefined') return;
             const db = dbData;
             
-            // --- 1. 渲染全局设置 (巨幕 & 简介) ---
+            // --- 1. 渲染全局设置 ---
             if (db.global) {
                 const g = db.global;
                 if(g.heroTitle) document.getElementById('heroTitle').innerText = g.heroTitle;
@@ -187,16 +182,34 @@
                 }
             }
 
-            // --- 2. 自动抓取最新 2 篇故事 (带智能播放按钮) ---
+            // --- 核心智能策展引擎：获取推荐文章，缺位则用最新补齐 ---
+            function getFeaturedItems(allArray, featId1, featId2) {
+                let result = [];
+                if(!allArray || allArray.length === 0) return result;
+                
+                // 1. 尝试寻找指定的文章
+                if (featId1) { const item1 = allArray.find(i => i.id === featId1); if(item1) result.push(item1); }
+                if (featId2) { const item2 = allArray.find(i => i.id === featId2); if(item2) result.push(item2); }
+                
+                // 2. 如果不足 2 篇，自动用最新发布的补齐
+                if (result.length < 2) {
+                    const latest = allArray.sort((a,b) => new Date(b.date) - new Date(a.date)).filter(i => !result.some(r => r.id === i.id));
+                    while(result.length < 2 && latest.length > 0) {
+                        result.push(latest.shift());
+                    }
+                }
+                return result;
+            }
+
+            // --- 2. 渲染故事区 ---
             const storiesGrid = document.getElementById('storiesGrid');
-            if (db.stories && db.stories.length > 0) {
-                const latestStories = db.stories.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 2);
+            const targetStories = getFeaturedItems(db.stories, db.global?.featS1, db.global?.featS2);
+            
+            if (targetStories.length > 0) {
                 storiesGrid.innerHTML = '';
-                latestStories.forEach(s => {
-                    // 如果这篇故事填了 BV 号，就渲染出播放图标
+                targetStories.forEach(s => {
                     const hasVideo = s.bilibili_bvid && s.bilibili_bvid.trim() !== '';
                     const playIconHtml = hasVideo ? `<div class="play-icon"></div>` : '';
-                    
                     storiesGrid.innerHTML += `
                         <a href="story-detail.html?id=${s.id}" class="video-card">
                             <img src="${s.cover}" class="card-img" alt="${s.title}">
@@ -209,18 +222,19 @@
                         </a>
                     `;
                 });
+            } else {
+                storiesGrid.innerHTML = '<p style="color:#666; padding: 20px;">暂无故事数据</p>';
             }
 
-            // --- 3. 自动抓取最新 2 篇攻略 (带智能播放按钮) ---
+            // --- 3. 渲染攻略区 ---
             const guidesGrid = document.getElementById('guidesGrid');
-            if (db.guides && db.guides.length > 0) {
-                const latestGuides = db.guides.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 2);
+            const targetGuides = getFeaturedItems(db.guides, db.global?.featG1, db.global?.featG2);
+
+            if (targetGuides.length > 0) {
                 guidesGrid.innerHTML = '';
-                latestGuides.forEach(g => {
-                    // 如果这篇攻略填了视频链接，就渲染出播放图标
+                targetGuides.forEach(g => {
                     const hasVideo = g.video && g.video.trim() !== '';
                     const playIconHtml = hasVideo ? `<div class="play-icon"></div>` : '';
-
                     guidesGrid.innerHTML += `
                         <a href="guide-detail.html?id=${g.id}" class="video-card">
                             <img src="${g.cover}" class="card-img" alt="${g.title}">
@@ -233,6 +247,8 @@
                         </a>
                     `;
                 });
+            } else {
+                guidesGrid.innerHTML = '<p style="color:#666; padding: 20px;">暂无攻略数据</p>';
             }
         });
     </script>
