@@ -28,8 +28,9 @@
         .hero-desc-block { display: flex; flex-direction: column; justify-content: center; }
         .hero-desc { color: #A0A0A0; font-size: 1.05rem; line-height: 1.8; font-weight: 300; text-align: justify; margin: 0; }
 
-        .video-box { width: 100%; aspect-ratio: 16 / 9; background: #000; border-radius: var(--radius); overflow: hidden; margin-bottom: 60px; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 30px 60px rgba(0,0,0,0.5); }
-        video { width: 100%; height: 100%; display: block; object-fit: cover; outline: none; background: #000; }
+        /* 动态媒体框 (视频/图片通用) */
+        .media-box { width: 100%; aspect-ratio: 16 / 9; background: #111; border-radius: var(--radius); overflow: hidden; margin-bottom: 60px; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 30px 60px rgba(0,0,0,0.5); }
+        .media-box video, .media-box iframe, .media-box img { width: 100%; height: 100%; display: block; object-fit: cover; border: none; outline: none; }
 
         /* 极简高级的下载区 */
         .download-section { margin-bottom: 80px; display: none; }
@@ -40,7 +41,7 @@
         .btn-download::before { content: '↓'; color: var(--gold); margin-right: 15px; font-weight: 700; }
         .btn-download:hover { border-color: rgba(212, 175, 55, 0.4); transform: translateX(5px); }
 
-        /* 恢复原汁原味的六宫格样式 */
+        /* 六宫格 */
         .section-label { font-family: 'Inter'; font-size: 0.75rem; color: var(--text-dimmed); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 25px; display: flex; align-items: center; gap: 15px;}
         .section-label::before { content: ''; display: block; width: 30px; height: 1px; background-color: var(--gold); opacity: 0.5; }
         
@@ -50,7 +51,7 @@
         .intel-card h4 { font-family: 'Inter'; font-size: 0.8rem; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 15px; }
         .intel-card p { font-size: 0.95rem; color: #CCCCCC; line-height: 1.8; font-weight: 300; margin: 0; }
 
-        /* 恢复原汁原味的逐日行程样式 */
+        /* 逐日行程 */
         .itinerary-list { display: flex; flex-direction: column; gap: 40px; }
         .day-row { display: grid; grid-template-columns: 80px 1fr; gap: 40px; padding-bottom: 50px; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .day-label { font-family: 'Inter'; font-size: 2.8rem; font-weight: 900; color: var(--gold); line-height: 1; margin-top: -5px;}
@@ -93,11 +94,7 @@
             </div>
         </header>
 
-        <section class="video-box">
-            <video id="renderVideo" controls poster="">
-                <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
-            </video>
-        </section>
+        <section class="media-box" id="renderMedia"></section>
 
         <section class="download-section" id="downloadSection">
             <div class="download-header">ATTACHMENTS // 附加资料</div>
@@ -126,7 +123,10 @@
                 return;
             }
 
-            const data = dbData; 
+            // 安全获取数据
+            const data = (typeof dbData !== 'undefined') ? dbData : null; 
+            if (!data || !data.guides) return;
+
             const guide = data.guides.find(g => g.id === guideId);
 
             if (!guide) {
@@ -134,12 +134,30 @@
                 return;
             }
 
-            // 渲染头部和视频
+            // 1. 渲染头部
             document.getElementById('renderTitle').innerHTML = guide.title.replace('：', '：<br>');
             document.getElementById('renderDesc').innerText = guide.intro_desc;
-            document.getElementById('renderVideo').poster = guide.cover;
 
-            // 渲染附件 (极简样式)
+            // 2. 渲染核心媒体逻辑 (视频或图片)
+            const mediaBox = document.getElementById('renderMedia');
+            if (guide.video && guide.video.trim() !== '') {
+                const vid = guide.video.trim();
+                if (vid.startsWith('BV') || vid.startsWith('bv')) {
+                    // 如果是 B站 BV号
+                    mediaBox.innerHTML = `<iframe src="//player.bilibili.com/player.html?bvid=${vid}&page=1&high_quality=1&danmaku=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>`;
+                } else if (vid.endsWith('.mp4')) {
+                    // 如果是 mp4 链接
+                    mediaBox.innerHTML = `<video controls poster="${guide.cover}"><source src="${vid}" type="video/mp4"></video>`;
+                } else {
+                    // 无法识别的格式，回退成图片
+                    mediaBox.innerHTML = `<img src="${guide.cover}" alt="Cover">`;
+                }
+            } else {
+                // 没有填视频，直接显示唯美封面图
+                mediaBox.innerHTML = `<img src="${guide.cover}" alt="Cover">`;
+            }
+
+            // 3. 渲染附件 
             if (guide.downloads && guide.downloads.length > 0) {
                 const dlContainer = document.getElementById('downloadSection');
                 const dlList = document.getElementById('renderDownloads');
@@ -149,34 +167,38 @@
                 });
             }
 
-            // 渲染六宫格 (完美还原高级 UI)
+            // 4. 渲染六宫格
             const intelContainer = document.getElementById('renderIntel');
-            guide.intel.forEach(item => {
-                intelContainer.innerHTML += `
-                    <div class="intel-card">
-                        <h4>${item.title}</h4>
-                        <p>${item.content}</p>
-                    </div>
-                `;
-            });
-
-            // 渲染逐日行程 (完美还原大号金字 01 和精美药丸)
-            const itContainer = document.getElementById('renderItinerary');
-            guide.itinerary.forEach(day => {
-                const tagsHtml = day.tags.map(tag => `<span class="tag-pill">${tag}</span>`).join('');
-                itContainer.innerHTML += `
-                    <div class="day-row">
-                        <div class="day-label">${day.day}</div>
-                        <div class="day-content">
-                            <h3>${day.title}</h3>
-                            <p>${day.desc}</p>
-                            <div class="day-tags">${tagsHtml}</div>
+            if (guide.intel) {
+                guide.intel.forEach(item => {
+                    intelContainer.innerHTML += `
+                        <div class="intel-card">
+                            <h4>${item.title}</h4>
+                            <p>${item.content}</p>
                         </div>
-                    </div>
-                `;
-            });
+                    `;
+                });
+            }
 
-            // 隐藏 loading 动画，展示完美内容
+            // 5. 渲染逐日行程
+            const itContainer = document.getElementById('renderItinerary');
+            if (guide.itinerary) {
+                guide.itinerary.forEach(day => {
+                    const tagsHtml = day.tags ? day.tags.map(tag => `<span class="tag-pill">${tag}</span>`).join('') : '';
+                    itContainer.innerHTML += `
+                        <div class="day-row">
+                            <div class="day-label">${day.day}</div>
+                            <div class="day-content">
+                                <h3>${day.title}</h3>
+                                <p>${day.desc}</p>
+                                <div class="day-tags">${tagsHtml}</div>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            // 隐藏 loading 展示内容
             document.getElementById('loadingState').style.display = 'none';
             document.getElementById('mainContent').style.display = 'block';
         });
