@@ -64,7 +64,6 @@
         .card-overlay { position: absolute; bottom: 0; left: 0; width: 100%; height: 80%; background: linear-gradient(to top, rgba(5,5,5,1) 0%, rgba(5,5,5,0.5) 45%, rgba(5,5,5,0) 100%); z-index: 1; }
         .video-card:hover .card-img { transform: scale(1.05); opacity: 0.8;}
         
-        /* 播放按钮视觉特效 */
         .play-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.8); width: 60px; height: 60px; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.3); border-radius: 50%; display: flex; justify-content: center; align-items: center; z-index: 3; opacity: 0; transition: all 0.4s ease; backdrop-filter: blur(4px); }
         .play-icon::after { content: '▶'; color: #fff; font-size: 1.2rem; margin-left: 4px; }
         .video-card:hover .play-icon { opacity: 1; transform: translate(-50%, -50%) scale(1); }
@@ -98,16 +97,16 @@
             </div>
         </nav>
 
-        <a href="stories.html" class="teaser-strip" id="heroBanner">
+        <a href="iceland.html" class="teaser-strip" id="heroBanner">
             <div id="heroMediaContainer" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:0; overflow:hidden;">
                 <img src="https://images.unsplash.com/photo-1476610182048-b716b8518aae?q=80&w=2000&auto=format&fit=crop" class="teaser-bg" alt="Hero">
             </div>
             <div class="teaser-content">
                 <div class="teaser-left">
-                    <span class="teaser-tag">LATEST</span>
-                    <h2 class="teaser-title" id="heroTitle">载入中...</h2>
+                    <span class="teaser-tag">COMING SOON</span>
+                    <h2 class="teaser-title" id="heroTitle">冰岛极境</h2>
                 </div>
-                <div class="teaser-meta" id="heroSub">请稍候...</div>
+                <div class="teaser-meta" id="heroSub">APR 26 - MAY 04 // 故事正在路上...</div>
             </div>
         </a>
 
@@ -120,10 +119,10 @@
                 </h1>
             </div>
             <div class="philosophy-body">
-                <p class="philosophy-desc" id="renderBio">正在同步云端节点...</p>
+                <p class="philosophy-desc" id="renderBio">“互联网大厂打工人，用年假去拍世界的B面”——这是我的真实身份，也是创作的底色。作为一名冷门目的地的记录者，我用心讲述每一次旅程，拒绝平庸的叙事逻辑。无论是法罗群岛的极夜风暴，还是冰岛的无人区冰川，在这里，我将用真实的镜头和纯粹的文字，将极境最原本的故事带回现实。</p>
                 <div class="philosophy-signature">
                     DAVID. 
-                    <span id="renderTags"></span>
+                    <span id="renderTags">// 冷门目的地记录者</span>
                 </div>
             </div>
         </section>
@@ -134,7 +133,7 @@
                 <div class="section-title-en">SELECTED STORIES</div>
             </div>
             <div class="video-grid" id="storiesGrid">
-                <p style="color:#666;">扫描数据中...</p>
+                <p style="color:#666;">扫描云端数据中...</p>
             </div>
             <div class="view-more-container"><a href="stories.html" class="btn-view-more">查看更多旅行故事 ↗</a></div>
         </div>
@@ -145,7 +144,7 @@
                 <div class="section-title-en">EXPEDITION GUIDES</div>
             </div>
             <div class="video-grid" id="guidesGrid">
-                <p style="color:#666;">扫描数据中...</p>
+                <p style="color:#666;">扫描云端数据中...</p>
             </div>
             <div class="view-more-container"><a href="guides.html" class="btn-view-more">查阅完整攻略知识库 ↗</a></div>
         </div>
@@ -158,15 +157,17 @@
             if (typeof dbData === 'undefined') return;
             const db = dbData;
             
-            // --- 1. 渲染全局设置 ---
+            // --- 1. 渲染全局设置 (带有非空安全判定) ---
             if (db.global) {
                 const g = db.global;
-                if(g.heroTitle) document.getElementById('heroTitle').innerText = g.heroTitle;
-                if(g.heroSub) document.getElementById('heroSub').innerText = g.heroSub;
-                if(g.bio) document.getElementById('renderBio').innerText = g.bio;
-                if(g.footer) document.getElementById('renderFooter').innerText = g.footer;
                 
-                if(g.tags) {
+                // 只有当后台填了字，才会覆盖默认文案！
+                if(g.heroTitle && g.heroTitle.trim() !== '') document.getElementById('heroTitle').innerText = g.heroTitle;
+                if(g.heroSub && g.heroSub.trim() !== '') document.getElementById('heroSub').innerText = g.heroSub;
+                if(g.bio && g.bio.trim() !== '') document.getElementById('renderBio').innerText = g.bio;
+                if(g.footer && g.footer.trim() !== '') document.getElementById('renderFooter').innerText = g.footer;
+                
+                if(g.tags && g.tags.trim() !== '') {
                     const tagStr = g.tags.split(',').map(t => t.trim()).join(' / ');
                     document.getElementById('renderTags').innerText = `// ${tagStr}`;
                 }
@@ -187,11 +188,9 @@
                 let result = [];
                 if(!allArray || allArray.length === 0) return result;
                 
-                // 1. 尝试寻找指定的文章
                 if (featId1) { const item1 = allArray.find(i => i.id === featId1); if(item1) result.push(item1); }
                 if (featId2) { const item2 = allArray.find(i => i.id === featId2); if(item2) result.push(item2); }
                 
-                // 2. 如果不足 2 篇，自动用最新发布的补齐
                 if (result.length < 2) {
                     const latest = allArray.sort((a,b) => new Date(b.date) - new Date(a.date)).filter(i => !result.some(r => r.id === i.id));
                     while(result.length < 2 && latest.length > 0) {
