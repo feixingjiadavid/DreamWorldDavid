@@ -1,18 +1,6 @@
 const dbData = {
   "stories": [
     {
-      "id": "story-1773472260830",
-      "title": "青森故事",
-      "date": "2026-03-14",
-      "cover": "https://feixingjiadavid.github.io/DreamWorldDavid/index.html",
-      "location": "",
-      "bilibili_bvid": "11",
-      "short_desc": "aa",
-      "paragraphs": [
-        "aa"
-      ]
-    },
-    {
       "id": "story-faroe",
       "date": "2026-03-14",
       "location": "62°00′N",
