@@ -227,9 +227,9 @@ const dbData = {
     "tags": "",
     "bio": "",
     "email": "davidxxxu@gmail.com",
-    "qrXhs": "",
-    "qrBili": "",
-    "qrDouyin": "",
+    "qrXhs": "images/img_1773500648663.jpg",
+    "qrBili": "images/img_1773500826149.jpg",
+    "qrDouyin": "images/img_1773500474087.jpg",
     "footer": ""
   },
   "trash": [],
