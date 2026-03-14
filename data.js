@@ -216,7 +216,13 @@ const dbData = {
   ],
   "global": {
     "heroTitle": "",
-    "heroSub": "",
+    "heroBanner": "",
+    "featS1": "",
+    "featS2": "",
+    "featG1": "",
+    "featG2": "",
+    "signatureName": "",
+    "heroDeclare": "",
     "avatar": "",
     "tags": "",
     "bio": "",
@@ -227,5 +233,5 @@ const dbData = {
     "footer": ""
   },
   "trash": [],
-  "version": "1.4"
+  "version": "1.9"
 };
