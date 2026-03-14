@@ -3,85 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>故事放映厅 | 戴维的梦想世界</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <title>故事详情 | DAVID EXPEDITION</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <script src="data.js"></script>
     <style>
         :root {
-            --bg-base: #050505; --text-primary: #FFFFFF; --text-secondary: #AAAAAA;
-            --text-dimmed: #888888; --gold: #D4AF37; --radius: 4px; 
+            --bg-base: #050505; --text-primary: #FFFFFF; --text-dimmed: #888888;
+            --gold: #D4AF37; --radius: 8px; --transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: var(--bg-base); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; -webkit-font-smoothing: antialiased; line-height: 1.8; }
 
-        /* 导航栏 */
-        nav { padding: 25px 6vw; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .back-btn { color: var(--text-primary); text-decoration: none; font-size: 0.95rem; letter-spacing: 1px; transition: color 0.3s; font-weight: 500;}
+        /* 顶部导航 */
+        nav { padding: 30px 6vw; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .back-btn { color: var(--text-primary); text-decoration: none; font-size: 0.95rem; font-weight: 500; transition: color 0.3s; }
         .back-btn:hover { color: var(--gold); }
         .nav-meta { font-family: 'Inter'; font-size: 0.75rem; color: var(--text-dimmed); letter-spacing: 2px; text-transform: uppercase; }
 
-        .story-wrapper { max-width: 1400px; margin: 0 auto; padding: 40px 6vw 100px 6vw; }
+        .container { max-width: 900px; margin: 0 auto; padding: 60px 6vw 120px 6vw; }
 
-        /* 视频播放器修复：绝对视觉核心 */
-        .video-player-box { 
-            width: 100%; aspect-ratio: 16 / 9; background: #000; border-radius: var(--radius); 
-            overflow: hidden; margin-bottom: 50px; border: 1px solid rgba(255,255,255,0.05);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
-        }
-        /* 确保控件正常显示 */
-        video { width: 100%; height: 100%; display: block; object-fit: cover; outline: none; background: #000; }
+        /* 标题区 */
+        .story-header { margin-bottom: 50px; text-align: center; }
+        .story-meta { font-family: 'Inter'; font-size: 0.85rem; color: var(--gold); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 20px; display: block; font-weight: 700;}
+        .story-title { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 900; line-height: 1.2; letter-spacing: -1px; margin-bottom: 20px; }
+        .story-location { color: var(--text-dimmed); font-size: 1rem; display: flex; align-items: center; justify-content: center; gap: 10px; }
 
-        .story-article { display: grid; grid-template-columns: 1fr 1fr; gap: 6vw; align-items: start; }
+        /* 媒体区 (B站视频或封面图) */
+        .media-container { width: 100%; border-radius: var(--radius); overflow: hidden; margin-bottom: 60px; background: #111; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 30px 60px rgba(0,0,0,0.5); aspect-ratio: 16/9;}
+        .media-container iframe, .media-container img { width: 100%; height: 100%; object-fit: cover; display: block; border: none; }
 
-        .story-header h1 { font-size: clamp(2rem, 3vw, 3rem); font-weight: 700; line-height: 1.3; margin-bottom: 20px; letter-spacing: -1px; }
-        .story-tag { color: var(--gold); font-size: 0.8rem; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 15px; display: block; font-weight: 500; }
+        /* 正文排版 */
+        .story-content { font-size: 1.15rem; color: #CCCCCC; font-weight: 300; text-align: justify; }
+        .story-content p { margin-bottom: 30px; }
+        .story-content p:first-child::first-letter { color: var(--gold); float: left; font-size: 4.5rem; line-height: 1; padding-right: 15px; font-weight: 900; font-family: 'Noto Sans SC'; margin-top: -10px;}
 
-        .story-body { border-left: 1px solid rgba(212, 175, 55, 0.2); padding-left: 5vw; }
-        .story-body p { font-size: 1.1rem; color: #CCCCCC; font-weight: 300; margin-bottom: 30px; text-align: justify; }
+        .site-footer { border-top: 1px solid rgba(255,255,255,0.05); padding: 40px 0; margin-top: 100px; text-align: center; font-family: 'Inter'; font-size: 0.8rem; color: var(--text-dimmed); letter-spacing: 2px; }
 
-        .action-footer { margin-top: 80px; padding-top: 40px; border-top: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; }
-        .action-text { color: var(--text-secondary); font-size: 0.95rem; }
-        .btn-link-guide { color: var(--gold); text-decoration: none; font-weight: 700; border: 1px solid var(--gold); padding: 12px 30px; border-radius: 40px; transition: all 0.3s; font-size: 0.9rem; }
-        .btn-link-guide:hover { background: var(--gold); color: #000; }
-
-        @media (max-width: 1024px) {
-            .story-article { grid-template-columns: 1fr; gap: 40px; }
-            .story-body { border-left: none; padding-left: 0; }
-        }
+        #loadingState { text-align: center; color: var(--gold); letter-spacing: 2px; margin-top: 100px; font-family: 'Inter'; }
     </style>
 </head>
 <body>
 
     <nav>
         <a href="stories.html" class="back-btn">← 返回故事列表</a>
-        <div class="nav-meta">NOW PLAYING</div>
+        <div class="nav-meta">EXPEDITION LOG</div>
     </nav>
 
-    <main class="story-wrapper">
-        <section class="video-player-box">
-            <video controls poster="https://images.unsplash.com/photo-1579707248564-91285312dc72?q=80&w=2000&auto=format&fit=crop">
-                <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
-                您的浏览器不支持 HTML5 视频。
-            </video>
-        </section>
+    <div id="loadingState">读取神经链路中...</div>
 
-        <article class="story-article">
-            <div class="story-header">
-                <span class="story-tag">EXPEDITION LOG</span>
-                <h1>法罗群岛：<br>在世界尽头拥抱风暴</h1>
-                <p style="color: var(--text-dimmed); font-size: 0.9rem;">记录于 2026.03.14 // 坐标 62°00′N</p>
-            </div>
+    <main class="container" id="mainContent" style="display: none;">
+        
+        <header class="story-header">
+            <span class="story-meta" id="r_date"></span>
+            <h1 class="story-title" id="r_title"></h1>
+            <div class="story-location">📍 <span id="r_location">未知坐标</span></div>
+        </header>
 
-            <div class="story-body">
-                <p>这并不是一段被精心剪辑过的美好，而是法罗群岛最真实的呼吸。在那段被年假换来的珍贵时光里，我站在玄武岩峭壁边缘，感受着北大西洋能瞬间撕裂一切的狂风。</p>
-                <p>大厂的忙碌与日常在这一刻被彻底屏蔽，我唯一能听见的是自己的心跳。这就是我一直在寻找的“世界的B面”——它不温婉，不讨好，却拥有让人重获新生的原始力量。</p>
-                
-                <div class="action-footer">
-                    <div class="action-text">想去这片悬崖看看？</div>
-                    <a href="guide-detail.html" class="btn-link-guide">获取本篇详细攻略 ↗</a>
-                </div>
-            </div>
-        </article>
+        <div class="media-container" id="r_media"></div>
+
+        <article class="story-content" id="r_content"></article>
+
     </main>
 
+    <footer class="site-footer">
+        © 2026 DAVID EXPEDITION.
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 1. 获取网址里的 ?id=xxx
+            const urlParams = new URLSearchParams(window.location.search);
+            const storyId = urlParams.get('id');
+
+            if (!storyId) {
+                document.getElementById('loadingState').innerText = "ERROR: 缺少故事编号参数";
+                return;
+            }
+
+            // 2. 去数据库里找这篇故事
+            const data = dbData; 
+            const story = data.stories.find(s => s.id === storyId);
+
+            if (!story) {
+                document.getElementById('loadingState').innerText = "ERROR: 在数据库中未找到该故事";
+                return;
+            }
+
+            // 3. 开始把数据填入网页
+            document.getElementById('r_title').innerText = story.title;
+            document.getElementById('r_date').innerText = story.date.replace(/-/g, ' // ');
+            document.getElementById('r_location').innerText = story.location || "坐标已隐藏";
+
+            // 处理视频和图片逻辑
+            const mediaBox = document.getElementById('r_media');
+            if (story.bilibili_bvid && story.bilibili_bvid.trim() !== "") {
+                // 如果有 BV 号，直接嵌入无广告最高清的 B 站播放器
+                mediaBox.innerHTML = `<iframe src="//player.bilibili.com/player.html?bvid=${story.bilibili_bvid}&page=1&high_quality=1&danmaku=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>`;
+            } else {
+                // 如果没有视频，就展示封面大图
+                mediaBox.innerHTML = `<img src="${story.cover}" alt="Cover">`;
+            }
+
+            // 处理正文段落（回车换行还原）
+            const contentBox = document.getElementById('r_content');
+            story.paragraphs.forEach(para => {
+                // 把后台按回车拆分的每一段，包进 <p> 标签里
+                contentBox.innerHTML += `<p>${para}</p>`;
+            });
+
+            // 4. 数据填充完毕，隐藏 loading，展示真实页面
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+        });
+    </script>
 </body>
 </html>
