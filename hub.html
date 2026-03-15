@@ -144,13 +144,14 @@
             menuToggle.innerText = mobileOverlay.classList.contains('active') ? '✕' : '☰';
         });
 
-        // 默认内置的工具库
+        // 默认数据，新加了“住宿与其他”
         const defaultHubs = [
-            { category: '核心引擎', title: '智能路线自动演算', icon: '🛣️', url: 'consult.html', desc: '【本站核心工具】基于主理人私有库，一键演算定制化路线图与防坑点。', isEngine: true },
+            { category: '核心引擎', title: '智能路线自动演算', icon: '🛣️', url: 'consult.html', desc: '【本站核心】选择你的探险条件，算法将自动绘制地图轨迹并提供行程防坑点。', isEngine: true },
             { category: '签证与使馆', title: '申根签预约 (VFS)', icon: '🛂', url: 'https://visa.vfsglobal.com/', desc: 'VFS Global 官方预约中心，规避虚假中介。' },
             { category: '气象与路况', title: '冰岛气象雷达 (Vedur)', icon: '🌤️', url: 'https://en.vedur.is/', desc: '追极光必备：精准查询云层覆盖率与风暴预警。' },
             { category: '气象与路况', title: '官方实时路况 (Road.is)', icon: '🚙', url: 'https://umferdin.is/en', desc: '自驾保命神器，实时查看封路及黑冰警告。' },
-            { category: '户外与徒步', title: 'Wikiloc 离线地图', icon: '🥾', url: 'https://www.wikiloc.com/', desc: '收录北欧众多未被开发的硬核野徒步路线。' }
+            { category: '户外与徒步', title: 'Wikiloc 离线地图', icon: '🥾', url: 'https://www.wikiloc.com/', desc: '收录北欧众多未被开发的硬核野徒步路线。' },
+            { category: '住宿与其他', title: '极地特色住宿 (Booking)', icon: '🏠', url: 'https://www.booking.com/', desc: '寻找北欧峡湾木屋与冰岛极光玻璃屋的最佳平台。' }
         ];
 
         document.addEventListener("DOMContentLoaded", function() {
@@ -159,7 +160,7 @@
             
             let hubs = defaultHubs;
             if (typeof dbData !== 'undefined' && dbData.hubs && dbData.hubs.length > 0) {
-                // 如果云端有数据，把智能路书强制作为置顶对象塞入
+                // 如果云端有数据，把智能路书强制置顶插入
                 hubs = [defaultHubs[0], ...dbData.hubs.sort((a,b) => new Date(b.date) - new Date(a.date))];
             }
 
