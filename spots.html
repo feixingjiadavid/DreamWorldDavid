@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#050505">
+    <title>极境坐标 | 戴维的梦想世界</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Noto+Sans+SC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { --bg-base: #050505; --text-primary: #FFFFFF; --gold: #D4AF37; --border: rgba(255,255,255,0.05); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg-base); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; -webkit-font-smoothing: antialiased; display: flex; flex-direction: column; min-height: 100vh;}
+
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 30px 6vw; font-size: 0.95rem; font-weight: 500; letter-spacing: 1px; border-bottom: 1px solid var(--border); background: rgba(5,5,5,0.8); backdrop-filter: blur(20px); z-index: 100;}
+        .nav-brand a { color: var(--text-primary); text-decoration: none; font-weight: 700; font-size: 1.2rem; letter-spacing: 2px;}
+        .nav-brand a:hover { color: var(--gold); } 
+        .nav-links { display: flex; gap: 50px; align-items: center; }
+        .nav-links a { color: #888; text-decoration: none; position: relative; padding-bottom: 6px; transition: 0.3s; white-space: nowrap;}
+        .nav-links a:hover, .nav-links a.active { color: var(--text-primary); }
+        .nav-links a.active::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--text-primary); }
+        .mobile-menu-btn { display: none; background: transparent; border: none; color: #fff; font-size: 1.8rem; cursor: pointer; }
+        
+        .mobile-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(5,5,5,0.98); backdrop-filter: blur(15px); z-index: 99; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 0.4s; }
+        .mobile-overlay.active { opacity: 1; visibility: visible; }
+        .mobile-overlay a { color: #fff; text-decoration: none; font-size: 2rem; font-weight: 700; letter-spacing: 4px; margin: 20px 0; opacity: 0; transform: translateY(20px); transition: 0.4s; }
+        .mobile-overlay.active a { opacity: 1; transform: translateY(0); }
+        .mobile-overlay a.active { color: var(--gold); }
+
+        .breadcrumb-nav { padding: 30px 6vw; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); font-family: 'Inter', sans-serif; font-size: 0.8rem; letter-spacing: 1px;}
+        .crumb-link { color: #888; text-decoration: none; transition: 0.3s;}
+        .crumb-link:hover { color: var(--gold); }
+        .crumb-separator { color: #444;}
+        .crumb-current { color: var(--text-primary);}
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 60px 6vw; flex: 1; width: 100%; }
+        .page-header { margin-bottom: 60px;}
+        .title-area h1 { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 900; letter-spacing: -1px; margin-bottom: 15px; margin-top: 0;}
+        .title-area p { color: #888; font-size: 1.1rem; margin: 0; max-width: 600px; line-height: 1.8;}
+        .title-tag { font-family: 'Inter'; font-size: 0.8rem; color: #a855f7; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 15px; display: block; font-weight: 700;}
+
+        /* 高级机位库网格 */
+        .spot-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 40px;}
+        .spot-card { position: relative; border-radius: 12px; overflow: hidden; aspect-ratio: 4/5; background: #111; cursor: crosshair; border: 1px solid rgba(255,255,255,0.05);}
+        
+        .spot-img { width: 100%; height: 100%; object-fit: cover; transition: 0.8s ease; opacity: 0.8;}
+        .spot-card:hover .spot-img { transform: scale(1.05); filter: brightness(0.4);}
+        
+        .spot-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.2) 50%, transparent 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 30px; z-index: 2;}
+        
+        .spot-title { font-size: 1.6rem; font-weight: 700; margin-bottom: 10px; color: #fff; line-height: 1.3;}
+        .spot-location { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--gold); letter-spacing: 1px; margin-bottom: 20px;}
+        
+        /* 隐藏的硬核参数面板 (Hover时浮现) */
+        .tech-specs { display: flex; flex-direction: column; gap: 12px; opacity: 0; transform: translateY(20px); transition: 0.4s ease; border-top: 1px dashed rgba(255,255,255,0.2); padding-top: 20px;}
+        .spot-card:hover .tech-specs { opacity: 1; transform: translateY(0);}
+        
+        .spec-row { display: flex; align-items: center; gap: 10px; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: #ccc;}
+        .spec-icon { width: 24px; height: 24px; background: rgba(255,255,255,0.1); border-radius: 4px; display: flex; justify-content: center; align-items: center; color: #fff;}
+        .spec-highlight { color: #38bdf8; font-weight: 700;}
+
+        .site-footer { border-top: 1px solid var(--border); padding: 40px 0; text-align: center; font-family: 'Inter'; font-size: 0.8rem; color: #888; letter-spacing: 2px; margin-top: auto;}
+
+        @media (max-width: 768px) {
+            nav { padding: 20px 5vw; border-bottom: none;}
+            .nav-links { display: none; }
+            .mobile-menu-btn { display: block; }
+            .nav-brand a { font-size: 1.1rem; }
+            .container { padding: 30px 5vw; }
+            .spot-grid { grid-template-columns: 1fr; gap: 30px;}
+            /* 手机端默认展示一半信息，防止 hover 难触发 */
+            .tech-specs { opacity: 1; transform: translateY(0); padding-top: 15px; margin-top: 15px;}
+            .spot-img { filter: brightness(0.6);}
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-brand"><a href="index.html">戴维的梦想世界</a></div>
+        <div class="nav-links">
+            <a href="index.html">首页</a>
+            <a href="stories.html">旅行故事</a>
+            <a href="guides.html">攻略指南</a>
+            <a href="toolkit.html">干货库</a>
+            <a href="spots.html" class="active">极境坐标</a>
+            <a href="consult.html">私人定制</a>
+        </div>
+        <button class="mobile-menu-btn" id="menuToggle">☰</button>
+    </nav>
+    
+    <div class="mobile-overlay" id="mobileOverlay">
+        <a href="index.html">首页</a>
+        <a href="stories.html">旅行故事</a>
+        <a href="guides.html">攻略指南</a>
+        <a href="toolkit.html">干货库</a>
+        <a href="spots.html" class="active">极境坐标</a>
+        <a href="consult.html">私人定制</a>
+    </div>
+
+    <div class="breadcrumb-nav">
+        <a href="index.html" class="crumb-link">首页</a><span class="crumb-separator">/</span>
+        <span class="crumb-current">极境坐标</span>
+    </div>
+
+    <main class="container">
+        <header class="page-header">
+            <div class="title-area">
+                <span class="title-tag">SPOT ARCHIVE</span>
+                <h1>绝密坐标库</h1>
+                <p>拒绝烂大街的旅游团打卡点。这里收录了我实地测绘的绝密摄影机位、精确的 GPS 坐标与实战光影参数。这才是探索者的核心资产。</p>
+            </div>
+        </header>
+
+        <div class="spot-grid">
+            <div class="spot-card">
+                <img src="https://images.unsplash.com/photo-1476610182048-b716b8518aae?q=80&w=800" class="spot-img" alt="Ice Cave">
+                <div class="spot-overlay">
+                    <h2 class="spot-title">瓦特纳冰川蓝冰洞</h2>
+                    <div class="spot-location">ISL // 64.015° N, 16.178° W</div>
+                    <div class="tech-specs">
+                        <div class="spec-row"><span class="spec-icon">⌚</span> 最佳时间: <span class="spec-highlight">11月-3月 清晨光线</span></div>
+                        <div class="spec-row"><span class="spec-icon">📷</span> 推荐焦段: 14-24mm 超广角</div>
+                        <div class="spec-row"><span class="spec-icon">⚙️</span> 实战参数: f/8 | 1/60s | ISO 800</div>
+                        <div class="spec-row"><span class="spec-icon">🚁</span> 无人机禁飞区</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="spot-card">
+                <img src="https://images.unsplash.com/photo-1522031309322-68b321a30896?q=80&w=800" class="spot-img" alt="Faroe">
+                <div class="spot-overlay">
+                    <h2 class="spot-title">卡尔斯岛悬崖灯塔</h2>
+                    <div class="spot-location">FRO // 62.362° N, 6.812° W</div>
+                    <div class="tech-specs">
+                        <div class="spec-row"><span class="spec-icon">⌚</span> 最佳时间: <span class="spec-highlight">日落蓝调时刻</span></div>
+                        <div class="spec-row"><span class="spec-icon">📷</span> 推荐焦段: 70-200mm 空间压缩</div>
+                        <div class="spec-row"><span class="spec-icon">⚙️</span> 实战参数: f/4 | 1/250s | ISO 100</div>
+                        <div class="spec-row"><span class="spec-icon">🚁</span> 极强妖风预警</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="spot-card">
+                <img src="https://images.unsplash.com/photo-1510798831971-661eb04b3739?q=80&w=800" class="spot-img" alt="Norway">
+                <div class="spot-overlay">
+                    <h2 class="spot-title">峡湾魔鬼之舌</h2>
+                    <div class="spot-location">NOR // 60.132° N, 6.740° E</div>
+                    <div class="tech-specs">
+                        <div class="spec-row"><span class="spec-icon">⌚</span> 最佳时间: <span class="spec-highlight">夏季 7-8月 正午</span></div>
+                        <div class="spec-row"><span class="spec-icon">📷</span> 推荐焦段: 24-70mm 带人像</div>
+                        <div class="spec-row"><span class="spec-icon">⚙️</span> 实战参数: f/11 | 1/500s | ISO 100</div>
+                        <div class="spec-row"><span class="spec-icon">🥾</span> 单程 11KM 重度徒步</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">© 2026 戴维的梦想世界.</footer>
+
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileOverlay = document.getElementById('mobileOverlay');
+        let isMenuOpen = false;
+        menuToggle.addEventListener('click', () => {
+            isMenuOpen = !isMenuOpen;
+            if(isMenuOpen) { mobileOverlay.classList.add('active'); menuToggle.innerText = '✕'; document.body.style.overflow = 'hidden';
+            } else { mobileOverlay.classList.remove('active'); menuToggle.innerText = '☰'; document.body.style.overflow = 'auto'; }
+        });
+    </script>
+</body>
+</html>
