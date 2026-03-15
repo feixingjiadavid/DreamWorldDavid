@@ -130,7 +130,7 @@
         .r-card-tag { color: var(--gold); font-size: 0.7rem; letter-spacing: 2px; margin-bottom: 8px; display: block;}
         .r-card-title { color: #fff; font-size: 1.1rem; font-weight: 700; margin: 0; line-height: 1.3;}
 
-        /* 滑动画廊 */
+        /* 滑动灯箱 */
         .lightbox-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.96); z-index: 10000; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: var(--transition); backdrop-filter: blur(10px); }
         .lightbox-overlay.active { opacity: 1; visibility: visible; }
         .lightbox-img { max-width: 95vw; max-height: 90vh; object-fit: contain; transform: scale(0.9); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); user-select: none;}
@@ -172,7 +172,14 @@
         .back-to-top { position: fixed; bottom: 40px; right: 40px; width: 45px; height: 45px; border-radius: 50%; background: rgba(17,17,17,0.8); border: 1px solid rgba(212,175,55,0.3); color: var(--gold); font-size: 1.2rem; cursor: pointer; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: var(--transition); z-index: 99; backdrop-filter: blur(5px);}
         .back-to-top.show { opacity: 1; visibility: visible; transform: translateY(0); }
         .site-footer { border-top: 1px solid var(--border); padding: 40px 0; text-align: center; font-family: 'Inter'; font-size: 0.8rem; color: var(--text-dimmed); letter-spacing: 2px; }
+        
+        /* 空状态优雅降级 */
         #loadingState { text-align: center; color: var(--gold); letter-spacing: 2px; margin-top: 100px; font-family: 'Inter'; display: none;}
+        .error-state { text-align: center; padding: 100px 20px; }
+        .error-title { font-size: 2rem; color: #ff4d4f; margin-bottom: 20px; font-weight: 700;}
+        .error-desc { color: #888; margin-bottom: 40px; line-height: 1.6;}
+        .btn-home { display: inline-block; padding: 12px 30px; border: 1px solid var(--gold); color: var(--gold); text-decoration: none; border-radius: 30px; transition: 0.3s; }
+        .btn-home:hover { background: rgba(212,175,55,0.1); transform: translateY(-3px);}
 
         @media (min-width: 768px) { .gallery-item { flex: 0 0 45%; } }
         @media (max-width: 1024px) {
@@ -245,6 +252,14 @@
     
     <div id="loadingState">调取硬核数据中...</div>
 
+    <main class="container" id="errorContent" style="display: none;">
+        <div class="error-state">
+            <h1 class="error-title">MISSION ABORTED</h1>
+            <p class="error-desc">该探险档案已被封存或销毁。<br>迷路也是探险的一部分，请返回基地重新选择路线。</p>
+            <a href="index.html" class="btn-home">← 返回大本营</a>
+        </div>
+    </main>
+
     <main class="container" id="mainContent" style="display: none;">
         <header class="guide-header">
             <span class="guide-tag">EXPEDITION GUIDE</span>
@@ -276,7 +291,7 @@
 
                 <div class="cta-block" id="ctaContainer" style="display: none;">
                     <span class="cta-text" id="r_cta_text"></span>
-                    <a href="#" class="cta-btn" id="r_cta_link">去看看这趟旅程的故事 ↗</a>
+                    <a href="#" class="cta-btn" id="r_cta_link">推荐延伸阅读 ↗</a>
                 </div>
 
                 <div class="action-bar">
@@ -418,7 +433,7 @@
             html = html.replace(/==(.*?)==/g, '<span class="highlight-gold">$1</span>'); 
             html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
             html = html.replace(/(?:^|<br>)> (.*?)(?=<br>|$)/g, '<br><blockquote class="pull-quote">$1</blockquote>');
-            html = html.replace(/!\[(.*?)\]\((.*?)\)/g, '<img src="$2" alt="$1" loading="lazy">');
+            html = html.replace(/!\[(.*?)\]\((.*?)\)/g, '<img src="$2" alt="$1" loading="lazy" decoding="async">');
             html = html.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank">$1</a>');
             return html;
         }
@@ -428,13 +443,22 @@
         backToTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
         document.addEventListener("DOMContentLoaded", function() {
+            // 设置兜底安全退出机制
             const fallbackLoader = setTimeout(dismissGlobalLoader, 8000);
 
             const guideId = new URLSearchParams(window.location.search).get('id');
-            if (!guideId || typeof dbData === 'undefined' || !dbData.guides) { dismissGlobalLoader(); clearTimeout(fallbackLoader); return; }
+            if (!guideId || typeof dbData === 'undefined' || !dbData.guides) { 
+                document.getElementById('loadingState').style.display = "none";
+                document.getElementById('errorContent').style.display = "block";
+                dismissGlobalLoader(); clearTimeout(fallbackLoader); return; 
+            }
             
             const guide = dbData.guides.find(g => g.id === guideId);
-            if (!guide) { dismissGlobalLoader(); clearTimeout(fallbackLoader); return; }
+            if (!guide) { 
+                document.getElementById('loadingState').style.display = "none";
+                document.getElementById('errorContent').style.display = "block";
+                dismissGlobalLoader(); clearTimeout(fallbackLoader); return; 
+            }
 
             currentArticleData = { title: guide.title, cover: getFastCdnUrl(guide.cover) };
 
@@ -461,7 +485,7 @@
                 document.getElementById('r_gallery_section').style.display = 'block';
                 const galleryBox = document.getElementById('r_gallery');
                 guide.gallery.forEach(img => {
-                    galleryBox.innerHTML += `<img src="${getFastCdnUrl(img)}" class="gallery-item" loading="lazy">`;
+                    galleryBox.innerHTML += `<img src="${getFastCdnUrl(img)}" class="gallery-item" loading="lazy" decoding="async">`;
                 });
             }
 
@@ -528,15 +552,18 @@
                 others.slice(0, 3).forEach(item => {
                     relatedGrid.innerHTML += `
                         <a href="guide-detail.html?id=${item.id}" class="related-card">
-                            <img src="${getFastCdnUrl(item.cover)}" class="r-card-img" loading="lazy">
+                            <img src="${getFastCdnUrl(item.cover)}" class="r-card-img" loading="lazy" decoding="async">
                             <div class="r-card-overlay"></div>
                             <div class="r-card-content"><span class="r-card-tag">GUIDE</span><h3 class="r-card-title">${item.title}</h3></div>
                         </a>`;
                 });
             }
 
+            document.getElementById('loadingState').style.display = "none";
             document.getElementById('mainContent').style.display = 'block';
             setTimeout(initLightbox, 500);
+            
+            // 完美结束加载状态
             dismissGlobalLoader();
             clearTimeout(fallbackLoader);
         });
