@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AI 路线引擎 | 戴维的梦想世界</title>
+    <meta name="theme-color" content="#050505">
+    <title>路线引擎 | 戴维的梦想世界</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Noto+Sans+SC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     
@@ -46,7 +47,6 @@
 
         .btn-generate { background: #38bdf8; color: #000; border: none; padding: 18px; font-size: 1.1rem; font-weight: 700; letter-spacing: 2px; border-radius: 8px; cursor: pointer; transition: 0.3s; width: 100%; outline: none; display: flex; justify-content: center; align-items: center; gap: 10px;}
         .btn-generate:hover { background: #fff;}
-        .btn-generate:disabled { background: #333; color: #888; cursor: not-allowed;}
 
         /* 加载动画 */
         .loader-wrapper { display: none; flex-direction: column; align-items: center; padding: 60px 0;}
@@ -54,23 +54,54 @@
         @keyframes spin { 100% { transform: rotate(360deg); } }
         .loader-text { font-family: 'JetBrains Mono', monospace; color: #38bdf8; font-size: 0.9rem; letter-spacing: 2px;}
 
-        /* 生成的路书展示区 */
-        .result-panel { display: none; width: 100%; margin-top: 40px; animation: fadeIn 0.5s ease;}
-        @keyframes fadeIn { from{opacity:0; transform:translateY(20px);} to{opacity:1; transform:translateY(0);} }
-        .itinerary-paper { background: #111; border: 1px solid #333; border-radius: 12px; padding: 40px; }
-        .ip-header { border-bottom: 1px dashed #333; padding-bottom: 20px; margin-bottom: 30px;}
-        .ip-title { font-size: 2rem; font-weight: 900; margin-bottom: 10px; color: #fff;}
-        .ip-meta { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: #38bdf8;}
+        /* 极致奢华的路书展示区 */
+        .result-panel { display: none; width: 100%; margin-top: 40px; animation: fadeIn 0.8s ease;}
+        @keyframes fadeIn { from{opacity:0; transform:translateY(30px);} to{opacity:1; transform:translateY(0);} }
         
-        .day-node { border-left: 2px solid #222; padding-left: 25px; position: relative; margin-bottom: 35px;}
-        .day-node::before { content: ''; position: absolute; left: -7px; top: 0; width: 12px; height: 12px; background: #050505; border: 2px solid #38bdf8; border-radius: 50%;}
-        .day-num { font-family: 'Inter'; font-size: 0.75rem; color: #888; font-weight: 700; letter-spacing: 2px; margin-bottom: 8px; display: block;}
-        .day-headline { font-size: 1.3rem; font-weight: 700; color: #fff; margin-bottom: 10px;}
-        .day-detail { color: #aaa; font-size: 0.95rem; line-height: 1.6;}
+        .itinerary-paper { background: #0A0A0A; border: 1px solid #333; border-radius: 16px; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.8);}
+        
+        /* 动态地图头图层 */
+        .route-map-header { width: 100%; height: 300px; background: #111; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; padding: 40px;}
+        .map-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.4; filter: contrast(120%) saturate(80%);}
+        .map-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to top, #0A0A0A 0%, transparent 100%);}
+        .map-content { position: relative; z-index: 2;}
+        .ip-meta { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: #38bdf8; margin-bottom: 10px; letter-spacing: 2px;}
+        .ip-title { font-size: 2.5rem; font-weight: 900; margin: 0; color: #fff; letter-spacing: -1px;}
 
-        .disclaimer { font-size: 0.8rem; color: #666; text-align: center; margin-top: 30px;}
+        /* 硬核行程节点 */
+        .route-nodes { padding: 40px;}
+        .day-node { border-left: 2px solid #222; padding-left: 35px; position: relative; margin-bottom: 45px;}
+        .day-node:last-child { border-left-color: transparent; }
+        .day-node::before { content: ''; position: absolute; left: -8px; top: 0; width: 14px; height: 14px; background: #050505; border: 3px solid #38bdf8; border-radius: 50%; box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);}
+        
+        .day-num { font-family: 'Inter'; font-size: 0.8rem; color: #888; font-weight: 700; letter-spacing: 3px; margin-bottom: 8px; display: block;}
+        .day-headline { font-size: 1.5rem; font-weight: 700; color: #fff; margin-bottom: 15px;}
+        
+        .day-tags { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;}
+        .day-tags span { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #ccc; font-size: 0.75rem; padding: 4px 10px; border-radius: 4px; font-family: 'JetBrains Mono', monospace;}
+        
+        .day-detail { color: #aaa; font-size: 1rem; line-height: 1.8; font-weight: 300; text-align: justify;}
+        .day-detail strong { color: #fff; font-weight: 500; border-bottom: 1px dashed #38bdf8;}
+
+        .action-footer { padding: 0 40px 40px 40px; display: flex; flex-direction: column; gap: 20px;}
+        .btn-expert { background: transparent; color: #fff; border: 1px solid #333; padding: 15px; border-radius: 8px; text-align: center; cursor: pointer; transition: 0.3s; font-size: 0.95rem;}
+        .btn-expert:hover { border-color: #38bdf8; color: #38bdf8;}
 
         .site-footer { border-top: 1px solid var(--border); padding: 40px 0; text-align: center; font-family: 'Inter'; font-size: 0.8rem; color: #888; letter-spacing: 2px; margin-top: auto;}
+
+        @media (max-width: 768px) {
+            nav { padding: 20px 5vw; border-bottom: none;}
+            .nav-links { display: none; }
+            .container { padding: 30px 5vw; }
+            .cs-title { font-size: 2.2rem; }
+            .engine-panel { padding: 25px 20px; }
+            .route-map-header { padding: 30px 20px; height: 250px;}
+            .ip-title { font-size: 1.8rem; }
+            .route-nodes { padding: 30px 20px; }
+            .day-node { padding-left: 25px; }
+            .day-headline { font-size: 1.3rem; }
+            .action-footer { padding: 0 20px 30px 20px; }
+        }
     </style>
 </head>
 <body>
@@ -81,14 +112,14 @@
             <a href="stories.html">旅行故事</a>
             <a href="guides.html">攻略指南</a>
             <a href="toolkit.html">干货库</a>
-            <a href="gear.html">装备库</a>
+            <a href="gear.html">探险装备</a>
             <a href="consult.html" class="active">私人定制</a>
         </div>
     </nav>
 
     <div class="breadcrumb-nav">
         <a href="index.html" class="crumb-link">首页</a><span class="crumb-separator">/</span>
-        <span class="crumb-current">路线引擎</span>
+        <span class="crumb-current">私人定制</span>
     </div>
 
     <main class="container">
@@ -123,7 +154,7 @@
                 </div>
             </div>
 
-            <button class="btn-generate" id="generateBtn">🚀 生成专属路书</button>
+            <button class="btn-generate" id="generateBtn">🚀 启动路书演算</button>
         </div>
 
         <div class="loader-wrapper" id="loaderBox">
@@ -134,7 +165,10 @@
         <div class="result-panel" id="resultBox">
             <div class="itinerary-paper" id="itineraryContent">
                 </div>
-            <p class="disclaimer">注：此为智能算法生成的框架版路书。出行前请务必核对当季天气与封路情况。</p>
+            <div class="action-footer">
+                <button class="btn-expert" onclick="window.location.reload()">重新演算路线</button>
+                <div style="font-size: 0.8rem; color: #666; text-align: center; margin-top: 10px;">注：此为算法生成的框架版路书。如需主理人一对一保姆级代订与指导，请于首页获取联系方式。</div>
+            </div>
         </div>
     </main>
 
@@ -147,32 +181,41 @@
         const resultBox = document.getElementById('resultBox');
         const itineraryContent = document.getElementById('itineraryContent');
 
-        // 简易智库：预置几套惊艳的方案模板
+        // 顶级专业路书数据库 (Mock)
         const dataVault = {
-            "冰岛_5_风光摄影": [
-                {d: "DAY 1", t: "抵达雷克雅未克 & 蓝湖补给", desc: "抵达 KEF 机场，提车。下午前往蓝湖洗去疲惫，傍晚抵达市区采购物资。"},
-                {d: "DAY 2", t: "黄金圈避开人群路线", desc: "清晨直奔辛格维利尔国家公园，中午前往间歇泉。重点：在古佛斯瀑布利用慢门拍摄水流。"},
-                {d: "DAY 3", t: "南岸瀑布群与黑沙滩", desc: "塞里雅兰瀑布 -> 斯科加瀑布。傍晚在黑沙滩拍摄玄武岩石柱，严禁背对大海（防疯狗浪）。"},
-                {d: "DAY 4", t: "维克镇狂风与冰川徒步", desc: "早晨参加索尔黑马冰川徒步，下午前往飞机残骸。体力消耗极大，需准备高热量食物。"},
-                {d: "DAY 5", t: "极光收尾 & 离岛", desc: "返回首都，视极光指数前往 Grotta 灯塔守候。随后前往机场还车。"}
-            ],
-            "挪威_7_硬核越野": [
-                {d: "DAY 1-2", t: "奥斯陆空降 & 提车北上", desc: "抵达奥斯陆，提取四驱 SUV。驱车穿过蜿蜒的森林公路，适应挪威的驾驶节奏。"},
-                {d: "DAY 3", t: "奇迹石硬核攀登", desc: "早晨 6 点起步，避开人群。单程 5 公里，多为裸露岩石，必须穿着专业级 V 底徒步鞋。"},
-                {d: "DAY 4", t: "布道石悬崖俯瞰", desc: "转移至吕瑟峡湾，进行 4 小时往返的布道石徒步。在此可操作无人机，但需时刻注意峡湾峡管效应造成的妖风。"},
-                {d: "DAY 5", t: "国家景观公路轮渡", desc: "驾驶体验日。沿途经过多个峡湾轮渡，体会北欧极致的桥隧基建。"},
-                {d: "DAY 6", t: "恶魔之舌前哨站", desc: "抵达奥达镇补给。视天气决定是否预定次日的恶魔之舌硬核向导。"},
-                {d: "DAY 7", t: "壮丽返程", desc: "沿哈当厄尔峡湾返回，交付车辆。"}
-            ]
+            "冰岛_5_风光摄影": {
+                title: "冰岛南岸极地追光路线",
+                mapImg: "https://images.unsplash.com/photo-1476610182048-b716b8518aae?q=80&w=1200",
+                days: [
+                    {d: "DAY 01", t: "空降冰火之国 & 蓝湖暗调摄影", tags: ["🚗 50KM", "📍 KEF机场 -> 蓝湖"], desc: "抵达基夫拉维克机场。提取四驱越野车后直奔蓝湖。建议利用<strong>黄昏蓝调时刻 (Blue Hour)</strong> 的冷暖对比，拍摄地热蒸汽与黑色熔岩的视觉张力。晚间完成市区物资补给。"},
+                    {d: "DAY 02", t: "黄金圈极致慢门与间歇泉抓拍", tags: ["🚗 230KM", "📷 滤镜: ND1000"], desc: "清晨 7 点避开大巴团直奔辛格维利尔。在古佛斯瀑布架设三脚架，使用 ND 滤镜进行长曝光拍摄丝滑水流。下午在间歇泉预判喷发周期，使用 <strong>1/1000s 高速快门</strong>凝固爆发瞬间。"},
+                    {d: "DAY 03", t: "南岸暗黑美学：黑沙滩与玄武岩", tags: ["🚗 180KM", "⚠️ 严防疯狗浪"], desc: "途径塞里雅兰瀑布，穿防水服进入瀑布背后拍摄逆光剪影。傍晚抵达维克镇黑沙滩，利用长焦压缩海浪与玄武岩石柱的空间感。<strong>警告：严禁背对大海拍摄。</strong>"},
+                    {d: "DAY 4-5", t: "冰川徒步与极光收尾", tags: ["🥾 体力消耗: 高", "🌌 极光守候"], desc: "早晨参加索尔黑马冰川向导徒步。下午返回首都，视 KP 指数（极光强度）前往 Grotta 灯塔守候。次日归还车辆离境。"}
+                ]
+            },
+            "挪威_7_硬核越野": {
+                title: "挪威峡湾硬派攀登路线",
+                mapImg: "https://images.unsplash.com/photo-1510798831971-661eb04b3739?q=80&w=1200",
+                days: [
+                    {d: "DAY 01-02", t: "奥斯陆空降 & 深入极地森林", tags: ["🚗 350KM", "🌲 森林公路"], desc: "抵达奥斯陆，提取硬派四驱 SUV。驱车穿过蜿蜒的雪松森林，适应北欧狭窄且没有护栏的驾驶节奏。夜宿峡湾木屋。"},
+                    {d: "DAY 03", t: "奇迹石硬核攀登线", tags: ["🥾 单程 5KM", "⛰️ 裸露岩层"], desc: "早晨 6 点起步。多为裸露的花岗岩，坡度极陡，<strong>必须穿着专业级 V 底徒步鞋</strong>。下午到达奇迹石，拍摄悬崖悬空大片。"},
+                    {d: "DAY 04", t: "布道石悬崖航拍", tags: ["🚁 无人机警报", "📍 吕瑟峡湾"], desc: "转移至吕瑟峡湾，进行 4 小时往返的布道石徒步。在此可起飞无人机，但需时刻留意峡湾峡管效应造成的<strong>突发性妖风</strong>。"},
+                    {d: "DAY 05-07", t: "国家景观公路与恶魔之舌", tags: ["⛴️ 峡湾轮渡", "⛺ 高山露营"], desc: "沿途体验极致的桥隧基建。视体能决定是否挑战长达 22 公里的“恶魔之舌”徒步。第七日沿哈当厄尔峡湾返回奥斯陆还车。"}
+                ]
+            }
         };
 
-        // 默认兜底万能模板
-        const defaultRoute = [
-            {d: "DAY 1", t: "未知的空降地", desc: "提取车辆，熟悉当地交通规则，完成超市补给（重点购买饮用水和速食高热量食物）。"},
-            {d: "DAY 2", t: "深入腹地", desc: "离开城市，沿途随停随拍。这里是摄影师的试炼场，请随时准备好 ND 镜。"},
-            {d: "DAY 3-N", t: "极境探索", desc: "系统依据您的要求，建议您将大部分时间留给不可抗力的天气。不赶路，就是最好的路书。"},
-            {d: "FINAL DAY", t: "文明的回归", desc: "整理 1TB 的素材，带着敬畏之心返回机场。"}
-        ];
+        // 默认通用高级模板
+        const defaultRoute = {
+            title: "极境未知穿越路线",
+            mapImg: "https://images.unsplash.com/photo-1520106212299-d99c443e4568?q=80&w=1200",
+            days: [
+                {d: "DAY 01", t: "抵达未知坐标", tags: ["🚗 适应驾驶", "🛒 极地补给"], desc: "提取车辆，熟悉当地严苛的交通与让行规则。完成超市生存级补给（重点购买饮用水、高热量能量棒）。"},
+                {d: "DAY 02", t: "深入腹地", tags: ["📷 随时备战", "🗺️ 离线导航"], desc: "驶离城市，沿途随停随拍。这里是摄影师的终极试炼场，请随时在副驾备好装有 ND 镜的相机。"},
+                {d: "DAY 03-N", t: "敬畏自然", tags: ["⚠️ 弹性行程", "🌪️ 天气预警"], desc: "系统依据您的要求，建议您将 30% 的时间留给不可抗力的恶劣天气。在极境，<strong>不赶路，就是最安全的越野。</strong>"},
+                {d: "FINAL DAY", t: "文明的回归", tags: ["✈️ 离境", "💾 数据备份"], desc: "整理好 1TB 的原始素材，带着敬畏之心返回机场。"}
+            ]
+        };
 
         generateBtn.addEventListener('click', () => {
             const dest = document.querySelector('input[name="dest"]:checked').value;
@@ -182,7 +225,6 @@
             controlPanel.style.display = 'none';
             loaderBox.style.display = 'flex';
 
-            // 模拟 AI 计算动画效果
             setTimeout(() => { document.getElementById('loaderText').innerText = "MATCHING SECRET LOCATIONS..."; }, 800);
             setTimeout(() => { document.getElementById('loaderText').innerText = "GENERATING TIMELINE..."; }, 1600);
 
@@ -193,22 +235,30 @@
                 const routePlan = dataVault[dbKey] || defaultRoute;
                 
                 let html = `
-                    <div class="ip-header">
-                        <div class="ip-meta">SYS.GEN // ${dest} • ${days} DAYS • ${style}</div>
-                        <h2 class="ip-title">您的极境路书演算完毕</h2>
+                    <div class="route-map-header">
+                        <img src="${routePlan.mapImg}" class="map-bg">
+                        <div class="map-overlay"></div>
+                        <div class="map-content">
+                            <div class="ip-meta">SYS.GEN // ${dest} • ${days} DAYS • ${style}</div>
+                            <h2 class="ip-title">${routePlan.title}</h2>
+                        </div>
                     </div>
+                    <div class="route-nodes">
                 `;
 
-                routePlan.forEach(day => {
+                routePlan.days.forEach(day => {
+                    const tagsHtml = day.tags.map(tag => `<span>${tag}</span>`).join('');
                     html += `
                         <div class="day-node">
                             <span class="day-num">${day.d}</span>
                             <div class="day-headline">${day.t}</div>
+                            <div class="day-tags">${tagsHtml}</div>
                             <div class="day-detail">${day.desc}</div>
                         </div>
                     `;
                 });
 
+                html += `</div>`;
                 itineraryContent.innerHTML = html;
                 resultBox.style.display = 'block';
 
