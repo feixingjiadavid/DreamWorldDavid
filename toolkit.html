@@ -23,7 +23,15 @@
         .nav-links a { color: var(--text-dimmed); text-decoration: none; position: relative; padding-bottom: 6px; transition: color 0.3s ease; white-space: nowrap;}
         .nav-links a:hover, .nav-links a.active { color: var(--text-primary); }
         .nav-links a.active::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--text-primary); }
+        
         .mobile-menu-btn { display: none; background: transparent; border: none; color: #fff; font-size: 1.8rem; cursor: pointer;}
+        
+        /* 核心修复：补充全屏菜单的隐藏样式 */
+        .mobile-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(5,5,5,0.98); backdrop-filter: blur(15px); z-index: 99; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 0.4s; }
+        .mobile-overlay.active { opacity: 1; visibility: visible; }
+        .mobile-overlay a { color: #fff; text-decoration: none; font-size: 2rem; font-weight: 700; letter-spacing: 4px; margin: 20px 0; opacity: 0; transform: translateY(20px); transition: 0.4s; }
+        .mobile-overlay.active a { opacity: 1; transform: translateY(0); }
+        .mobile-overlay a.active { color: var(--gold); }
         
         .breadcrumb-nav { padding: 30px 6vw; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); font-family: 'Inter', sans-serif; font-size: 0.8rem; letter-spacing: 1px;}
         .crumb-link { color: var(--text-dimmed); text-decoration: none; transition: color 0.3s;}
@@ -64,11 +72,13 @@
 
         .site-footer { border-top: 1px solid var(--border); padding: 40px 0; text-align: center; font-family: 'Inter'; font-size: 0.8rem; color: var(--text-dimmed); letter-spacing: 2px; margin-top: auto;}
 
+        @media (max-width: 900px) { .toolkit-grid { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); } }
         @media (max-width: 768px) {
             nav { padding: 20px 5vw; border-bottom: none;}
             .nav-links { display: none; }
             .mobile-menu-btn { display: block; }
-            .nav-brand a { font-size: 1.1rem;}
+            .nav-brand a { font-size: 1.1rem; letter-spacing: 2px; }
+            .breadcrumb-nav { padding: 20px 5vw; font-size: 0.75rem;}
             .container { padding: 30px 5vw 60px 5vw; }
             .toolkit-grid { grid-template-columns: 1fr; gap: 20px;}
         }
@@ -162,7 +172,7 @@
                             <div class="rc-footer">
                                 <div class="rc-meta">${item.size}</div>
                                 <a href="${getFastCdnUrl(item.link)}" target="_blank" download class="btn-download">
-                                    <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg> 获取源文件
+                                    <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg> 获取文件
                                 </a>
                             </div>
                         </div>
