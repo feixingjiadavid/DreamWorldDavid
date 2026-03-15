@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#050505">
-    <title>智能路书工作台 | 戴维的梦想世界</title>
+    <title>智能路书演算 | 戴维的梦想世界</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Noto+Sans+SC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -38,15 +38,14 @@
         .crumb-separator { color: #444;}
         .crumb-current { color: var(--text-primary);}
 
-        .container { max-width: 1500px; margin: 0 auto; padding: 60px 6vw; flex: 1; width: 100%; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 60px 6vw; flex: 1; width: 100%; }
         
         .cs-tag { color: #38bdf8; font-family: 'JetBrains Mono', monospace; letter-spacing: 4px; font-size: 0.8rem; margin-bottom: 20px; display: block; text-align: center;}
         .cs-title { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 900; margin-bottom: 20px; line-height: 1.2; text-align: center; letter-spacing: -1px;}
         .cs-desc { color: #888; max-width: 700px; line-height: 1.8; font-size: 1.05rem; text-align: center; margin-bottom: 60px; margin-left: auto; margin-right: auto;}
 
-        .split-layout { display: grid; grid-template-columns: 1.6fr 1fr; gap: 50px; width: 100%; align-items: start;}
-        
-        .engine-left { display: flex; flex-direction: column; width: 100%; }
+        /* 核心修复：把生成器完美居中 */
+        .single-layout { width: 100%; max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; }
 
         .engine-panel { background: #0A0A0A; border: 1px solid rgba(56, 189, 248, 0.2); border-radius: 12px; padding: 40px; width: 100%; box-shadow: 0 20px 50px rgba(0,0,0,0.5);}
         .engine-row { margin-bottom: 35px;}
@@ -113,35 +112,10 @@
         .btn-expert { background: transparent; color: #fff; border: 1px solid #333; padding: 15px 40px; border-radius: 40px; cursor: pointer; transition: 0.3s; font-size: 0.95rem; font-family: 'Noto Sans SC'; letter-spacing: 1px;}
         .btn-expert:hover { border-color: #38bdf8; color: #38bdf8;}
 
-        .tools-right { position: sticky; top: 120px; display: flex; flex-direction: column; gap: 20px;}
-        .tool-header { font-family: 'Inter'; font-size: 0.8rem; color: var(--gold); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 10px; font-weight: 700; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 15px;}
-        
-        .tool-card { display: flex; align-items: center; gap: 20px; background: #0A0A0A; border: 1px solid rgba(255,255,255,0.05); padding: 25px; border-radius: 12px; text-decoration: none; transition: var(--transition); box-shadow: 0 10px 30px rgba(0,0,0,0.3); position: relative; overflow: hidden;}
-        .tool-card::after { content: '↗'; position: absolute; top: 20px; right: 25px; color: #333; font-size: 1.2rem; transition: var(--transition); font-family: 'Inter';}
-        .tool-card:hover { background: #111; transform: translateY(-5px); border-color: rgba(245, 158, 11, 0.4); box-shadow: 0 20px 40px rgba(0,0,0,0.6);}
-        .tool-card:hover::after { color: #f59e0b; transform: translate(3px, -3px);}
-        
-        .lc-icon { width: 55px; height: 55px; background: rgba(255,255,255,0.03); border-radius: 12px; display: flex; justify-content: center; align-items: center; font-size: 1.8rem; flex-shrink: 0; transition: var(--transition); border: 1px solid rgba(255,255,255,0.05);}
-        .tool-card:hover .lc-icon { background: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.3); color: #f59e0b;}
-        
-        .lc-info { flex: 1; display: flex; flex-direction: column; gap: 8px; padding-right: 20px;}
-        .lc-title { color: #fff; font-size: 1.15rem; font-weight: 700; margin: 0; transition: var(--transition); line-height: 1.3;}
-        .tool-card:hover .lc-title { color: #f59e0b; }
-        .lc-desc { color: #888; font-size: 0.85rem; line-height: 1.5; margin: 0;}
-
         .site-footer { border-top: 1px solid var(--border); padding: 40px 0; text-align: center; font-family: 'Inter'; font-size: 0.8rem; color: #888; letter-spacing: 2px; margin-top: auto;}
 
-        .custom-map-marker { background: var(--gold); color: #000; border-radius: 50%; width: 24px; height: 24px; display: flex; justify-content: center; align-items: center; font-family: 'JetBrains Mono', monospace; font-weight: 900; font-size: 12px; border: 2px solid #000; box-shadow: 0 0 10px rgba(0,0,0,0.8);}
-        .leaflet-popup-content-wrapper { background: #111; color: #fff; border-radius: 4px; border: 1px solid #333; }
-        .leaflet-popup-tip { background: #111; }
-        .leaflet-popup-content b { color: var(--gold); font-family: 'Inter'; font-size: 0.75rem; letter-spacing: 1px;}
-
-        @media (max-width: 1024px) {
-            .split-layout { grid-template-columns: 1fr; gap: 60px;}
-            .tools-right { position: relative; top: 0; }
-        }
         @media (max-width: 768px) {
-            nav { padding: 20px 5vw; border-bottom: none; position: relative;}
+            nav { padding: 20px 5vw; border-bottom: none;}
             .nav-links { display: none; }
             .mobile-menu-btn { display: block; }
             .nav-brand a { font-size: 1.1rem; }
@@ -156,8 +130,6 @@
             .day-node { padding-left: 25px; }
             .day-headline { font-size: 1.3rem; }
             .action-footer { padding: 0 20px 30px 20px; }
-            .tool-card { padding: 20px; flex-direction: column; text-align: center; gap: 15px;}
-            .link-card::after { display: none; }
         }
     </style>
 </head>
@@ -174,7 +146,6 @@
         </div>
         <button class="mobile-menu-btn" id="menuToggle">☰</button>
     </nav>
-    
     <div class="mobile-overlay" id="mobileOverlay">
         <a href="index.html">首页</a>
         <a href="stories.html">旅行故事</a>
@@ -193,82 +164,74 @@
     <main class="container">
         <span class="cs-tag">AI ITINERARY ENGINE</span>
         <h1 class="cs-title">极境路线智能演算</h1>
-        <p class="cs-desc">选择探险条件，算法将自动调取主理人实地勘测的私有坐标库，生成包含动态轨迹与防坑指南的硬核路书。或使用右侧导航库自助查询。</p>
+        <p class="cs-desc">选择探险条件，算法将自动调取主理人实地勘测的私有坐标库，生成包含动态轨迹与防坑指南的硬核路书。</p>
         
-        <div class="split-layout">
-            
-            <div class="engine-left">
-                <div class="engine-panel" id="controlPanel">
-                    <form id="bespokeForm" method="POST">
-                        <div class="engine-row">
-                            <span class="engine-label"><span>01</span> 目标极境 (DESTINATION)</span>
-                            <div class="options-grid">
-                                <label class="opt-card"><input type="radio" name="Destination" value="冰岛" checked><div class="opt-body">🇮🇸 冰岛 Iceland</div></label>
-                                <label class="opt-card"><input type="radio" name="Destination" value="挪威"><div class="opt-body">🇳🇴 挪威 Norway</div></label>
-                                <label class="opt-card"><input type="radio" name="Destination" value="法罗群岛"><div class="opt-body">🇫🇴 法罗 Faroe</div></label>
-                            </div>
+        <div class="single-layout">
+            <div class="engine-panel" id="controlPanel">
+                <form id="bespokeForm" method="POST">
+                    <div class="engine-row">
+                        <span class="engine-label"><span>01</span> 目标极境 (DESTINATION)</span>
+                        <div class="options-grid">
+                            <label class="opt-card"><input type="radio" name="Destination" value="冰岛" checked><div class="opt-body">🇮🇸 冰岛 Iceland</div></label>
+                            <label class="opt-card"><input type="radio" name="Destination" value="挪威"><div class="opt-body">🇳🇴 挪威 Norway</div></label>
+                            <label class="opt-card"><input type="radio" name="Destination" value="法罗群岛"><div class="opt-body">🇫🇴 法罗 Faroe</div></label>
                         </div>
-                        
-                        <div class="engine-row">
-                            <span class="engine-label"><span>02</span> 可用天数 (DURATION)</span>
-                            <div class="options-grid">
-                                <label class="opt-card"><input type="radio" name="Duration" value="5天内" checked><div class="opt-body">3-5 天 (紧凑)</div></label>
-                                <label class="opt-card"><input type="radio" name="Duration" value="7天"><div class="opt-body">7 天 (精华)</div></label>
-                                <label class="opt-card"><input type="radio" name="Duration" value="10天以上"><div class="opt-body">10 天+ (深度环岛)</div></label>
-                            </div>
-                        </div>
-
-                        <div class="engine-row">
-                            <span class="engine-label"><span>03</span> 探索风格 (STYLE)</span>
-                            <div class="options-grid">
-                                <label class="opt-card"><input type="radio" name="Style" value="风光摄影" checked><div class="opt-body">📷 风光摄影 (追光)</div></label>
-                                <label class="opt-card"><input type="radio" name="Style" value="硬核越野"><div class="opt-body">🚙 硬核越野 (无人区)</div></label>
-                                <label class="opt-card"><input type="radio" name="Style" value="小众打卡"><div class="opt-body">🗺️ 小众打卡 (避人群)</div></label>
-                            </div>
-                        </div>
-
-                        <div class="engine-row">
-                            <span class="engine-label"><span>04</span> 预算预期 (BUDGET)</span>
-                            <div class="options-grid">
-                                <label class="opt-card"><input type="radio" name="Budget" value="经济" checked><div class="opt-body">经济实惠 (青旅/露营)</div></label>
-                                <label class="opt-card"><input type="radio" name="Budget" value="舒适"><div class="opt-body">舒适体验 (独立木屋)</div></label>
-                                <label class="opt-card"><input type="radio" name="Budget" value="奢华"><div class="opt-body">高定奢华 (极光酒店)</div></label>
-                            </div>
-                        </div>
-
-                        <div class="direct-form" id="contactFields">
-                            <span class="engine-label" style="color: #fff; margin-bottom: 20px;">演算前请完善接收信息：</span>
-                            <div class="form-inputs">
-                                <input type="text" name="Name" required placeholder="阁下的称呼">
-                                <input type="text" name="WeChat" required placeholder="您的微信或邮箱 (用于接收全套源文件)">
-                            </div>
-                        </div>
-
-                        <button type="submit" class="btn-generate" id="generateBtn">启动轨迹绘算 ➔</button>
-                    </form>
-                </div>
-
-                <div class="loader-wrapper" id="loaderBox">
-                    <div class="radar-spinner"></div>
-                    <div class="loader-text" id="loaderText">ESTABLISHING CONNECTION...</div>
-                    <div class="loader-subtext" id="loaderSub">正在调取主理人私有数据库</div>
-                </div>
-
-                <div class="result-panel" id="resultBox">
-                    <div class="itinerary-paper">
-                        <div class="route-map-header" id="mapHeader"></div>
-                        <div class="route-nodes" id="itineraryContent"></div>
                     </div>
-                    <div class="action-footer">
-                        <button class="btn-expert" onclick="window.location.reload()">↺ 返回重新演算</button>
+                    
+                    <div class="engine-row">
+                        <span class="engine-label"><span>02</span> 可用天数 (DURATION)</span>
+                        <div class="options-grid">
+                            <label class="opt-card"><input type="radio" name="Duration" value="5天内" checked><div class="opt-body">3-5 天 (紧凑)</div></label>
+                            <label class="opt-card"><input type="radio" name="Duration" value="7天"><div class="opt-body">7 天 (精华)</div></label>
+                            <label class="opt-card"><input type="radio" name="Duration" value="10天以上"><div class="opt-body">10 天+ (深度环岛)</div></label>
+                        </div>
                     </div>
-                </div>
+
+                    <div class="engine-row">
+                        <span class="engine-label"><span>03</span> 探索风格 (STYLE)</span>
+                        <div class="options-grid">
+                            <label class="opt-card"><input type="radio" name="Style" value="风光摄影" checked><div class="opt-body">📷 风光摄影 (追光)</div></label>
+                            <label class="opt-card"><input type="radio" name="Style" value="硬核越野"><div class="opt-body">🚙 硬核越野 (无人区)</div></label>
+                            <label class="opt-card"><input type="radio" name="Style" value="小众打卡"><div class="opt-body">🗺️ 小众打卡 (避人群)</div></label>
+                        </div>
+                    </div>
+
+                    <div class="engine-row">
+                        <span class="engine-label"><span>04</span> 预算预期 (BUDGET)</span>
+                        <div class="options-grid">
+                            <label class="opt-card"><input type="radio" name="Budget" value="经济" checked><div class="opt-body">经济实惠 (青旅/露营)</div></label>
+                            <label class="opt-card"><input type="radio" name="Budget" value="舒适"><div class="opt-body">舒适体验 (独立木屋)</div></label>
+                            <label class="opt-card"><input type="radio" name="Budget" value="奢华"><div class="opt-body">高定奢华 (极光酒店)</div></label>
+                        </div>
+                    </div>
+
+                    <div class="direct-form" id="contactFields">
+                        <span class="engine-label" style="color: #fff; margin-bottom: 20px;">演算前请完善接收信息：</span>
+                        <div class="form-inputs">
+                            <input type="text" name="Name" required placeholder="阁下的称呼">
+                            <input type="text" name="WeChat" required placeholder="您的微信或邮箱 (用于接收全套源文件)">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-generate" id="generateBtn">启动轨迹绘算 ➔</button>
+                </form>
             </div>
 
-            <aside class="tools-right" id="dynamicToolsContainer">
-                <div class="tool-header">EXTERNAL TOOLS // 极境工具箱</div>
-            </aside>
+            <div class="loader-wrapper" id="loaderBox">
+                <div class="radar-spinner"></div>
+                <div class="loader-text" id="loaderText">ESTABLISHING CONNECTION...</div>
+                <div class="loader-subtext" id="loaderSub">正在调取主理人私有数据库</div>
+            </div>
 
+            <div class="result-panel" id="resultBox">
+                <div class="itinerary-paper">
+                    <div class="route-map-header" id="mapHeader"></div>
+                    <div class="route-nodes" id="itineraryContent"></div>
+                </div>
+                <div class="action-footer">
+                    <button class="btn-expert" onclick="window.location.reload()">↺ 返回重新演算</button>
+                </div>
+            </div>
         </div>
     </main>
 
@@ -280,34 +243,6 @@
         menuToggle.addEventListener('click', () => {
             mobileOverlay.classList.toggle('active');
             menuToggle.innerText = mobileOverlay.classList.contains('active') ? '✕' : '☰';
-        });
-
-        // 动态工具箱渲染
-        document.addEventListener("DOMContentLoaded", function() {
-            const toolsContainer = document.getElementById('dynamicToolsContainer');
-            let toolsArray = [
-                { icon: '🌤️', title: '极光与云图监控', desc: '冰岛官方气象雷达 (vedur.is)，精准查询云层覆盖率与 KP 极光指数。', link: 'https://en.vedur.is/' },
-                { icon: '🚙', title: '官方实时路况排雷', desc: '冬季自驾保命神器 (road.is)，实时查看封路、风速、积雪及暗冰警告。', link: 'https://umferdin.is/en' },
-                { icon: '🥾', title: '极地徒步轨迹地图', desc: 'Wikiloc 离线等高线地图，收录北欧众多未被开发的硬核野徒步路线。', link: 'https://www.wikiloc.com/' },
-                { icon: '🛂', title: '申根签直达预约', desc: 'VFS Global 官方签证中心入口，规避黄牛与虚假中介的纯净通道。', link: 'https://visa.vfsglobal.com/' }
-            ];
-
-            if (typeof dbData !== 'undefined' && dbData.global && dbData.global.tools && dbData.global.tools.length > 0) {
-                toolsArray = dbData.global.tools;
-            }
-
-            toolsArray.forEach(tool => {
-                const toolCard = `
-                    <a href="${tool.link}" target="_blank" class="tool-card">
-                        <div class="tc-icon">${tool.icon || '🔗'}</div>
-                        <div class="tc-info">
-                            <h3 class="tc-title">${tool.title}</h3>
-                            <p class="tc-desc">${tool.desc}</p>
-                        </div>
-                    </a>
-                `;
-                toolsContainer.insertAdjacentHTML('beforeend', toolCard);
-            });
         });
 
         const expertVault = {
