@@ -1,6 +1,21 @@
 const dbData = {
   "stories": [
     {
+      "id": "story-1773560740523",
+      "title": "青森故事",
+      "date": "2026-03-15",
+      "trip_date": "2026-02-21",
+      "cover": "https://cdn.jsdelivr.net/gh/feixingjiadavid/David-Image-Bank-01/images/img_1773559850506.webp",
+      "location": "青森",
+      "bilibili_bvid": "",
+      "short_desc": "世界雪极",
+      "paragraphs": [
+        "==世界==**雪极**"
+      ],
+      "cta_text": "推荐前往xxx",
+      "cta_link": "guide-detail.html?id=guide-faroe"
+    },
+    {
       "id": "story-faroe",
       "title": "法罗群岛：在世界尽头拥抱风暴",
       "date": "2025-05-01",
@@ -239,24 +254,7 @@ const dbData = {
     "qrDouyin": "images/img_1773500474087.jpg",
     "footer": ""
   },
-  "trash": [
-    {
-      "id": "story-1773560740523",
-      "title": "青森故事",
-      "date": "2026-03-15",
-      "trip_date": "2026-02-21",
-      "cover": "https://cdn.jsdelivr.net/gh/feixingjiadavid/David-Image-Bank-01/images/img_1773559850506.webp",
-      "location": "青森",
-      "bilibili_bvid": "",
-      "short_desc": "世界雪极",
-      "paragraphs": [
-        "==世界==**雪极**"
-      ],
-      "cta_text": "推荐前往xxx",
-      "cta_link": "guide-detail.html?id=guide-faroe",
-      "originalType": "stories"
-    }
-  ],
+  "trash": [],
   "version": "13.0 MAX",
   "toolkits": [
     {
@@ -271,5 +269,6 @@ const dbData = {
     }
   ],
   "radars": [],
-  "routes": []
+  "routes": [],
+  "hubs": []
 };
