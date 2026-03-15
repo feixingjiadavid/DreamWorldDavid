@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="referrer" content="no-referrer">
+    <meta name="theme-color" content="#050505">
     
-    <meta property="og:title" content="戴维的梦想世界 | 硬核攻略">
+    <meta property="og:title" content="硬核攻略 | DAVID EXPEDITION">
     <meta property="og:description" content="硬核干货储备：从签证策略到无人区驾驶指南。">
     <meta property="og:image" content="https://images.unsplash.com/photo-1476610182048-b716b8518aae?q=80&w=1200&auto=format&fit=crop">
     <meta property="og:type" content="article">
@@ -22,10 +23,24 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: var(--bg-base); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; -webkit-font-smoothing: antialiased; line-height: 1.8; overflow-x: hidden;}
 
-        #init-loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--bg-base); z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.8s ease, visibility 0.8s ease; }
+        #init-loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--bg-base); z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.5s ease, visibility 0.5s ease; }
         .loader-brand { font-family: 'Inter', sans-serif; font-size: 1.2rem; font-weight: 700; letter-spacing: 6px; color: var(--gold); animation: breath 2s infinite ease-in-out;}
         @keyframes breath { 0% { opacity: 0.3; transform: scale(0.98); } 50% { opacity: 1; transform: scale(1); } 100% { opacity: 0.3; transform: scale(0.98); } }
         body.loaded #init-loader { opacity: 0; visibility: hidden; }
+
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 30px 6vw; font-size: 0.95rem; font-weight: 500; letter-spacing: 1px; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: rgba(5,5,5,0.8); backdrop-filter: blur(20px); z-index: 100;}
+        .nav-brand a { color: var(--text-primary); text-decoration: none; font-weight: 500; font-size: 1.2rem; letter-spacing: 4px; transition: color 0.3s ease; position: relative; z-index: 101;}
+        .nav-brand a:hover { color: var(--gold); } 
+        .nav-links { display: flex; gap: 50px; align-items: center; }
+        .nav-links a { color: var(--text-dimmed); text-decoration: none; position: relative; padding-bottom: 6px; transition: color 0.3s ease; letter-spacing: 1px; white-space: nowrap;}
+        .nav-links a:hover, .nav-links a.active { color: var(--text-primary); }
+        .nav-links a.active::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--text-primary); }
+        .mobile-menu-btn { display: none; background: transparent; border: none; color: #fff; font-size: 1.8rem; cursor: pointer; z-index: 101; position: relative; width: 40px; height: 40px; }
+        .mobile-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(5,5,5,0.98); backdrop-filter: blur(15px); z-index: 99; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: var(--transition); }
+        .mobile-overlay.active { opacity: 1; visibility: visible; }
+        .mobile-overlay a { color: #fff; text-decoration: none; font-size: 2rem; font-weight: 700; letter-spacing: 4px; margin: 20px 0; opacity: 0; transform: translateY(20px); transition: var(--transition); }
+        .mobile-overlay.active a { opacity: 1; transform: translateY(0); }
+        .mobile-overlay a.active { color: var(--gold); }
 
         .breadcrumb-nav { padding: 30px 6vw; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); font-family: 'Inter', sans-serif; font-size: 0.8rem; letter-spacing: 1px; white-space: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;}
         .breadcrumb-nav::-webkit-scrollbar { display: none; }
@@ -42,11 +57,14 @@
 
         @keyframes imgFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        .media-container { width: 100%; border-radius: var(--radius); overflow: hidden; margin-bottom: 60px; background: var(--bg-panel); aspect-ratio: 21/9;}
+        .media-container { width: 100%; border-radius: var(--radius); overflow: hidden; margin-bottom: 60px; background: var(--bg-panel); aspect-ratio: 21/9; position: relative;}
         .media-container iframe, .media-container img, .media-container video { width: 100%; height: 100%; object-fit: cover; display: block; border: none; animation: imgFadeIn 0.8s ease forwards;}
+        .facade-play { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80px; height: 80px; background: rgba(0,0,0,0.7); border: 2px solid rgba(255,255,255,0.4); border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.3s; z-index: 2; backdrop-filter: blur(5px);}
+        .facade-play::after { content: '▶'; color: #fff; font-size: 1.5rem; margin-left: 5px; }
+        .facade-play:hover { background: var(--gold); border-color: var(--gold); transform: translate(-50%, -50%) scale(1.1); }
 
         .guide-layout { display: grid; grid-template-columns: 240px 1fr; gap: 60px; align-items: start; }
-        .toc-sidebar { position: sticky; top: 40px; padding-right: 20px; }
+        .toc-sidebar { position: sticky; top: 100px; padding-right: 20px; }
         .toc-title { font-family: 'Inter'; font-size: 0.75rem; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px; font-weight: 700; border-bottom: 1px solid rgba(212,175,55,0.2); padding-bottom: 10px;}
         .toc-list { list-style: none; padding: 0; margin: 0; border-left: 1px solid var(--border);}
         .toc-link { color: var(--text-dimmed); text-decoration: none; font-size: 0.9rem; transition: var(--transition); display: block; padding: 8px 0 8px 15px; border-left: 2px solid transparent; margin-left: -1px; }
@@ -69,8 +87,8 @@
         .guide-content a:hover { color: #fff; border-bottom-color: #fff;}
         .guide-content img { max-width: 100%; border-radius: 6px; cursor: zoom-in; margin: 15px 0; transition: filter 0.3s ease; display: block; animation: imgFadeIn 0.8s ease forwards;}
         .guide-content img:hover { filter: brightness(1.1); }
+        .guide-content .highlight-gold { color: var(--gold); font-weight: bold; }
         
-        /* 核心视觉升级：杂志级引用块 */
         .pull-quote { border-left: 3px solid var(--gold); background: rgba(212, 175, 55, 0.05); padding: 15px 20px; margin: 25px 0; color: #E0E0E0; font-size: 1.1rem; font-style: italic; border-radius: 0 8px 8px 0; position: relative; }
         .pull-quote::before { content: '“'; position: absolute; top: -10px; left: 10px; font-size: 3rem; color: rgba(212, 175, 55, 0.2); font-family: Georgia, serif; line-height: 1; }
 
@@ -95,7 +113,7 @@
         .cta-btn { padding: 12px 30px; background: transparent; color: var(--gold); border: 1px solid var(--gold); border-radius: 40px; text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: var(--transition); white-space: nowrap;}
         .cta-btn:hover { background: rgba(212,175,55,0.1); transform: translateX(5px); }
 
-        .action-bar { display: flex; gap: 20px; align-items: center; margin-top: 50px; padding-top: 30px; border-top: 1px dashed rgba(255,255,255,0.1); }
+        .action-bar { display: flex; gap: 20px; align-items: center; margin-top: 80px; padding-top: 30px; border-top: 1px dashed rgba(255,255,255,0.1); }
         .action-btn { background: transparent; border: none; color: var(--text-dimmed); font-family: var(--font-zh); font-size: 0.85rem; letter-spacing: 2px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: var(--transition); outline: none; padding: 0;}
         .action-btn:hover { color: var(--gold); transform: translateY(-2px); }
         .action-btn svg { width: 16px; height: 16px; fill: currentColor; }
@@ -112,6 +130,20 @@
         .r-card-tag { color: var(--gold); font-size: 0.7rem; letter-spacing: 2px; margin-bottom: 8px; display: block;}
         .r-card-title { color: #fff; font-size: 1.1rem; font-weight: 700; margin: 0; line-height: 1.3;}
 
+        /* 滑动画廊 */
+        .lightbox-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.96); z-index: 10000; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: var(--transition); backdrop-filter: blur(10px); }
+        .lightbox-overlay.active { opacity: 1; visibility: visible; }
+        .lightbox-img { max-width: 95vw; max-height: 90vh; object-fit: contain; transform: scale(0.9); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); user-select: none;}
+        .lightbox-overlay.active .lightbox-img { transform: scale(1); }
+        .lb-btn { position: absolute; top: 50%; transform: translateY(-50%); width: 50px; height: 50px; background: rgba(255,255,255,0.1); border: none; border-radius: 50%; color: #fff; font-size: 1.5rem; cursor: pointer; z-index: 10001; transition: 0.3s; display: flex; justify-content: center; align-items: center;}
+        .lb-btn:hover { background: var(--gold); color: #000; }
+        .lb-prev { left: 20px; }
+        .lb-next { right: 20px; }
+        .lb-close { position: absolute; top: 20px; right: 20px; width: 40px; height: 40px; background: rgba(255,255,255,0.1); color:#fff; border:none; border-radius:50%; font-size:1.2rem; cursor:pointer; z-index:10001; transition:0.3s;}
+        .lb-close:hover { background: #ff4d4f; }
+        .lb-counter { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,0.6); font-family: var(--font-mono); font-size: 0.85rem; letter-spacing: 2px;}
+
+        /* 分享海报 Modal */
         .share-modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.92); backdrop-filter: blur(20px); z-index: 11000; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: var(--transition); }
         .share-modal-overlay.active { opacity: 1; visibility: visible; }
         .share-card { background: #0A0A0A; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; width: 88%; max-width: 360px; overflow: hidden; transform: translateY(30px) scale(0.95); transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 30px 60px rgba(0,0,0,0.8); position: relative;}
@@ -139,11 +171,6 @@
         #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
         .back-to-top { position: fixed; bottom: 40px; right: 40px; width: 45px; height: 45px; border-radius: 50%; background: rgba(17,17,17,0.8); border: 1px solid rgba(212,175,55,0.3); color: var(--gold); font-size: 1.2rem; cursor: pointer; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: var(--transition); z-index: 99; backdrop-filter: blur(5px);}
         .back-to-top.show { opacity: 1; visibility: visible; transform: translateY(0); }
-
-        .lightbox-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.95); z-index: 10000; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: var(--transition); cursor: zoom-out; backdrop-filter: blur(10px); }
-        .lightbox-overlay.active { opacity: 1; visibility: visible; }
-        .lightbox-img { max-width: 95vw; max-height: 95vh; object-fit: contain; transform: scale(0.9); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); border-radius: 4px; box-shadow: 0 20px 50px rgba(0,0,0,0.8);}
-        .lightbox-overlay.active .lightbox-img { transform: scale(1); }
         .site-footer { border-top: 1px solid var(--border); padding: 40px 0; text-align: center; font-family: 'Inter'; font-size: 0.8rem; color: var(--text-dimmed); letter-spacing: 2px; }
         #loadingState { text-align: center; color: var(--gold); letter-spacing: 2px; margin-top: 100px; font-family: 'Inter'; display: none;}
 
@@ -159,8 +186,14 @@
             .toc-list { border-left: none; display: flex; flex-direction: column; gap: 8px;}
             .toc-link { background: rgba(255,255,255,0.03); border-left: 2px solid transparent; border-radius: 4px; padding: 12px 15px; margin-left: 0;}
             .toc-link.active { background: rgba(212,175,55,0.1); border-left-color: var(--gold); }
+            .lb-btn { display: none; }
         }
         @media (max-width: 768px) {
+            nav { padding: 20px 5vw; border-bottom: none; background: var(--bg-base);}
+            .nav-links { display: none; }
+            .mobile-menu-btn { display: block; }
+            .nav-brand a { font-size: 1.1rem; letter-spacing: 2px; }
+
             .breadcrumb-nav { padding: 20px 5vw; font-size: 0.75rem;}
             .crumb-current { max-width: none; } 
             .container { padding: 20px 5vw 60px 5vw; }
@@ -187,11 +220,29 @@
 
     <div id="init-loader"><div class="loader-brand">DAVID EXPEDITION</div></div>
 
-    <nav class="breadcrumb-nav">
-        <a href="index.html" class="crumb-link">Home / 首页</a><span class="crumb-separator">/</span>
-        <a href="guides.html" class="crumb-link">Guides / 攻略指南</a><span class="crumb-separator">/</span>
-        <span class="crumb-current" id="r_breadcrumb_title">读取中...</span>
+    <nav>
+        <div class="nav-brand"><a href="index.html">DAVID EXPEDITION</a></div>
+        <div class="nav-links">
+            <a href="index.html">首页</a>
+            <a href="stories.html">旅行故事</a>
+            <a href="guides.html" class="active">攻略指南</a>
+            <a href="contact.html">合作联系</a>
+        </div>
+        <button class="mobile-menu-btn" id="menuToggle">☰</button>
     </nav>
+    <div class="mobile-overlay" id="mobileOverlay">
+        <a href="index.html">HOME / 首页</a>
+        <a href="stories.html">STORIES / 旅行故事</a>
+        <a href="guides.html" class="active">GUIDES / 攻略指南</a>
+        <a href="contact.html">CONTACT / 合作</a>
+    </div>
+
+    <div class="breadcrumb-nav">
+        <a href="index.html" class="crumb-link">Home</a><span class="crumb-separator">/</span>
+        <a href="guides.html" class="crumb-link">Guides</a><span class="crumb-separator">/</span>
+        <span class="crumb-current" id="r_breadcrumb_title">读取中...</span>
+    </div>
+    
     <div id="loadingState">调取硬核数据中...</div>
 
     <main class="container" id="mainContent" style="display: none;">
@@ -209,8 +260,7 @@
         <div class="guide-layout">
             <aside class="toc-sidebar" id="r_toc_sidebar">
                 <div class="toc-title">INDEX / 攻略目录</div>
-                <ul class="toc-list" id="r_toc_list">
-                    </ul>
+                <ul class="toc-list" id="r_toc_list"></ul>
             </aside>
 
             <div class="guide-content">
@@ -242,12 +292,18 @@
         <div class="related-grid" id="r_related_grid"></div>
     </section>
 
+    <div class="lightbox-overlay" id="globalLightbox">
+        <button class="lb-close" onclick="closeLightbox()">✕</button>
+        <button class="lb-btn lb-prev" onclick="navLightbox(-1)">‹</button>
+        <img src="" class="lightbox-img" id="lightboxImg">
+        <button class="lb-btn lb-next" onclick="navLightbox(1)">›</button>
+        <div class="lb-counter" id="lbCounter">1 / 1</div>
+    </div>
+
     <div class="share-modal-overlay" id="shareModal">
         <div class="share-card" id="shareCardHTML">
             <button class="close-share" onclick="closeShareModal()">✕</button>
-            <div class="share-card-cover">
-                <img src="" id="shareCoverImg" crossorigin="anonymous">
-            </div>
+            <div class="share-card-cover"><img src="" id="shareCoverImg" crossorigin="anonymous"></div>
             <div class="share-card-content">
                 <div class="share-card-tag">EXPEDITION GUIDE</div>
                 <h3 class="share-card-title" id="shareTitle">加载中...</h3>
@@ -266,65 +322,102 @@
 
     <button id="backToTop" class="back-to-top" title="回到顶部">↑</button>
     <footer class="site-footer">© 2026 DAVID EXPEDITION.</footer>
-    <div class="lightbox-overlay" id="globalLightbox"><img src="" class="lightbox-img" id="lightboxImg"></div>
     <div id="toast">提示信息</div>
 
     <script>
         let currentArticleData = null;
 
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileOverlay = document.getElementById('mobileOverlay');
+        let isMenuOpen = false;
+        menuToggle.addEventListener('click', () => {
+            isMenuOpen = !isMenuOpen;
+            if(isMenuOpen) { mobileOverlay.classList.add('active'); menuToggle.innerText = '✕'; document.body.style.overflow = 'hidden';
+            } else { mobileOverlay.classList.remove('active'); menuToggle.innerText = '☰'; document.body.style.overflow = 'auto'; }
+        });
+
+        // 数据驱动卸载白屏
+        function dismissGlobalLoader() { document.body.classList.add('loaded'); }
         function getFastCdnUrl(url) { if (!url) return ''; if (url.startsWith('images/')) return `https://cdn.jsdelivr.net/gh/feixingjiadavid/DreamWorldDavid/${url}`; return url; }
+
+        function loadIframeVideo(vid, coverUrl) {
+            const box = document.getElementById('r_media');
+            box.innerHTML = `<iframe src="//player.bilibili.com/player.html?bvid=${vid}&page=1&high_quality=1&danmaku=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" style="width:100%; height:100%;"></iframe>`;
+        }
+
+        // 画廊滑动引擎与鼠标滚轮劫持
+        let galleryImages = []; let currentGalleryIndex = 0;
+        const lightbox = document.getElementById('globalLightbox'); const lbImg = document.getElementById('lightboxImg'); const lbCounter = document.getElementById('lbCounter');
         
+        function initLightbox() {
+            galleryImages = Array.from(document.querySelectorAll('.guide-content img, .gallery-item'));
+            galleryImages.forEach((img, idx) => {
+                img.style.cursor = 'zoom-in';
+                img.addEventListener('click', () => {
+                    currentGalleryIndex = idx; updateLightbox();
+                    lightbox.classList.add('active'); document.body.style.overflow = 'hidden';
+                });
+            });
+
+            // 电脑端图集滚轮转化为横向滑动
+            const carousel = document.getElementById('r_gallery');
+            if(carousel) {
+                carousel.addEventListener('wheel', (evt) => {
+                    if (evt.deltaY !== 0) { evt.preventDefault(); carousel.scrollLeft += evt.deltaY; }
+                }, { passive: false });
+            }
+        }
+        function updateLightbox() {
+            if(galleryImages.length === 0) return;
+            lbImg.src = galleryImages[currentGalleryIndex].src;
+            lbCounter.innerText = `${currentGalleryIndex + 1} / ${galleryImages.length}`;
+        }
+        function navLightbox(dir) {
+            currentGalleryIndex += dir;
+            if(currentGalleryIndex < 0) currentGalleryIndex = galleryImages.length - 1;
+            if(currentGalleryIndex >= galleryImages.length) currentGalleryIndex = 0;
+            updateLightbox();
+        }
+        function closeLightbox() { lightbox.classList.remove('active'); document.body.style.overflow = 'auto'; setTimeout(() => lbImg.src = '', 400); }
+        
+        let touchStartX = 0; let touchEndX = 0;
+        lightbox.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; });
+        lightbox.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            if(touchStartX - touchEndX > 50) navLightbox(1);
+            if(touchEndX - touchStartX > 50) navLightbox(-1);
+        });
+
         async function openShareModal() {
             if(!currentArticleData) return;
-            const modal = document.getElementById('shareModal');
-            const tip = document.getElementById('shareTipText');
-            const target = document.getElementById('shareCardHTML');
-            const generatedImg = document.getElementById('generatedShareImage');
-            const coverImg = document.getElementById('shareCoverImg');
+            const modal = document.getElementById('shareModal'); const tip = document.getElementById('shareTipText');
+            const target = document.getElementById('shareCardHTML'); const generatedImg = document.getElementById('generatedShareImage'); const coverImg = document.getElementById('shareCoverImg');
             
-            generatedImg.style.display = 'none'; generatedImg.src = '';
-            tip.innerText = "⏳ 正在拉取高清影像...";
-            document.getElementById('shareTitle').innerText = currentArticleData.title;
-            
-            const qrContainer = document.getElementById('qrcode-container');
-            qrContainer.innerHTML = ''; 
+            generatedImg.style.display = 'none'; generatedImg.src = ''; tip.innerText = "⏳ 正在拉取高清影像..."; document.getElementById('shareTitle').innerText = currentArticleData.title;
+            const qrContainer = document.getElementById('qrcode-container'); qrContainer.innerHTML = ''; 
             new QRCode(qrContainer, { text: window.location.href, width: 52, height: 52, colorDark : "#000", colorLight : "#fff", correctLevel : QRCode.CorrectLevel.M });
-            
             modal.classList.add('active');
 
             try {
-                await new Promise((resolve) => {
-                    coverImg.onload = resolve; coverImg.onerror = resolve; 
-                    const cleanUrl = currentArticleData.cover;
-                    coverImg.src = cleanUrl + (cleanUrl.includes('?') ? '&' : '?') + 'cors_bypass=' + Date.now();
-                });
-
-                tip.innerText = "⏳ 正在生成专属分享海报...";
-                await new Promise(r => setTimeout(r, 300));
-
+                await new Promise((resolve) => { coverImg.onload = resolve; coverImg.onerror = resolve; const cleanUrl = currentArticleData.cover; coverImg.src = cleanUrl + (cleanUrl.includes('?') ? '&' : '?') + 'cors_bypass=' + Date.now(); });
+                tip.innerText = "⏳ 正在生成专属分享海报..."; await new Promise(r => setTimeout(r, 300));
                 const canvas = await html2canvas(target, { useCORS: true, allowTaint: false, scale: 2, backgroundColor: "#0A0A0A", logging: false });
                 const imgData = canvas.toDataURL("image/jpeg", 0.9);
                 tip.innerText = "👍 生成成功！请长按上方海报保存";
-                
                 generatedImg.src = imgData; generatedImg.style.display = 'block'; generatedImg.style.opacity = '0.01'; 
-            } catch (e) { console.error("Guide poster generation failed:", e); tip.innerText = "❌ 海报生成失败，请尝试直接手机截屏"; }
+            } catch (e) { tip.innerText = "❌ 海报生成失败，请尝试直接手机截屏"; }
         }
-        
-        function closeShareModal() { document.getElementById('shareModal').classList.remove('active'); }
-        function copyShareText() {
-            const text = `▬ DAVID EXPEDITION ▬\n\n《${document.title.split(' | ')[0]}》\n硬核干货攻略，点击阅读全文：\n${window.location.href}`;
-            navigator.clipboard.writeText(text); showToast('✓ 专属邀请文案已复制！'); closeShareModal();
-        }
+        function closeShareModal() { document.getElementById('shareModal').classList.remove('active'); document.getElementById('shareTipText').innerText = "海报生成中..."; }
+        function copyShareText() { navigator.clipboard.writeText(`▬ DAVID EXPEDITION ▬\n\n《${document.title.split(' | ')[0]}》\n硬核干货攻略，点击阅读全文：\n${window.location.href}`); showToast('✓ 专属邀请文案已复制！'); closeShareModal(); }
 
         function bookmarkPage() { showToast(/macintosh|mac os x/i.test(navigator.userAgent.toLowerCase()) ? `⭐ 请按 ⌘+D 收藏` : `⭐ 请按 Ctrl+D 收藏`); }
         function showToast(msg) { const t = document.getElementById('toast'); t.innerText = msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'), 3000); }
         
-        // 核心突破：前台增强版 MD 解析器
         function parseMarkdown(text) {
             let html = text;
-            html = html.replace(/==(.*?)==/g, '<span style="color: var(--gold); font-weight: 700;">$1</span>'); // 解析高亮金字
+            html = html.replace(/==(.*?)==/g, '<span class="highlight-gold">$1</span>'); 
             html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-            html = html.replace(/(?:^|<br>)> (.*?)(?=<br>|$)/g, '<br><blockquote class="pull-quote">$1</blockquote>'); // 解析杂志级引用
+            html = html.replace(/(?:^|<br>)> (.*?)(?=<br>|$)/g, '<br><blockquote class="pull-quote">$1</blockquote>');
             html = html.replace(/!\[(.*?)\]\((.*?)\)/g, '<img src="$2" alt="$1" loading="lazy">');
             html = html.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank">$1</a>');
             return html;
@@ -334,23 +427,14 @@
         window.addEventListener('scroll', () => { window.scrollY > 400 ? backToTopBtn.classList.add('show') : backToTopBtn.classList.remove('show'); });
         backToTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-        function bindLightbox() {
-            const lb = document.getElementById('globalLightbox'); const lbImg = document.getElementById('lightboxImg');
-            document.querySelectorAll('.guide-content img, .gallery-item').forEach(img => {
-                img.addEventListener('click', function() { lbImg.src = this.src; lb.classList.add('active'); });
-            });
-            lb.addEventListener('click', function() { this.classList.remove('active'); setTimeout(() => lbImg.src = '', 400); });
-        }
-
         document.addEventListener("DOMContentLoaded", function() {
-            const loaderTimeout = setTimeout(() => document.body.classList.add('loaded'), 2500);
-            function removeLoader() { clearTimeout(loaderTimeout); setTimeout(() => document.body.classList.add('loaded'), 300); }
+            const fallbackLoader = setTimeout(dismissGlobalLoader, 8000);
 
             const guideId = new URLSearchParams(window.location.search).get('id');
-            if (!guideId || typeof dbData === 'undefined' || !dbData.guides) { removeLoader(); return; }
+            if (!guideId || typeof dbData === 'undefined' || !dbData.guides) { dismissGlobalLoader(); clearTimeout(fallbackLoader); return; }
             
             const guide = dbData.guides.find(g => g.id === guideId);
-            if (!guide) { document.getElementById('loadingState').innerText="未找到攻略"; return; }
+            if (!guide) { dismissGlobalLoader(); clearTimeout(fallbackLoader); return; }
 
             currentArticleData = { title: guide.title, cover: getFastCdnUrl(guide.cover) };
 
@@ -366,7 +450,11 @@
             if (guide.video && guide.video.trim()) {
                 let vid = guide.video.trim();
                 if (!vid.endsWith('.mp4')) { const m = vid.match(/(BV[a-zA-Z0-9]+)/); if (m) vid = m[1]; }
-                mediaBox.innerHTML = vid.endsWith('.mp4') ? `<video controls poster="${coverUrl}"><source src="${vid}" type="video/mp4"></video>` : `<iframe src="//player.bilibili.com/player.html?bvid=${vid}&page=1&high_quality=1&danmaku=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>`;
+                if (vid.endsWith('.mp4')) {
+                    mediaBox.innerHTML = `<video controls poster="${coverUrl}"><source src="${vid}" type="video/mp4"></video>`;
+                } else {
+                    mediaBox.innerHTML = `<img src="${coverUrl}" class="facade-cover" onclick="loadIframeVideo('${vid}', '${coverUrl}')"><div class="facade-play" onclick="loadIframeVideo('${vid}', '${coverUrl}')"></div>`;
+                }
             } else { mediaBox.innerHTML = `<img src="${coverUrl}">`; }
 
             if(guide.gallery && guide.gallery.length > 0) {
@@ -448,7 +536,9 @@
             }
 
             document.getElementById('mainContent').style.display = 'block';
-            bindLightbox(); removeLoader();
+            setTimeout(initLightbox, 500);
+            dismissGlobalLoader();
+            clearTimeout(fallbackLoader);
         });
     </script>
 </body>
