@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>极境导航库 | 戴维的梦想世界</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Noto+Sans+SC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script>document.write('<script src="data.js?v=' + new Date().getTime() + '"><\/script>');</script>
+    
+    <style>
+        :root { --bg-base: #050505; --text-primary: #FFFFFF; --gold: #D4AF37; --border: rgba(255,255,255,0.05); --transition: 0.3s cubic-bezier(0.16, 1, 0.3, 1);}
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { background: var(--bg-base); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; -webkit-font-smoothing: antialiased; display: flex; flex-direction: column; min-height: 100vh;}
+
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 30px 6vw; font-size: 0.95rem; font-weight: 500; letter-spacing: 1px; border-bottom: 1px solid var(--border); background: rgba(5,5,5,0.8); backdrop-filter: blur(20px); z-index: 100; position: sticky; top: 0;}
+        .nav-brand a { color: var(--text-primary); text-decoration: none; font-weight: 700; font-size: 1.2rem; letter-spacing: 2px;}
+        .nav-brand a:hover { color: var(--gold); } 
+        .nav-links { display: flex; gap: 40px; align-items: center; }
+        .nav-links a { color: #888; text-decoration: none; position: relative; padding-bottom: 6px; transition: var(--transition); white-space: nowrap;}
+        .nav-links a:hover, .nav-links a.active { color: var(--text-primary); }
+        .nav-links a.active::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--text-primary); }
+        .mobile-menu-btn { display: none; background: transparent; border: none; color: #fff; font-size: 1.8rem; cursor: pointer; }
+        
+        .mobile-overlay { position: fixed; inset: 0; background: rgba(5,5,5,0.98); backdrop-filter: blur(15px); z-index: 99; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 0.4s; }
+        .mobile-overlay.active { opacity: 1; visibility: visible; }
+        .mobile-overlay a { color: #fff; text-decoration: none; font-size: 2rem; font-weight: 700; letter-spacing: 4px; margin: 15px 0; opacity: 0; transform: translateY(20px); transition: 0.4s; }
+        .mobile-overlay.active a { opacity: 1; transform: translateY(0); }
+        .mobile-overlay a.active { color: var(--gold); }
+
+        .breadcrumb-nav { padding: 30px 6vw; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); font-family: 'Inter', sans-serif; font-size: 0.8rem; letter-spacing: 1px; white-space: nowrap; overflow-x: auto;}
+        .crumb-link { color: #888; text-decoration: none; transition: var(--transition);}
+        .crumb-link:hover { color: var(--gold); }
+        .crumb-separator { color: #444;}
+        .crumb-current { color: var(--text-primary);}
+
+        .container { max-width: 1500px; margin: 0 auto; padding: 60px 6vw; flex: 1; width: 100%; }
+        .page-header { margin-bottom: 60px; text-align: center;}
+        .title-tag { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: #f59e0b; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 15px; display: block; font-weight: 700;}
+        .page-header h1 { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 900; margin-bottom: 20px; line-height: 1.2; letter-spacing: -1px;}
+        .page-header p { color: #888; max-width: 700px; line-height: 1.8; font-size: 1.05rem; margin: 0 auto;}
+
+        /* 核心布局：左侧导航 + 右侧卡片矩阵 */
+        .hub-layout { display: grid; grid-template-columns: 250px 1fr; gap: 60px; align-items: start;}
+        
+        .hub-sidebar { position: sticky; top: 120px; display: flex; flex-direction: column; gap: 10px;}
+        .hub-nav-link { color: #888; text-decoration: none; font-size: 0.95rem; padding: 12px 20px; border-radius: 8px; transition: var(--transition); border-left: 2px solid transparent;}
+        .hub-nav-link:hover { color: #fff; background: rgba(255,255,255,0.03);}
+        .hub-nav-link.active { color: #f59e0b; background: rgba(245, 158, 11, 0.1); border-left-color: #f59e0b; font-weight: 700;}
+
+        .hub-content { display: flex; flex-direction: column; gap: 80px; padding-bottom: 100px;}
+        .hub-section-title { font-size: 1.8rem; font-weight: 700; color: #fff; margin-bottom: 30px; padding-bottom: 15px; border-bottom: 1px dashed rgba(255,255,255,0.1); display: flex; align-items: center; gap: 15px; scroll-margin-top: 120px;}
+        
+        .links-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px;}
+        
+        .link-card { display: flex; align-items: center; gap: 20px; background: #0A0A0A; border: 1px solid rgba(255,255,255,0.05); padding: 25px; border-radius: 12px; text-decoration: none; transition: var(--transition); box-shadow: 0 10px 30px rgba(0,0,0,0.3); position: relative; overflow: hidden;}
+        .link-card::after { content: '↗'; position: absolute; top: 20px; right: 25px; color: #333; font-size: 1.2rem; transition: var(--transition); font-family: 'Inter';}
+        .link-card:hover { background: #111; transform: translateY(-5px); border-color: rgba(245, 158, 11, 0.4); box-shadow: 0 20px 40px rgba(0,0,0,0.6);}
+        .link-card:hover::after { color: #f59e0b; transform: translate(3px, -3px);}
+        
+        .lc-icon { width: 55px; height: 55px; background: rgba(255,255,255,0.03); border-radius: 12px; display: flex; justify-content: center; align-items: center; font-size: 1.8rem; flex-shrink: 0; transition: var(--transition); border: 1px solid rgba(255,255,255,0.05);}
+        .link-card:hover .lc-icon { background: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.3); color: #f59e0b;}
+        
+        .lc-info { flex: 1; display: flex; flex-direction: column; gap: 8px; padding-right: 20px;}
+        .lc-title { color: #fff; font-size: 1.15rem; font-weight: 700; margin: 0; transition: var(--transition); line-height: 1.3;}
+        .link-card:hover .lc-title { color: #f59e0b; }
+        .lc-desc { color: #888; font-size: 0.85rem; line-height: 1.5; margin: 0;}
+
+        .site-footer { border-top: 1px solid var(--border); padding: 40px 0; text-align: center; font-family: 'Inter'; font-size: 0.8rem; color: #888; letter-spacing: 2px; margin-top: auto;}
+
+        @media (max-width: 1024px) {
+            .hub-layout { grid-template-columns: 1fr; gap: 40px;}
+            .hub-sidebar { position: relative; top: 0; flex-direction: row; overflow-x: auto; white-space: nowrap; padding-bottom: 10px; border-bottom: 1px solid var(--border);}
+            .hub-nav-link { border-left: none; border-bottom: 2px solid transparent; border-radius: 0; padding: 10px 15px;}
+            .hub-nav-link.active { border-left: none; border-bottom-color: #f59e0b; background: transparent;}
+        }
+        @media (max-width: 768px) {
+            nav { padding: 20px 5vw; border-bottom: none;}
+            .nav-links { display: none; }
+            .mobile-menu-btn { display: block; }
+            .nav-brand a { font-size: 1.1rem; }
+            .container { padding: 30px 5vw; }
+            .page-header h1 { font-size: 2.2rem; }
+            .hub-section-title { font-size: 1.4rem; }
+            .links-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-brand"><a href="index.html">戴维的梦想世界</a></div>
+        <div class="nav-links">
+            <a href="index.html">首页</a>
+            <a href="stories.html">旅行故事</a>
+            <a href="guides.html">攻略指南</a>
+            <a href="toolkit.html">资料下载</a>
+            <a href="radar.html">避坑雷达</a>
+            <a href="consult.html">智能路书</a>
+            <a href="hub.html" class="active">极境导航</a>
+        </div>
+        <button class="mobile-menu-btn" id="menuToggle">☰</button>
+    </nav>
+    
+    <div class="mobile-overlay" id="mobileOverlay">
+        <a href="index.html">首页</a>
+        <a href="stories.html">旅行故事</a>
+        <a href="guides.html">攻略指南</a>
+        <a href="toolkit.html">资料下载</a>
+        <a href="radar.html">避坑雷达</a>
+        <a href="consult.html">智能路书</a>
+        <a href="hub.html" class="active">极境导航</a>
+    </div>
+
+    <div class="breadcrumb-nav">
+        <a href="index.html" class="crumb-link">首页</a><span class="crumb-separator">/</span>
+        <span class="crumb-current">全网极境导航库</span>
+    </div>
+
+    <main class="container">
+        <header class="page-header">
+            <span class="title-tag">GLOBAL EXPEDITION PORTAL</span>
+            <h1>全网极境导航库</h1>
+            <p>拒绝在信息海中迷失。这里收录了冰岛、挪威及所有极地国家的官方签证中心、气象雷达、本地租车与硬核徒步入口。</p>
+        </header>
+
+        <div class="hub-layout">
+            <aside class="hub-sidebar" id="hubSidebar"></aside>
+            <div class="hub-content" id="hubContent"></div>
+        </div>
+    </main>
+
+    <footer class="site-footer">© 2026 戴维的梦想世界.</footer>
+
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileOverlay = document.getElementById('mobileOverlay');
+        menuToggle.addEventListener('click', () => {
+            mobileOverlay.classList.toggle('active');
+            menuToggle.innerText = mobileOverlay.classList.contains('active') ? '✕' : '☰';
+        });
+
+        // 默认的兜底导航库数据
+        const defaultHubs = [
+            { category: '签证与使馆', title: '申根签预约 (VFS)', icon: '🛂', url: 'https://visa.vfsglobal.com/', desc: 'VFS Global 官方预约中心，规避虚假中介。' },
+            { category: '签证与使馆', title: '冰岛驻华大使馆', icon: '🇮🇸', url: 'https://www.government.is/', desc: '获取最新的冰岛出入境政策与官方声明。' },
+            { category: '气象与路况', title: '冰岛气象雷达 (Vedur)', icon: '🌤️', url: 'https://en.vedur.is/', desc: '追极光必备：精准查询云层覆盖率与风暴预警。' },
+            { category: '气象与路况', title: '官方实时路况 (Road.is)', icon: '🚙', url: 'https://umferdin.is/en', desc: '自驾保命神器，实时查看封路及黑冰警告。' },
+            { category: '气象与路况', title: '挪威气象局 (Yr.no)', icon: '🇳🇴', url: 'https://www.yr.no/en', desc: '北欧最准的天气预报，峡湾攀登前必看。' },
+            { category: '户外与徒步', title: 'Wikiloc 离线地图', icon: '🥾', url: 'https://www.wikiloc.com/', desc: '收录北欧众多未被开发的硬核野徒步路线。' },
+            { category: '户外与徒步', title: '冰岛冰川向导预定', icon: '⛏️', url: 'https://guidetoiceland.is/', desc: '本地最大的冰川徒步、蓝冰洞、火山项目预定中心。' }
+        ];
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const sidebar = document.getElementById('hubSidebar');
+            const content = document.getElementById('hubContent');
+            
+            let hubs = defaultHubs;
+            if (typeof dbData !== 'undefined' && dbData.hubs && dbData.hubs.length > 0) {
+                hubs = dbData.hubs.sort((a,b) => new Date(b.date) - new Date(a.date));
+            }
+
+            // 按 Category 分组
+            const grouped = hubs.reduce((acc, item) => {
+                if (!acc[item.category]) acc[item.category] = [];
+                acc[item.category].push(item);
+                return acc;
+            }, {});
+
+            // 渲染左侧栏和右侧内容
+            let isFirst = true;
+            for (const category in grouped) {
+                const catId = 'cat-' + category.replace(/\s+/g, '-');
+                
+                // 左侧导航
+                sidebar.innerHTML += `<a href="#${catId}" class="hub-nav-link ${isFirst ? 'active' : ''}">${category}</a>`;
+                
+                // 右侧区块
+                let cardsHtml = '';
+                grouped[category].forEach(link => {
+                    cardsHtml += `
+                        <a href="${link.url}" target="_blank" class="link-card">
+                            <div class="lc-icon">${link.icon || '🔗'}</div>
+                            <div class="lc-info">
+                                <h3 class="lc-title">${link.title}</h3>
+                                <p class="lc-desc">${link.desc}</p>
+                            </div>
+                        </a>
+                    `;
+                });
+
+                content.innerHTML += `
+                    <div class="hub-section" id="${catId}">
+                        <h2 class="hub-section-title">${category}</h2>
+                        <div class="links-grid">${cardsHtml}</div>
+                    </div>
+                `;
+                isFirst = false;
+            }
+
+            // 滚动监听高亮当前目录
+            const sections = document.querySelectorAll('.hub-section');
+            const navLinks = document.querySelectorAll('.hub-nav-link');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => link.classList.remove('active'));
+                        const activeLink = document.querySelector(`.hub-nav-link[href="#${entry.target.id}"]`);
+                        if (activeLink) activeLink.classList.add('active');
+                    }
+                });
+            }, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
+            sections.forEach(sec => observer.observe(sec));
+        });
+    </script>
+</body>
+</html>
