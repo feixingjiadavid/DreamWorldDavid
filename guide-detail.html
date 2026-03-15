@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="no-referrer">
+    
     <title>攻略详情 | DAVID EXPEDITION</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     
@@ -100,7 +102,7 @@
         }
         @media (max-width: 768px) {
             .breadcrumb-nav { padding: 20px 5vw; font-size: 0.75rem;}
-            .crumb-current { max-width: none; } /* 允许手机上横划看完标题 */
+            .crumb-current { max-width: none; } 
             .container { padding: 20px 5vw 80px 5vw; }
             .guide-title { font-size: 1.8rem; }
             .guide-meta { font-size: 0.85rem; flex-direction: column; gap: 5px; }
@@ -218,7 +220,6 @@
             setTimeout(() => { toast.classList.remove('show'); }, 3000);
         }
 
-        // 回到顶部逻辑
         const backToTopBtn = document.getElementById('backToTop');
         window.addEventListener('scroll', () => {
             if (window.scrollY > 400) {
