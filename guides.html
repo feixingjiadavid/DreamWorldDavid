@@ -96,7 +96,7 @@
             <a href="guides.html" class="active">攻略指南</a>
             <a href="toolkit.html">资料下载</a>
             <a href="radar.html">避坑雷达</a>
-            <a href="consult.html">智能路书</a>
+            <a href="hub.html">极境导航</a>
         </div>
         <button class="mobile-menu-btn" id="menuToggle">☰</button>
     </nav>
@@ -107,7 +107,7 @@
         <a href="guides.html" class="active">攻略指南</a>
         <a href="toolkit.html">资料下载</a>
         <a href="radar.html">避坑雷达</a>
-        <a href="consult.html">智能路书</a>
+        <a href="hub.html">极境导航</a>
     </div>
 
     <div class="breadcrumb-nav">
@@ -140,11 +140,9 @@
 
         const menuToggle = document.getElementById('menuToggle');
         const mobileOverlay = document.getElementById('mobileOverlay');
-        let isMenuOpen = false;
         menuToggle.addEventListener('click', () => {
-            isMenuOpen = !isMenuOpen;
-            if(isMenuOpen) { mobileOverlay.classList.add('active'); menuToggle.innerText = '✕'; document.body.style.overflow = 'hidden';
-            } else { mobileOverlay.classList.remove('active'); menuToggle.innerText = '☰'; document.body.style.overflow = 'auto'; }
+            mobileOverlay.classList.toggle('active');
+            menuToggle.innerText = mobileOverlay.classList.contains('active') ? '✕' : '☰';
         });
 
         document.addEventListener("DOMContentLoaded", function() {
