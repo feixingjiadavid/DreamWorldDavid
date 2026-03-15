@@ -79,6 +79,7 @@
             .title-area h1 { font-size: 2.2rem; }
             .search-wrapper { max-width: 100%; }
             .grid { grid-template-columns: 1fr; gap: 25px; } 
+            .guide-card { border-radius: 6px; }
             .content { padding: 20px; }
             .title { font-size: 1.35rem; }
             .btn-load-more { width: 100%; padding: 12px 0; }
@@ -93,9 +94,9 @@
             <a href="index.html">首页</a>
             <a href="stories.html">旅行故事</a>
             <a href="guides.html" class="active">攻略指南</a>
-            <a href="toolkit.html">干货库</a>
-            <a href="spots.html">极境坐标</a>
-            <a href="consult.html">私人定制</a>
+            <a href="toolkit.html">资料下载</a>
+            <a href="radar.html">避坑雷达</a>
+            <a href="consult.html">智能路书</a>
         </div>
         <button class="mobile-menu-btn" id="menuToggle">☰</button>
     </nav>
@@ -104,9 +105,9 @@
         <a href="index.html">首页</a>
         <a href="stories.html">旅行故事</a>
         <a href="guides.html" class="active">攻略指南</a>
-        <a href="toolkit.html">干货库</a>
-        <a href="spots.html">极境坐标</a>
-        <a href="consult.html">私人定制</a>
+        <a href="toolkit.html">资料下载</a>
+        <a href="radar.html">避坑雷达</a>
+        <a href="consult.html">智能路书</a>
     </div>
 
     <div class="breadcrumb-nav">
@@ -126,7 +127,10 @@
         </header>
 
         <div class="grid" id="guidesGrid"></div>
-        <div class="load-more-container" id="loadMoreBox"><button class="btn-load-more" id="loadMoreBtn">解密更多攻略 ↓</button></div>
+
+        <div class="load-more-container" id="loadMoreBox">
+            <button class="btn-load-more" id="loadMoreBtn">解密更多攻略 ↓</button>
+        </div>
     </main>
     
     <footer class="site-footer">© 2026 戴维的梦想世界.</footer>
