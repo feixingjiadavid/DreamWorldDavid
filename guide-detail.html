@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="referrer" content="no-referrer">
     
-    <title>攻略详情 | DAVID EXPEDITION</title>
+    <title>攻略加载中... | DAVID EXPEDITION</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     
     <script>document.write('<script src="data.js?v=' + new Date().getTime() + '"><\/script>');</script>
@@ -23,7 +23,6 @@
         @keyframes breath { 0% { opacity: 0.3; transform: scale(0.98); } 50% { opacity: 1; transform: scale(1); } 100% { opacity: 0.3; transform: scale(0.98); } }
         body.loaded #init-loader { opacity: 0; visibility: hidden; }
 
-        /* 面包屑导航 (横向滚动优化) */
         .breadcrumb-nav { padding: 30px 6vw; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); font-family: 'Inter', sans-serif; font-size: 0.8rem; letter-spacing: 1px; white-space: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;}
         .breadcrumb-nav::-webkit-scrollbar { display: none; }
         .crumb-link { color: var(--text-dimmed); text-decoration: none; transition: color 0.3s; text-transform: uppercase; flex-shrink: 0;}
@@ -43,7 +42,6 @@
 
         .guide-layout { display: grid; grid-template-columns: 240px 1fr; gap: 60px; align-items: start; }
 
-        /* PC端侧边悬浮目录 */
         .toc-sidebar { position: sticky; top: 40px; padding-right: 20px; }
         .toc-title { font-family: 'Inter'; font-size: 0.75rem; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px; font-weight: 700; border-bottom: 1px solid rgba(212,175,55,0.2); padding-bottom: 10px;}
         .toc-list { list-style: none; padding: 0; margin: 0; border-left: 1px solid rgba(255,255,255,0.05);}
@@ -79,7 +77,6 @@
         #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: #111; border: 1px solid var(--gold); color: var(--gold); padding: 12px 25px; border-radius: 40px; font-size: 0.85rem; letter-spacing: 1px; opacity: 0; transition: var(--transition); z-index: 9999; box-shadow: 0 10px 30px rgba(0,0,0,0.8); pointer-events: none; }
         #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
-        /* 回到顶部按钮 */
         .back-to-top { position: fixed; bottom: 40px; right: 40px; width: 45px; height: 45px; border-radius: 50%; background: rgba(17,17,17,0.8); border: 1px solid rgba(212,175,55,0.3); color: var(--gold); font-size: 1.2rem; cursor: pointer; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: var(--transition); z-index: 99; backdrop-filter: blur(5px);}
         .back-to-top.show { opacity: 1; visibility: visible; transform: translateY(0); }
         .back-to-top:hover { background: var(--gold); color: #000; border-color: var(--gold); }
@@ -87,12 +84,10 @@
         .site-footer { border-top: 1px solid rgba(255,255,255,0.05); padding: 40px 0; text-align: center; font-family: 'Inter'; font-size: 0.8rem; color: var(--text-dimmed); letter-spacing: 2px; }
         #loadingState { text-align: center; color: var(--gold); letter-spacing: 2px; margin-top: 100px; font-family: 'Inter'; display: none;}
 
-        /* 移动端专属适配 */
         @media (max-width: 1024px) {
             .intel-grid { grid-template-columns: 1fr; }
         }
         @media (max-width: 900px) {
-            /* 手机端不再隐藏目录，改为顶部卡片样式 */
             .guide-layout { grid-template-columns: 1fr; gap: 40px; }
             .toc-sidebar { position: relative; top: 0; display: block; background: #111; padding: 25px 20px; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.05); margin-bottom: 10px;}
             .toc-title { border-bottom: none; padding-bottom: 0; margin-bottom: 15px; }
@@ -111,8 +106,6 @@
             .day-title { font-size: 1.3rem; }
             .intro-text { font-size: 1rem; }
             .action-bar { margin-top: 40px; padding-top: 20px; justify-content: space-around; width: 100%;}
-            
-            /* 拇指友好的回到顶部位置 */
             .back-to-top { bottom: 25px; right: 25px; width: 44px; height: 44px; font-size: 1.1rem; box-shadow: 0 4px 15px rgba(0,0,0,0.5);}
         }
     </style>
@@ -258,10 +251,12 @@
                 return;
             }
 
-            // 面包屑渲染
-            document.getElementById('r_breadcrumb_title').innerText = guide.title;
+            // 【极致修复】动态植入真实 SEO 网页标题
+            document.title = `${guide.title} | DAVID EXPEDITION`;
 
+            document.getElementById('r_breadcrumb_title').innerText = guide.title;
             document.getElementById('r_title').innerHTML = guide.title.replace('：', '：<br>');
+            
             const displayDate = (guide.trip_date && guide.trip_date.trim() !== '') ? guide.trip_date : guide.date;
             document.getElementById('r_date').innerText = displayDate.replace(/-/g, '.');
             document.getElementById('r_short').innerText = guide.short_desc;
@@ -269,8 +264,16 @@
 
             const mediaBox = document.getElementById('r_media');
             const finalCoverUrl = getFastCdnUrl(guide.cover);
+            
             if (guide.video && guide.video.trim() !== "") {
-                const vid = guide.video.trim();
+                let vid = guide.video.trim();
+                
+                // 【极致修复】防呆设计：智能提取 B站 BV 号
+                if (!vid.endsWith('.mp4')) {
+                    const bvMatch = vid.match(/(BV[a-zA-Z0-9]+)/);
+                    if (bvMatch) vid = bvMatch[1];
+                }
+
                 if (vid.endsWith('.mp4')) {
                     mediaBox.innerHTML = `<video controls poster="${finalCoverUrl}"><source src="${vid}" type="video/mp4"></video>`;
                 } else {
