@@ -2,8 +2,13 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>戴维的梦想世界 | 探险纪实</title>
+    
+    <meta property="og:title" content="戴维的梦想世界 | DAVID EXPEDITION">
+    <meta property="og:description" content="记录这个世界隐秘的B面。硬核干货储备：从签证策略到无人区驾驶指南。">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1476610182048-b716b8518aae?q=80&w=1200&auto=format&fit=crop">
+    <meta property="og:type" content="website">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -31,14 +36,29 @@
 
         .page-wrapper { padding: 40px 6vw; max-width: 1600px; margin: 0 auto;}
         
-        nav { display: flex; justify-content: space-between; align-items: center; padding-bottom: 20px; font-family: var(--font-zh); font-size: 0.95rem; font-weight: 500; letter-spacing: 1px; border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 20px; }
-        .nav-brand a { color: var(--text-primary); text-decoration: none; font-weight: 500; font-size: 1.2rem; letter-spacing: 4px; transition: color 0.3s ease; }
+        /* 导航栏重构 */
+        nav { display: flex; justify-content: space-between; align-items: center; padding-bottom: 20px; font-family: var(--font-zh); font-size: 0.95rem; font-weight: 500; letter-spacing: 1px; border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 20px; position: relative; z-index: 100;}
+        .nav-brand a { color: var(--text-primary); text-decoration: none; font-weight: 500; font-size: 1.2rem; letter-spacing: 4px; transition: color 0.3s ease; position: relative; z-index: 101;}
         .nav-brand a:hover { color: var(--gold); } 
         
         .nav-links { display: flex; gap: 50px; align-items: center; font-family: var(--font-zh); font-size: 0.95rem;}
         .nav-links a { color: var(--text-dimmed); text-decoration: none; position: relative; padding-bottom: 6px; transition: color 0.3s ease; letter-spacing: 1px; white-space: nowrap;}
         .nav-links a:hover, .nav-links a.active { color: var(--text-primary); }
         .nav-links a.active::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--text-primary); }
+
+        /* 移动端汉堡按钮 */
+        .mobile-menu-btn { display: none; background: transparent; border: none; color: #fff; font-size: 1.8rem; cursor: pointer; z-index: 101; position: relative; width: 40px; height: 40px; }
+        
+        /* 移动端全屏菜单遮罩 */
+        .mobile-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(5,5,5,0.98); backdrop-filter: blur(15px); z-index: 100; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: var(--transition-smooth); }
+        .mobile-overlay.active { opacity: 1; visibility: visible; }
+        .mobile-overlay a { color: #fff; text-decoration: none; font-size: 2rem; font-weight: 700; letter-spacing: 4px; margin: 20px 0; opacity: 0; transform: translateY(20px); transition: var(--transition-smooth); }
+        .mobile-overlay.active a { opacity: 1; transform: translateY(0); }
+        .mobile-overlay a:nth-child(1) { transition-delay: 0.1s; }
+        .mobile-overlay a:nth-child(2) { transition-delay: 0.2s; }
+        .mobile-overlay a:nth-child(3) { transition-delay: 0.3s; }
+        .mobile-overlay a:nth-child(4) { transition-delay: 0.4s; }
+        .mobile-overlay a.active { color: var(--gold); }
 
         .teaser-strip { position: relative; display: flex; align-items: center; width: 100%; height: 100px; border-radius: var(--radius); overflow: hidden; margin-bottom: 30px; text-decoration: none; color: var(--text-primary); border: 1px solid rgba(255,255,255,0.05); background: #111; transition: var(--transition-smooth); }
         .teaser-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.2; filter: grayscale(100%); transition: all 1.2s ease; z-index: 0; pointer-events: none;}
@@ -85,9 +105,6 @@
 
         .site-footer { background-color: #0A0A0A; border-top: 1px solid rgba(255,255,255,0.03); padding: 40px 5vw; margin-top: 40px; text-align: center; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-dimmed); text-transform: uppercase; letter-spacing: 2px; }
 
-        /* =========================================
-           移动端终极奢华适配 (完全不影响 PC)
-           ========================================= */
         @media (max-width: 1024px) {
             .philosophy-section { grid-template-columns: 1fr; gap: 40px; }
             .video-grid { grid-template-columns: 1fr; }
@@ -95,13 +112,12 @@
         @media (max-width: 768px) {
             .page-wrapper { padding: 25px 20px; }
             
-            /* 1. 丝滑滚动导航 */
-            nav { flex-direction: column; align-items: flex-start; gap: 15px; padding-bottom: 15px; border-bottom: none; }
+            /* 移动端汉堡导航替换 */
+            nav { padding-bottom: 15px; border-bottom: none; }
+            .nav-links { display: none; /* 彻底隐藏横向滑动的丑陋菜单 */ }
+            .mobile-menu-btn { display: block; }
             .nav-brand a { font-size: 1.1rem; letter-spacing: 2px; }
-            .nav-links { width: 100%; overflow-x: auto; padding-bottom: 5px; gap: 20px; border-bottom: 1px solid rgba(255,255,255,0.05); justify-content: flex-start;}
-            .nav-links::-webkit-scrollbar { display: none; }
             
-            /* 2. 横幅高级感：解除固定高度，垂直完美居中，不再挤压 */
             .teaser-strip { height: auto; min-height: 110px; padding: 20px 0; border-radius: 6px; }
             .teaser-content { flex-direction: column; align-items: flex-start; justify-content: center; gap: 12px; padding: 0 20px; }
             .teaser-left { flex-direction: column; align-items: flex-start; gap: 8px; margin-bottom: 0;}
@@ -109,14 +125,12 @@
             .teaser-title { font-size: 1.3rem; letter-spacing: 1px; }
             .teaser-meta { align-self: flex-start; font-size: 0.75rem; letter-spacing: 1px; opacity: 0.8;}
 
-            /* 3. 宣言区史诗级修复：防切割、去间隙，极致阅读感 */
             .philosophy-section { margin: 10px 0 40px 0; gap: 20px; grid-template-columns: 1fr;}
             .philosophy-statement { font-size: 1.7rem; line-height: 1.4; letter-spacing: 0px; text-align: left; word-break: normal; }
             .philosophy-desc { font-size: 0.95rem; text-align: left; line-height: 1.7; color: #999; }
             .philosophy-signature { font-size: 1.1rem; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.05);}
             .philosophy-signature span { font-size: 0.8rem; }
 
-            /* 4. 卡片区域收缩内边距，图显得更大 */
             .category-section { margin-bottom: 40px; padding-top: 20px; }
             .section-header { flex-direction: column; gap: 5px; margin-bottom: 20px; }
             .section-title-zh { font-size: 1.4rem; }
@@ -147,14 +161,22 @@
 
     <div class="page-wrapper">
         <nav>
-            <div class="nav-brand"><a href="index.html">欢迎来到戴维的梦想世界</a></div>
+            <div class="nav-brand"><a href="index.html">戴维的梦想世界</a></div>
             <div class="nav-links">
                 <a href="index.html" class="active">首页</a>
                 <a href="stories.html">旅行故事</a>
                 <a href="guides.html">攻略指南</a>
                 <a href="contact.html">合作联系</a>
             </div>
+            <button class="mobile-menu-btn" id="menuToggle">☰</button>
         </nav>
+
+        <div class="mobile-overlay" id="mobileOverlay">
+            <a href="index.html" class="active">HOME / 首页</a>
+            <a href="stories.html">STORIES / 旅行故事</a>
+            <a href="guides.html">GUIDES / 攻略指南</a>
+            <a href="contact.html">CONTACT / 合作</a>
+        </div>
 
         <a href="stories.html" class="teaser-strip">
             <img src="https://images.unsplash.com/photo-1476610182048-b716b8518aae?q=80&w=2000&auto=format&fit=crop" class="teaser-bg" id="heroBannerImg" alt="Banner">
@@ -208,6 +230,24 @@
             return url;
         }
 
+        // 移动端菜单逻辑
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileOverlay = document.getElementById('mobileOverlay');
+        let isMenuOpen = false;
+
+        menuToggle.addEventListener('click', () => {
+            isMenuOpen = !isMenuOpen;
+            if(isMenuOpen) {
+                mobileOverlay.classList.add('active');
+                menuToggle.innerText = '✕';
+                document.body.style.overflow = 'hidden'; // 防止背景滚动
+            } else {
+                mobileOverlay.classList.remove('active');
+                menuToggle.innerText = '☰';
+                document.body.style.overflow = 'auto';
+            }
+        });
+
         document.addEventListener("DOMContentLoaded", function() {
             const loaderTimeout = setTimeout(() => { document.body.classList.add('loaded'); }, 2500);
             function removeLoader() { clearTimeout(loaderTimeout); setTimeout(() => { document.body.classList.add('loaded'); }, 300); }
@@ -252,9 +292,11 @@
                         const playIconHtml = hasVideo ? `<div class="play-icon"></div>` : '';
                         const tagClass = item.bilibili_bvid ? 'tag-story' : 'tag-guide';
                         const targetUrl = item.paragraphs ? 'story-detail.html' : 'guide-detail.html';
+                        
+                        // 强制引入 loading="lazy" 解决性能刺客问题
                         grid.innerHTML += `
                             <a href="${targetUrl}?id=${item.id}" class="video-card">
-                                <img src="${getFastCdnUrl(item.cover)}" class="card-img" alt="${item.title}">
+                                <img src="${getFastCdnUrl(item.cover)}" class="card-img" alt="${item.title}" loading="lazy">
                                 <div class="card-overlay"></div>
                                 ${playIconHtml}
                                 <div class="card-content">
