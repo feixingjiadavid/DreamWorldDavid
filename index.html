@@ -10,26 +10,20 @@
     <meta property="og:image" content="https://images.unsplash.com/photo-1476610182048-b716b8518aae?q=80&w=1200&auto=format&fit=crop">
     <meta property="og:type" content="website">
     
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&family=JetBrains+Mono:wght@100;300;400&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-    
     <script>document.write('<script src="data.js?v=' + new Date().getTime() + '"><\/script>');</script>
 
     <style>
         :root {
             --bg-base: #050505; --text-primary: #FFFFFF; --text-dimmed: #888888;
-            --font-display: 'Inter', sans-serif; --font-mono: 'JetBrains Mono', monospace;
-            --font-zh: 'Noto Sans SC', sans-serif; --radius: 8px; 
-            --transition-smooth: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            --gold: #D4AF37;
+            --font-zh: 'Noto Sans SC', sans-serif; --font-mono: 'JetBrains Mono', monospace;
+            --gold: #D4AF37; --radius: 8px; --transition-smooth: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
         html { scroll-behavior: smooth; }
         body { background-color: var(--bg-base); color: var(--text-primary); font-family: var(--font-zh); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
         
-        #init-loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--bg-base); z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.8s ease, visibility 0.8s ease; }
+        #init-loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--bg-base); z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.4s ease, visibility 0.4s ease; }
         .loader-brand { font-family: var(--font-zh); font-size: 1.2rem; font-weight: 700; letter-spacing: 4px; color: var(--gold); animation: breath 2s infinite ease-in-out;}
         @keyframes breath { 0% { opacity: 0.3; transform: scale(0.98); } 50% { opacity: 1; transform: scale(1); } 100% { opacity: 0.3; transform: scale(0.98); } }
         body.loaded #init-loader { opacity: 0; visibility: hidden; }
@@ -103,24 +97,27 @@
         .btn-view-more { display: inline-block; padding: 14px 35px; background: transparent; border: 1px solid rgba(255,255,255,0.2); color: var(--text-primary); font-family: var(--font-zh); font-size: 0.95rem; font-weight: 500; letter-spacing: 2px; border-radius: 40px; text-decoration: none; transition: all 0.3s ease; }
         .btn-view-more:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-3px); }
 
-        /* 核心重构：底部极简联系区块 */
-        .footer-contact-section { margin-top: 100px; padding: 80px 6vw; background: #0A0A0A; border-radius: 20px; border: 1px solid rgba(255,255,255,0.03); display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; align-items: center;}
-        .fc-title { font-size: 3rem; font-weight: 900; margin-bottom: 30px; letter-spacing: 2px; color: #fff;}
-        .fc-email { font-family: var(--font-mono); font-size: 1.5rem; color: var(--gold); text-decoration: none; border-bottom: 1px dashed var(--gold); padding-bottom: 5px; transition: 0.3s; word-break: break-all;}
+        /* 核心修复：防折行的大气联系版块 */
+        .footer-contact-section { margin-top: 100px; padding: 60px 6vw; background: #0A0A0A; border-radius: 20px; border: 1px solid rgba(255,255,255,0.03); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 40px;}
+        .fc-left { display: flex; flex-direction: column; gap: 15px;}
+        .fc-title { font-size: 2.5rem; font-weight: 900; margin: 0; letter-spacing: 2px; color: #fff;}
+        .fc-email { font-family: var(--font-mono); font-size: 1.4rem; color: var(--gold); text-decoration: none; border-bottom: 1px dashed var(--gold); padding-bottom: 5px; transition: 0.3s; width: max-content;}
         .fc-email:hover { color: #fff; border-color: #fff;}
         
-        .qr-row { display: flex; gap: 30px; flex-wrap: wrap; justify-content: flex-end;}
-        .qr-item { text-align: center; font-size: 0.85rem; color: #888; letter-spacing: 2px; text-transform: uppercase; font-weight: 700;}
-        /* 二维码史诗级放大：200px */
-        .qr-box { width: 200px; height: 200px; background: #111; border-radius: 12px; margin-bottom: 15px; padding: 12px; border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: center; align-items: center;}
+        .qr-row { display: flex; gap: 20px; align-items: flex-end; flex-wrap: nowrap;} /* 强制不换行 */
+        .qr-item { display: flex; flex-direction: column; align-items: center; gap: 12px;}
+        .qr-label { font-size: 0.75rem; color: #666; letter-spacing: 2px; text-transform: uppercase; font-weight: 700;}
+        /* 尺寸放大到 160px，这是保证 3 个码在各种屏幕不换行的黄金比例 */
+        .qr-box { width: 160px; height: 160px; background: #111; border-radius: 12px; padding: 12px; border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: center; align-items: center;}
         .qr-box img { width: 100%; height: 100%; object-fit: contain; border-radius: 6px;}
 
-        .site-footer { padding: 40px 5vw; margin-top: 40px; text-align: center; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-dimmed); text-transform: uppercase; letter-spacing: 2px; border-top: 1px solid rgba(255,255,255,0.05);}
+        .site-footer { border-top: 1px solid rgba(255,255,255,0.05); padding: 40px 0; text-align: center; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-dimmed); text-transform: uppercase; letter-spacing: 2px; margin-top: 40px;}
 
         @media (max-width: 1024px) {
-            .philosophy-section, .footer-contact-section { grid-template-columns: 1fr; gap: 40px; text-align: center;}
-            .qr-row { justify-content: center; }
             .video-grid { grid-template-columns: 1fr; }
+            .footer-contact-section { flex-direction: column; text-align: center; align-items: center;}
+            .fc-left { align-items: center;}
+            .qr-box { width: 140px; height: 140px;}
         }
         @media (max-width: 768px) {
             .page-wrapper { padding: 25px 20px; }
@@ -139,7 +136,7 @@
             .live-status-bar { flex-direction: column; align-items: flex-start; gap: 8px; padding: 12px 20px; border-radius: 12px;} 
             .status-location { margin-left: 0; border-left: none; padding-left: 20px; }
 
-            .philosophy-section { margin: 10px 0 40px 0; gap: 20px; grid-template-columns: 1fr; text-align: left;}
+            .philosophy-section { margin: 10px 0 40px 0; gap: 20px; grid-template-columns: 1fr;}
             .philosophy-statement { font-size: 1.7rem; line-height: 1.4; letter-spacing: 0px; text-align: left; word-break: normal; }
             .philosophy-desc { font-size: 0.95rem; text-align: left; line-height: 1.7; color: #999; }
             .philosophy-signature { font-size: 1.1rem; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.05);}
@@ -159,12 +156,12 @@
             
             .btn-view-more { padding: 12px 20px; font-size: 0.85rem; width: 100%; text-align: center; border-radius: 30px;}
 
-            /* 手机端二维码尺寸适配 */
-            .footer-contact-section { padding: 50px 20px; margin-top: 60px; grid-template-columns: 1fr; gap: 40px; text-align: center;}
-            .fc-title { font-size: 2rem; margin-bottom: 20px;}
+            /* 手机端二维码也尽可能保持一行或紧凑 */
+            .footer-contact-section { padding: 50px 20px; margin-top: 60px; }
+            .fc-title { font-size: 2rem;}
             .fc-email { font-size: 1.2rem; }
-            .qr-row { justify-content: center; gap: 20px;}
-            .qr-box { width: 140px; height: 140px; }
+            .qr-row { gap: 15px; flex-wrap: wrap; justify-content: center;}
+            .qr-box { width: 120px; height: 120px; }
         }
     </style>
 
@@ -178,7 +175,7 @@
 </head>
 <body>
 
-    <div id="init-loader"><div class="loader-brand">戴维的梦想世界</div></div>
+    <div id="init-loader"><div class="loader-brand">欢迎来到戴维的梦想世界</div></div>
 
     <div class="page-wrapper">
         <nav>
@@ -188,19 +185,19 @@
                 <a href="stories.html">旅行故事</a>
                 <a href="guides.html">攻略指南</a>
                 <a href="toolkit.html">干货库</a>
-                <a href="gear.html">装备库</a>
+                <a href="gear.html">探险装备</a>
                 <a href="consult.html">私人定制</a>
             </div>
             <button class="mobile-menu-btn" id="menuToggle">☰</button>
         </nav>
 
         <div class="mobile-overlay" id="mobileOverlay">
-            <a href="index.html" class="active">首页</a>
-            <a href="stories.html">旅行故事</a>
-            <a href="guides.html">攻略指南</a>
-            <a href="toolkit.html">干货库</a>
-            <a href="gear.html">装备库</a>
-            <a href="consult.html">私人定制</a>
+            <a href="index.html" class="active">HOME / 首页</a>
+            <a href="stories.html">STORIES / 旅行故事</a>
+            <a href="guides.html">GUIDES / 攻略指南</a>
+            <a href="toolkit.html">TOOLKIT / 干货库</a>
+            <a href="gear.html">GEAR / 探险装备</a>
+            <a href="consult.html">BESPOKE / 私人定制</a>
         </div>
 
         <a href="stories.html" class="teaser-strip">
@@ -223,13 +220,13 @@
                     <span class="status-location">📍 NEXT DROP: 极境深处</span>
                 </div>
 
-                <h1 class="philosophy-statement" id="renderDeclare">记录这个世界隐秘的<span class="highlight">B面</span></h1>
+                <h1 class="philosophy-statement" id="renderDeclare">世界不缺走马观花的打卡，<br>我用珍贵的<span class="highlight">年假</span>逃离日常，<br>去记录这个世界隐秘的<span class="highlight no-wrap">B面</span></h1>
             </div>
             <div class="philosophy-body">
-                <p class="philosophy-desc" id="renderBio">“互联网大厂打工人，用年假去拍世界的B面”——这是我的真实身份，也是创作的底色。在这里，我将用真实的镜头和纯粹的文字，将极境最原本的故事带回现实。</p>
+                <p class="philosophy-desc" id="renderBio">“互联网大厂打工人，用年假去拍世界的B面”——这是我的真实身份，也是创作的底色。作为一名冷门目的地的记录者，我用心讲述每一次旅程，拒绝平庸的叙事逻辑。无论是法罗群岛的极夜风暴，还是冰岛的无人区冰川，在这里，我将用真实的镜头和纯粹的文字，将极境最原本的故事带回现实。</p>
                 <div class="philosophy-signature">
                     <div id="renderName" style="display:inline;">DAVID.</div>
-                    <span id="renderTags">// 记录者</span>
+                    <span id="renderTags">// 冷门目的地记录者</span>
                 </div>
             </div>
         </section>
@@ -253,14 +250,23 @@
         </div>
 
         <section class="footer-contact-section">
-            <div>
+            <div class="fc-left">
                 <h2 class="fc-title">联系我们</h2>
                 <a href="#" class="fc-email" id="renderEmail">Awaiting Database...</a>
             </div>
             <div class="qr-row">
-                <div class="qr-item"><div class="qr-box"><img src="" id="qrXhs" style="display:none;"></div>小红书</div>
-                <div class="qr-item"><div class="qr-box"><img src="" id="qrBili" style="display:none;"></div>BILIBILI</div>
-                <div class="qr-item"><div class="qr-box"><img src="" id="qrDouyin" style="display:none;"></div>抖音</div>
+                <div class="qr-item">
+                    <div class="qr-box"><img src="https://images.unsplash.com/photo-1520106212299-d99c443e4568?q=80&w=400" id="qrXhs" style="display:block;"></div>
+                    <span class="qr-label">小红书</span>
+                </div>
+                <div class="qr-item">
+                    <div class="qr-box"><img src="https://images.unsplash.com/photo-1510798831971-661eb04b3739?q=80&w=400" id="qrBili" style="display:block;"></div>
+                    <span class="qr-label">Bilibili</span>
+                </div>
+                <div class="qr-item">
+                    <div class="qr-box"><img src="https://images.unsplash.com/photo-1522031309322-68b321a30896?q=80&w=400" id="qrDouyin" style="display:block;"></div>
+                    <span class="qr-label">抖音</span>
+                </div>
             </div>
         </section>
     </div>
@@ -314,9 +320,9 @@
 
                 if(g.email) { const eEl = document.getElementById('renderEmail'); eEl.innerText = g.email; eEl.href = `mailto:${g.email}`; }
                 
-                if(g.qrXhs) { const i = document.getElementById('qrXhs'); i.src = getFastCdnUrl(g.qrXhs); i.style.display = 'block'; }
-                if(g.qrBili) { const i = document.getElementById('qrBili'); i.src = getFastCdnUrl(g.qrBili); i.style.display = 'block'; }
-                if(g.qrDouyin) { const i = document.getElementById('qrDouyin'); i.src = getFastCdnUrl(g.qrDouyin); i.style.display = 'block'; }
+                if(g.qrXhs) { document.getElementById('qrXhs').src = getFastCdnUrl(g.qrXhs); }
+                if(g.qrBili) { document.getElementById('qrBili').src = getFastCdnUrl(g.qrBili); }
+                if(g.qrDouyin) { document.getElementById('qrDouyin').src = getFastCdnUrl(g.qrDouyin); }
             }
 
             function getFeaturedItems(allArray, featId1, featId2) {
