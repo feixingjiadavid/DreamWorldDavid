@@ -96,24 +96,22 @@
             <a href="toolkit.html">干货库</a>
             <a href="gear.html">装备库</a>
             <a href="consult.html" class="active">私人定制</a>
-            <a href="contact.html">合作联系</a>
         </div>
         <button class="mobile-menu-btn" id="menuToggle">☰</button>
     </nav>
     
     <div class="mobile-overlay" id="mobileOverlay">
-        <a href="index.html">HOME / 首页</a>
-        <a href="stories.html">STORIES / 旅行故事</a>
-        <a href="guides.html">GUIDES / 攻略指南</a>
-        <a href="toolkit.html">TOOLKIT / 干货库</a>
-        <a href="gear.html">GEAR / 装备库</a>
-        <a href="consult.html" class="active">BESPOKE / 私人定制</a>
-        <a href="contact.html">CONTACT / 合作联系</a>
+        <a href="index.html">首页</a>
+        <a href="stories.html">旅行故事</a>
+        <a href="guides.html">攻略指南</a>
+        <a href="toolkit.html">干货库</a>
+        <a href="gear.html">装备库</a>
+        <a href="consult.html" class="active">私人定制</a>
     </div>
 
     <div class="breadcrumb-nav">
-        <a href="index.html" class="crumb-link">Home</a><span class="crumb-separator">/</span>
-        <span class="crumb-current">Bespoke Consult</span>
+        <a href="index.html" class="crumb-link">首页</a><span class="crumb-separator">/</span>
+        <span class="crumb-current">私人定制</span>
     </div>
 
     <main class="container">
@@ -185,21 +183,19 @@
             } else { mobileOverlay.classList.remove('active'); menuToggle.innerText = '☰'; document.body.style.overflow = 'auto'; }
         });
 
-        // 核心表单交互引擎 (无刷新异步提交)
         const form = document.getElementById('bespokeForm');
         const submitBtn = document.getElementById('submitBtn');
         const statusMsg = document.getElementById('formStatus');
 
-        // 👉 TODO: 这里需要替换为你申请的隐形 API 端点
-        // 获取方式：访问 https://formspree.io/ 或 https://web3forms.com/ 免费获取一个 Endpoint URL
-        const API_ENDPOINT = "https://formspree.io/f/YOUR_ENDPOINT_HERE"; 
+        // 核心：已无缝替换为你提供的 Formspree 真实端点
+        const API_ENDPOINT = "https://formspree.io/f/xgonlznl"; 
 
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
             
             submitBtn.disabled = true;
             submitBtn.innerText = "⏳ 正在投递至主理人信箱...";
-            statusMsg.className = "status-msg"; // 重置样式
+            statusMsg.className = "status-msg"; 
 
             const formData = new FormData(form);
 
@@ -219,7 +215,6 @@
                     throw new Error("Network response was not ok.");
                 }
             } catch (error) {
-                // 如果你还没填 Endpoint，或者网络报错，会走到这里
                 console.error(error);
                 statusMsg.innerText = "⚠️ 接口尚未配置就绪，或网络出现波动。目前请直接通过小红书私信联系。";
                 statusMsg.classList.add('status-error');
