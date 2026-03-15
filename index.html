@@ -30,34 +30,34 @@
         body { background-color: var(--bg-base); color: var(--text-primary); font-family: var(--font-zh); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
         
         #init-loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--bg-base); z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.8s ease, visibility 0.8s ease; }
-        .loader-brand { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; letter-spacing: 6px; color: var(--gold); animation: breath 2s infinite ease-in-out; text-transform: uppercase;}
+        .loader-brand { font-family: var(--font-zh); font-size: 1.2rem; font-weight: 700; letter-spacing: 4px; color: var(--gold); animation: breath 2s infinite ease-in-out;}
         @keyframes breath { 0% { opacity: 0.3; transform: scale(0.98); } 50% { opacity: 1; transform: scale(1); } 100% { opacity: 0.3; transform: scale(0.98); } }
         body.loaded #init-loader { opacity: 0; visibility: hidden; }
 
         .page-wrapper { padding: 40px 6vw; max-width: 1600px; margin: 0 auto;}
         
-        /* 导航栏重构 */
+        /* 导航栏瘦身：统一6大全矩阵 */
         nav { display: flex; justify-content: space-between; align-items: center; padding-bottom: 20px; font-family: var(--font-zh); font-size: 0.95rem; font-weight: 500; letter-spacing: 1px; border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 20px; position: relative; z-index: 100;}
-        .nav-brand a { color: var(--text-primary); text-decoration: none; font-weight: 500; font-size: 1.2rem; letter-spacing: 4px; transition: color 0.3s ease; position: relative; z-index: 101;}
+        .nav-brand a { color: var(--text-primary); text-decoration: none; font-weight: 700; font-size: 1.2rem; letter-spacing: 2px; transition: color 0.3s ease; position: relative; z-index: 101;}
         .nav-brand a:hover { color: var(--gold); } 
         
-        .nav-links { display: flex; gap: 50px; align-items: center; font-family: var(--font-zh); font-size: 0.95rem;}
+        .nav-links { display: flex; gap: 40px; align-items: center; font-family: var(--font-zh); font-size: 0.95rem;}
         .nav-links a { color: var(--text-dimmed); text-decoration: none; position: relative; padding-bottom: 6px; transition: color 0.3s ease; letter-spacing: 1px; white-space: nowrap;}
         .nav-links a:hover, .nav-links a.active { color: var(--text-primary); }
         .nav-links a.active::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--text-primary); }
 
-        /* 移动端汉堡按钮 */
         .mobile-menu-btn { display: none; background: transparent; border: none; color: #fff; font-size: 1.8rem; cursor: pointer; z-index: 101; position: relative; width: 40px; height: 40px; }
         
-        /* 移动端全屏菜单遮罩 */
         .mobile-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(5,5,5,0.98); backdrop-filter: blur(15px); z-index: 100; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: var(--transition-smooth); }
         .mobile-overlay.active { opacity: 1; visibility: visible; }
-        .mobile-overlay a { color: #fff; text-decoration: none; font-size: 2rem; font-weight: 700; letter-spacing: 4px; margin: 20px 0; opacity: 0; transform: translateY(20px); transition: var(--transition-smooth); }
+        .mobile-overlay a { color: #fff; text-decoration: none; font-size: 2rem; font-weight: 700; letter-spacing: 4px; margin: 15px 0; opacity: 0; transform: translateY(20px); transition: var(--transition-smooth); }
         .mobile-overlay.active a { opacity: 1; transform: translateY(0); }
         .mobile-overlay a:nth-child(1) { transition-delay: 0.1s; }
-        .mobile-overlay a:nth-child(2) { transition-delay: 0.2s; }
-        .mobile-overlay a:nth-child(3) { transition-delay: 0.3s; }
-        .mobile-overlay a:nth-child(4) { transition-delay: 0.4s; }
+        .mobile-overlay a:nth-child(2) { transition-delay: 0.15s; }
+        .mobile-overlay a:nth-child(3) { transition-delay: 0.2s; }
+        .mobile-overlay a:nth-child(4) { transition-delay: 0.25s; }
+        .mobile-overlay a:nth-child(5) { transition-delay: 0.3s; }
+        .mobile-overlay a:nth-child(6) { transition-delay: 0.35s; }
         .mobile-overlay a.active { color: var(--gold); }
 
         .teaser-strip { position: relative; display: flex; align-items: center; width: 100%; height: 100px; border-radius: var(--radius); overflow: hidden; margin-bottom: 30px; text-decoration: none; color: var(--text-primary); border: 1px solid rgba(255,255,255,0.05); background: #111; transition: var(--transition-smooth); }
@@ -69,6 +69,14 @@
         .teaser-tag { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 2px; color: var(--gold); background: rgba(212, 175, 55, 0.1); padding: 4px 10px; border-radius: 4px; white-space: nowrap;}
         .teaser-title { font-size: 1.4rem; font-weight: 700; letter-spacing: 2px; margin: 0; text-shadow: 0 2px 10px rgba(0,0,0,0.8);}
         .teaser-meta { font-family: var(--font-zh); font-size: 0.85rem; color: var(--text-dimmed); letter-spacing: 2px; text-shadow: 0 2px 10px rgba(0,0,0,0.8); }
+
+        /* LIVE STATUS 组件 */
+        .live-status-bar { display: inline-flex; align-items: center; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 8px 20px; border-radius: 40px; margin-bottom: 30px; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 1px;}
+        .status-dot { width: 8px; height: 8px; background: #52c41a; border-radius: 50%; margin-right: 12px; box-shadow: 0 0 10px #52c41a; animation: pulse 2s infinite;}
+        .status-label { color: #888; margin-right: 8px;}
+        .status-text { color: #fff;}
+        .status-location { color: var(--gold); margin-left: 15px; border-left: 1px solid rgba(255,255,255,0.2); padding-left: 15px;}
+        @keyframes pulse { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(82, 196, 26, 0.7); } 70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(82, 196, 26, 0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(82, 196, 26, 0); } }
 
         .philosophy-section { display: grid; grid-template-columns: 1.1fr 1fr; gap: 8vw; margin: 20px 0 60px 0; padding: 20px 0; align-items: start; }
         .philosophy-statement { font-size: clamp(2.2rem, 3.5vw, 4rem); font-weight: 700; line-height: 1.25; letter-spacing: -2px; color: var(--text-primary); margin: 0; word-break: keep-all; }
@@ -103,18 +111,27 @@
         .btn-view-more { display: inline-block; padding: 14px 35px; background: transparent; border: 1px solid rgba(255,255,255,0.2); color: var(--text-primary); font-family: var(--font-zh); font-size: 0.95rem; font-weight: 500; letter-spacing: 2px; border-radius: 40px; text-decoration: none; transition: all 0.3s ease; }
         .btn-view-more:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-3px); }
 
+        /* 底部商务合作区块 */
+        .footer-contact-section { margin-top: 100px; padding: 80px 6vw; background: #080808; border-radius: 20px; border: 1px solid rgba(255,255,255,0.03); display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;}
+        .fc-title { font-size: 2.5rem; font-weight: 900; margin-bottom: 20px; text-transform: uppercase; letter-spacing: -1px;}
+        .fc-email { font-family: var(--font-mono); font-size: 1.4rem; color: var(--gold); text-decoration: none; border-bottom: 1px dashed var(--gold); transition: 0.3s;}
+        .fc-email:hover { color: #fff; border-color: #fff;}
+        .qr-row { display: flex; gap: 30px;}
+        .qr-item { text-align: center; font-size: 0.75rem; color: #555; letter-spacing: 2px; text-transform: uppercase;}
+        .qr-box { width: 100px; height: 100px; background: #111; border-radius: 8px; margin-bottom: 10px; padding: 8px; border: 1px solid rgba(255,255,255,0.05);}
+        .qr-box img { width: 100%; height: 100%; object-fit: contain;}
+
         .site-footer { background-color: #0A0A0A; border-top: 1px solid rgba(255,255,255,0.03); padding: 40px 5vw; margin-top: 40px; text-align: center; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-dimmed); text-transform: uppercase; letter-spacing: 2px; }
 
         @media (max-width: 1024px) {
-            .philosophy-section { grid-template-columns: 1fr; gap: 40px; }
+            .philosophy-section, .footer-contact-section { grid-template-columns: 1fr; gap: 40px; }
             .video-grid { grid-template-columns: 1fr; }
         }
         @media (max-width: 768px) {
             .page-wrapper { padding: 25px 20px; }
             
-            /* 移动端汉堡导航替换 */
             nav { padding-bottom: 15px; border-bottom: none; }
-            .nav-links { display: none; /* 彻底隐藏横向滑动的丑陋菜单 */ }
+            .nav-links { display: none; }
             .mobile-menu-btn { display: block; }
             .nav-brand a { font-size: 1.1rem; letter-spacing: 2px; }
             
@@ -124,6 +141,9 @@
             .teaser-tag { font-size: 0.7rem; padding: 3px 8px; letter-spacing: 1px; }
             .teaser-title { font-size: 1.3rem; letter-spacing: 1px; }
             .teaser-meta { align-self: flex-start; font-size: 0.75rem; letter-spacing: 1px; opacity: 0.8;}
+
+            .live-status-bar { flex-direction: column; align-items: flex-start; gap: 8px; padding: 12px 20px; border-radius: 12px;} 
+            .status-location { margin-left: 0; border-left: none; padding-left: 20px; }
 
             .philosophy-section { margin: 10px 0 40px 0; gap: 20px; grid-template-columns: 1fr;}
             .philosophy-statement { font-size: 1.7rem; line-height: 1.4; letter-spacing: 0px; text-align: left; word-break: normal; }
@@ -144,6 +164,11 @@
             .play-icon::after { font-size: 0.9rem; margin-left: 2px; }
             
             .btn-view-more { padding: 12px 20px; font-size: 0.85rem; width: 100%; text-align: center; border-radius: 30px;}
+
+            .footer-contact-section { padding: 40px 20px; margin-top: 60px; }
+            .fc-title { font-size: 1.8rem; }
+            .fc-email { font-size: 1.1rem; }
+            .qr-row { justify-content: center; flex-wrap: wrap;}
         }
     </style>
 
@@ -157,7 +182,7 @@
 </head>
 <body>
 
-    <div id="init-loader"><div class="loader-brand">DAVID EXPEDITION</div></div>
+    <div id="init-loader"><div class="loader-brand">戴维的梦想世界</div></div>
 
     <div class="page-wrapper">
         <nav>
@@ -166,16 +191,20 @@
                 <a href="index.html" class="active">首页</a>
                 <a href="stories.html">旅行故事</a>
                 <a href="guides.html">攻略指南</a>
-                <a href="contact.html">合作联系</a>
+                <a href="toolkit.html">干货库</a>
+                <a href="gear.html">装备库</a>
+                <a href="consult.html">私人定制</a>
             </div>
             <button class="mobile-menu-btn" id="menuToggle">☰</button>
         </nav>
 
         <div class="mobile-overlay" id="mobileOverlay">
-            <a href="index.html" class="active">HOME / 首页</a>
-            <a href="stories.html">STORIES / 旅行故事</a>
-            <a href="guides.html">GUIDES / 攻略指南</a>
-            <a href="contact.html">CONTACT / 合作</a>
+            <a href="index.html" class="active">首页</a>
+            <a href="stories.html">旅行故事</a>
+            <a href="guides.html">攻略指南</a>
+            <a href="toolkit.html">干货库</a>
+            <a href="gear.html">装备库</a>
+            <a href="consult.html">私人定制</a>
         </div>
 
         <a href="stories.html" class="teaser-strip">
@@ -191,6 +220,12 @@
 
         <section class="philosophy-section">
             <div class="statement-block">
+                <div class="live-status-bar">
+                    <div class="status-dot"></div>
+                    <span class="status-label">LIVE STATUS:</span>
+                    <span class="status-text">正在筹备 2026 探险计划</span>
+                    <span class="status-location">📍 NEXT DROP: Awaiting...</span>
+                </div>
                 <h1 class="philosophy-statement" id="renderDeclare">世界不缺走马观花的打卡，<br>我用珍贵的<span class="highlight">年假</span>逃离日常，<br>去记录这个世界隐秘的<span class="highlight no-wrap">B面</span></h1>
             </div>
             <div class="philosophy-body">
@@ -219,9 +254,23 @@
             <div class="video-grid" id="guidesGrid"></div>
             <div class="view-more-container"><a href="guides.html" class="btn-view-more">查阅完整攻略知识库 ↗</a></div>
         </div>
+
+        <section class="footer-contact-section">
+            <div>
+                <div style="color: #52c41a; font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 3px; margin-bottom: 15px;">BUSINESS & COLLAB</div>
+                <h2 class="fc-title">商务与合作联系</h2>
+                <p style="color: #666; margin-bottom: 30px; line-height: 1.6;">旅行摄影 / 装备测评 / 目的地宣发 / 商业授权。<br>欢迎品牌方及旅游局发信探讨合作可能。</p>
+                <a href="#" class="fc-email" id="renderEmail">Awaiting Database...</a>
+            </div>
+            <div class="qr-row">
+                <div class="qr-item"><div class="qr-box"><img src="" id="qrXhs" style="display:none;"></div>小红书</div>
+                <div class="qr-item"><div class="qr-box"><img src="" id="qrBili" style="display:none;"></div>Bilibili</div>
+                <div class="qr-item"><div class="qr-box"><img src="" id="qrDouyin" style="display:none;"></div>抖音</div>
+            </div>
+        </section>
     </div>
 
-    <footer class="site-footer" id="renderFooter">© 2026 DAVID EXPEDITION. ALL RIGHTS RESERVED.</footer>
+    <footer class="site-footer" id="renderFooter">© 2026 戴维的梦想世界. ALL RIGHTS RESERVED.</footer>
 
     <script>
         function getFastCdnUrl(url) {
@@ -240,7 +289,7 @@
             if(isMenuOpen) {
                 mobileOverlay.classList.add('active');
                 menuToggle.innerText = '✕';
-                document.body.style.overflow = 'hidden'; // 防止背景滚动
+                document.body.style.overflow = 'hidden';
             } else {
                 mobileOverlay.classList.remove('active');
                 menuToggle.innerText = '☰';
@@ -269,6 +318,12 @@
                 if(g.signatureName && g.signatureName.trim() !== '') document.getElementById('renderName').innerText = g.signatureName;
                 if(g.heroDeclare && g.heroDeclare.trim() !== '') document.getElementById('renderDeclare').innerHTML = parseHighlighting(g.heroDeclare);
                 if(g.bio && g.bio.trim() !== '') document.getElementById('renderBio').innerText = g.bio;
+
+                // 底部联系方式自动渲染
+                if(g.email) { const eEl = document.getElementById('renderEmail'); eEl.innerText = g.email; eEl.href = `mailto:${g.email}`; }
+                if(g.qrXhs) { const i = document.getElementById('qrXhs'); i.src = getFastCdnUrl(g.qrXhs); i.style.display = 'block'; }
+                if(g.qrBili) { const i = document.getElementById('qrBili'); i.src = getFastCdnUrl(g.qrBili); i.style.display = 'block'; }
+                if(g.qrDouyin) { const i = document.getElementById('qrDouyin'); i.src = getFastCdnUrl(g.qrDouyin); i.style.display = 'block'; }
             }
 
             function getFeaturedItems(allArray, featId1, featId2) {
@@ -293,7 +348,6 @@
                         const tagClass = item.bilibili_bvid ? 'tag-story' : 'tag-guide';
                         const targetUrl = item.paragraphs ? 'story-detail.html' : 'guide-detail.html';
                         
-                        // 强制引入 loading="lazy" 解决性能刺客问题
                         grid.innerHTML += `
                             <a href="${targetUrl}?id=${item.id}" class="video-card">
                                 <img src="${getFastCdnUrl(item.cover)}" class="card-img" alt="${item.title}" loading="lazy">
