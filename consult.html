@@ -51,7 +51,6 @@
         .opt-card:hover .opt-body { background: #1a1a1a; color: #ccc;}
         .opt-card input:checked ~ .opt-body { border-color: #38bdf8; background: rgba(56, 189, 248, 0.1); color: #fff;}
 
-        /* 自定义表单嵌入，无缝体验 */
         .direct-form { display: none; width: 100%; border-top: 1px dashed rgba(255,255,255,0.1); margin-top: 30px; padding-top: 30px;}
         .direct-form input { width: 100%; background: #111; border: 1px solid #333; color: #fff; padding: 15px; border-radius: 8px; margin-bottom: 15px; outline: none; transition: 0.3s;}
         .direct-form input:focus { border-color: #38bdf8; }
@@ -116,9 +115,9 @@
             <a href="index.html">首页</a>
             <a href="stories.html">旅行故事</a>
             <a href="guides.html">攻略指南</a>
-            <a href="toolkit.html">干货库</a>
-            <a href="spots.html">极境坐标</a>
-            <a href="consult.html" class="active">私人定制</a>
+            <a href="toolkit.html">资料下载</a>
+            <a href="radar.html">避坑雷达</a>
+            <a href="consult.html" class="active">智能路书</a>
         </div>
         <button class="mobile-menu-btn" id="menuToggle">☰</button>
     </nav>
@@ -126,14 +125,14 @@
         <a href="index.html">首页</a>
         <a href="stories.html">旅行故事</a>
         <a href="guides.html">攻略指南</a>
-        <a href="toolkit.html">干货库</a>
-        <a href="spots.html">极境坐标</a>
-        <a href="consult.html" class="active">私人定制</a>
+        <a href="toolkit.html">资料下载</a>
+        <a href="radar.html">避坑雷达</a>
+        <a href="consult.html" class="active">智能路书</a>
     </div>
 
     <div class="breadcrumb-nav">
         <a href="index.html" class="crumb-link">首页</a><span class="crumb-separator">/</span>
-        <span class="crumb-current">私人定制</span>
+        <span class="crumb-current">智能路书</span>
     </div>
 
     <main class="container">
@@ -172,7 +171,7 @@
                 <div class="direct-form" id="contactFields">
                     <span class="engine-label">4. 接收方式 (CONTACT)</span>
                     <input type="text" name="Name" required placeholder="阁下的称呼...">
-                    <input type="text" name="WeChat" required placeholder="您的微信号/邮箱 (用于接收定制方案)...">
+                    <input type="text" name="WeChat" required placeholder="您的微信号/邮箱 (用于接收高级定制方案)...">
                 </div>
 
                 <button type="submit" class="btn-generate" id="generateBtn" style="margin-top: 15px;">🚀 启动路书演算</button>
@@ -235,7 +234,6 @@
             ]
         };
 
-        // UI 逻辑强化：点击选项后展开输入框
         const form = document.getElementById('bespokeForm');
         const contactFields = document.getElementById('contactFields');
         const generateBtn = document.getElementById('generateBtn');
@@ -253,12 +251,10 @@
             controlPanel.style.display = 'none';
             loaderBox.style.display = 'flex';
 
-            // 1. 并行调用 API 静默发送数据
             const formData = new FormData(form);
             fetch(API_ENDPOINT, { method: 'POST', body: formData, headers: { 'Accept': 'application/json' } })
-            .catch(err => console.error("API投递失败, 但不阻断前台生成", err));
+            .catch(err => console.error("API投递失败", err));
 
-            // 2. 炫酷演渲动画
             setTimeout(() => { document.getElementById('loaderText').innerText = "MATCHING SECRET LOCATIONS..."; }, 800);
             setTimeout(() => { document.getElementById('loaderText').innerText = "GENERATING TIMELINE..."; }, 1600);
 
