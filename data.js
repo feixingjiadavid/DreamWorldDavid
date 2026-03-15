@@ -270,5 +270,20 @@ const dbData = {
   ],
   "radars": [],
   "routes": [],
-  "hubs": []
+  "hubs": [
+    {
+      "id": "hub-1773599094708",
+      "title": "大类: 气象与路况",
+      "date": "2026-03-16",
+      "category": "气象与路况",
+      "links": [
+        {
+          "title": "法罗群岛天气在线",
+          "icon": "🌨",
+          "url": "https://www.faroeislandslive.com/",
+          "desc": "法罗群岛全岛天气及实时画面在线"
+        }
+      ]
+    }
+  ]
 };
