@@ -2,27 +2,231 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#050505">
     <title>私人定制 | 戴维的梦想世界</title>
+    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Noto+Sans+SC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
     <style>
-        body { background: #050505; color: #fff; font-family: 'Noto Sans SC', sans-serif; margin: 0; padding: 0; }
-        .coming-soon-wrapper { height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 0 20px;}
-        .cs-tag { color: #38bdf8; font-family: 'JetBrains Mono', monospace; letter-spacing: 4px; font-size: 0.8rem; margin-bottom: 20px;}
-        .cs-title { font-size: clamp(2rem, 5vw, 4rem); font-weight: 900; margin-bottom: 20px; line-height: 1.1;}
-        .cs-desc { color: #888; max-width: 500px; line-height: 1.6;}
-        .form-placeholder { width: 100%; max-width: 600px; height: 300px; border: 1px dashed rgba(255,255,255,0.2); border-radius: 8px; display: flex; justify-content: center; align-items: center; color: #555; margin-top: 40px; font-family: 'JetBrains Mono'; font-size: 0.8rem;}
+        :root { --bg-base: #050505; --text-primary: #FFFFFF; --text-dimmed: #888888; --gold: #D4AF37; --border: rgba(255,255,255,0.05); --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);}
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg-base); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; -webkit-font-smoothing: antialiased; display: flex; flex-direction: column; min-height: 100vh;}
+
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 30px 6vw; font-size: 0.95rem; font-weight: 500; letter-spacing: 1px; border-bottom: 1px solid var(--border); background: rgba(5,5,5,0.8); backdrop-filter: blur(20px); z-index: 100;}
+        .nav-brand a { color: var(--text-primary); text-decoration: none; font-weight: 700; font-size: 1.2rem; letter-spacing: 2px; transition: color 0.3s ease;}
+        .nav-brand a:hover { color: var(--gold); } 
+        .nav-links { display: flex; gap: 50px; align-items: center; }
+        .nav-links a { color: var(--text-dimmed); text-decoration: none; position: relative; padding-bottom: 6px; transition: color 0.3s ease; letter-spacing: 1px; white-space: nowrap;}
+        .nav-links a:hover, .nav-links a.active { color: var(--text-primary); }
+        .nav-links a.active::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--text-primary); }
+        
+        .mobile-menu-btn { display: none; background: transparent; border: none; color: #fff; font-size: 1.8rem; cursor: pointer; z-index: 101; position: relative; width: 40px; height: 40px; }
+        .mobile-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(5,5,5,0.98); backdrop-filter: blur(15px); z-index: 99; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: var(--transition); }
+        .mobile-overlay.active { opacity: 1; visibility: visible; }
+        .mobile-overlay a { color: #fff; text-decoration: none; font-size: 2rem; font-weight: 700; letter-spacing: 4px; margin: 20px 0; opacity: 0; transform: translateY(20px); transition: var(--transition); }
+        .mobile-overlay.active a { opacity: 1; transform: translateY(0); }
+        .mobile-overlay a.active { color: var(--gold); }
+
+        .breadcrumb-nav { padding: 30px 6vw; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); font-family: 'Inter', sans-serif; font-size: 0.8rem; letter-spacing: 1px;}
+        .crumb-link { color: var(--text-dimmed); text-decoration: none; transition: color 0.3s; text-transform: uppercase;}
+        .crumb-link:hover { color: var(--gold); }
+        .crumb-separator { color: #444; font-size: 0.8rem;}
+        .crumb-current { color: var(--text-primary); text-transform: uppercase;}
+
+        .container { max-width: 900px; margin: 0 auto; padding: 60px 6vw; flex: 1; width: 100%; }
+        
+        .cs-tag { color: #38bdf8; font-family: 'JetBrains Mono', monospace; letter-spacing: 4px; font-size: 0.8rem; margin-bottom: 20px; display: block;}
+        .cs-title { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 900; margin-bottom: 20px; line-height: 1.2; text-transform: uppercase; letter-spacing: -1px; }
+        .cs-desc { color: #888; max-width: 600px; line-height: 1.8; font-size: 1.1rem; margin-bottom: 50px;}
+
+        /* 原生高定表单样式 */
+        .custom-form { background: #0A0A0A; border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 50px; box-shadow: 0 20px 50px rgba(0,0,0,0.5);}
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px;}
+        .form-group { display: flex; flex-direction: column; gap: 10px;}
+        .form-group.full { grid-column: span 2;}
+        
+        label { font-size: 0.85rem; color: #aaa; letter-spacing: 1px; font-weight: 500;}
+        .required::after { content: ' *'; color: #38bdf8;}
+        
+        input[type="text"], input[type="email"], textarea { background: #111; border: 1px solid #222; color: #fff; padding: 16px; border-radius: 6px; outline: none; font-family: inherit; font-size: 1rem; transition: 0.3s;}
+        input:focus, textarea:focus { border-color: #38bdf8; background: #000;}
+        textarea { min-height: 120px; resize: vertical;}
+
+        /* 定制化高级单选框 (卡片式) */
+        .radio-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;}
+        .radio-card { position: relative; display: block; cursor: pointer;}
+        .radio-card input { position: absolute; opacity: 0; cursor: pointer; height: 0; width: 0;}
+        .card-body { border: 1px solid #222; background: #111; padding: 15px 20px; border-radius: 6px; transition: 0.3s; text-align: center; color: #888; font-weight: 500;}
+        .radio-card:hover .card-body { background: #1a1a1a; color: #ccc;}
+        .radio-card input:checked ~ .card-body { border-color: #38bdf8; background: rgba(56, 189, 248, 0.1); color: #38bdf8;}
+
+        .btn-submit { background: #fff; color: #000; border: none; padding: 18px 40px; font-size: 1rem; font-weight: 700; letter-spacing: 2px; border-radius: 6px; cursor: pointer; transition: 0.3s; margin-top: 20px; width: 100%; outline: none;}
+        .btn-submit:hover { background: #38bdf8; transform: translateY(-3px);}
+        .btn-submit:disabled { background: #333; color: #888; cursor: not-allowed; transform: none;}
+
+        /* 发送状态层 */
+        .status-msg { margin-top: 20px; padding: 15px; border-radius: 6px; text-align: center; font-size: 0.9rem; display: none; font-weight: 500;}
+        .status-success { background: rgba(82, 196, 26, 0.1); color: #52c41a; border: 1px solid rgba(82, 196, 26, 0.3); display: block;}
+        .status-error { background: rgba(255, 77, 79, 0.1); color: #ff4d4f; border: 1px solid rgba(255, 77, 79, 0.3); display: block;}
+
+        .site-footer { border-top: 1px solid var(--border); padding: 40px 0; text-align: center; font-family: 'Inter'; font-size: 0.8rem; color: var(--text-dimmed); letter-spacing: 2px; margin-top: auto;}
+
+        @media (max-width: 768px) {
+            nav { padding: 20px 5vw; border-bottom: none; background: var(--bg-base);}
+            .nav-links { display: none; }
+            .mobile-menu-btn { display: block; }
+            .nav-brand a { font-size: 1.1rem; }
+            .breadcrumb-nav { padding: 20px 5vw; font-size: 0.75rem;}
+            .container { padding: 30px 5vw 60px 5vw; }
+            .cs-title { font-size: 2.2rem; }
+            .custom-form { padding: 30px 20px; }
+            .form-row { grid-template-columns: 1fr; gap: 20px;}
+            .radio-group { grid-template-columns: 1fr 1fr; }
+        }
     </style>
 </head>
 <body>
-    <div class="coming-soon-wrapper">
-        <div class="cs-tag">BESPOKE ROUTES // 私人定制</div>
-        <h1 class="cs-title">拒绝平庸的打卡<br>定制你的极境</h1>
-        <p class="cs-desc">冰岛环岛 / 罗弗敦摄影 / 申根国深度游。智能路线咨询引擎即将上线，目前如需咨询，请通过小红书私信。</p>
-        
-        <div class="form-placeholder">
-            [ 智能问卷引擎接口预留位 (Awaiting Form Engine Embed) ]
+    <nav>
+        <div class="nav-brand"><a href="index.html">戴维的梦想世界</a></div>
+        <div class="nav-links">
+            <a href="index.html">首页</a>
+            <a href="stories.html">旅行故事</a>
+            <a href="guides.html">攻略指南</a>
+            <a href="toolkit.html">干货库</a>
+            <a href="gear.html">装备库</a>
+            <a href="consult.html" class="active">私人定制</a>
+            <a href="contact.html">合作联系</a>
         </div>
+        <button class="mobile-menu-btn" id="menuToggle">☰</button>
+    </nav>
+    
+    <div class="mobile-overlay" id="mobileOverlay">
+        <a href="index.html">HOME / 首页</a>
+        <a href="stories.html">STORIES / 旅行故事</a>
+        <a href="guides.html">GUIDES / 攻略指南</a>
+        <a href="toolkit.html">TOOLKIT / 干货库</a>
+        <a href="gear.html">GEAR / 装备库</a>
+        <a href="consult.html" class="active">BESPOKE / 私人定制</a>
+        <a href="contact.html">CONTACT / 合作联系</a>
     </div>
+
+    <div class="breadcrumb-nav">
+        <a href="index.html" class="crumb-link">Home</a><span class="crumb-separator">/</span>
+        <span class="crumb-current">Bespoke Consult</span>
+    </div>
+
+    <main class="container">
+        <span class="cs-tag">BESPOKE ROUTES // 路线定制</span>
+        <h1 class="cs-title">拒绝走马观花<br>构建你的极境</h1>
+        <p class="cs-desc">填写您的探险偏好。我将基于实地勘测的非公开数据库，为您提供避开人群的深旅行路线框架与高定排雷建议。</p>
+        
+        <form class="custom-form" id="bespokeForm">
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="required">如何称呼您 (Name)</label>
+                    <input type="text" name="Name" required placeholder="阁下的称呼...">
+                </div>
+                <div class="form-group">
+                    <label class="required">微信号 (WeChat)</label>
+                    <input type="text" name="WeChat" required placeholder="用于接收方案...">
+                </div>
+            </div>
+
+            <div class="form-group full" style="margin-bottom: 30px;">
+                <label class="required">向往的极境 (Destination)</label>
+                <div class="radio-group">
+                    <label class="radio-card"><input type="radio" name="Destination" value="冰岛" required><div class="card-body">🇮🇸 冰岛环岛</div></label>
+                    <label class="radio-card"><input type="radio" name="Destination" value="挪威"><div class="card-body">🇳🇴 挪威峡湾</div></label>
+                    <label class="radio-card"><input type="radio" name="Destination" value="法罗群岛"><div class="card-body">🇫🇴 法罗群岛</div></label>
+                    <label class="radio-card"><input type="radio" name="Destination" value="申根国深度游"><div class="card-body">🇪🇺 欧洲申根国</div></label>
+                </div>
+            </div>
+
+            <div class="form-group full" style="margin-bottom: 30px;">
+                <label class="required">预计可用天数 (Duration)</label>
+                <div class="radio-group">
+                    <label class="radio-card"><input type="radio" name="Duration" value="5天以内" required><div class="card-body">5天内</div></label>
+                    <label class="radio-card"><input type="radio" name="Duration" value="7天左右"><div class="card-body">7天左右</div></label>
+                    <label class="radio-card"><input type="radio" name="Duration" value="10天左右"><div class="card-body">10天左右</div></label>
+                    <label class="radio-card"><input type="radio" name="Duration" value="14天以上"><div class="card-body">14天+</div></label>
+                </div>
+            </div>
+
+            <div class="form-group full" style="margin-bottom: 30px;">
+                <label class="required">旅行风格偏好 (Style)</label>
+                <div class="radio-group">
+                    <label class="radio-card"><input type="radio" name="Style" value="硬核自驾" required><div class="card-body">🚙 硬核自驾</div></label>
+                    <label class="radio-card"><input type="radio" name="Style" value="风光摄影"><div class="card-body">📷 风光摄影</div></label>
+                    <label class="radio-card"><input type="radio" name="Style" value="小众深度"><div class="card-body">🗺️ 小众深度</div></label>
+                    <label class="radio-card"><input type="radio" name="Style" value="松弛度假"><div class="card-body">☕ 松弛度假</div></label>
+                </div>
+            </div>
+
+            <div class="form-group full">
+                <label>更多特定需求 (Optional Requirements)</label>
+                <textarea name="Details" placeholder="例如：是否需要指导无人机航拍机位？几月出发？是否有特定想去的地标..."></textarea>
+            </div>
+
+            <button type="submit" class="btn-submit" id="submitBtn">提交探险需求</button>
+            <div class="status-msg" id="formStatus"></div>
+        </form>
+    </main>
+
+    <footer class="site-footer">© 2026 戴维的梦想世界.</footer>
+
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileOverlay = document.getElementById('mobileOverlay');
+        let isMenuOpen = false;
+        menuToggle.addEventListener('click', () => {
+            isMenuOpen = !isMenuOpen;
+            if(isMenuOpen) { mobileOverlay.classList.add('active'); menuToggle.innerText = '✕'; document.body.style.overflow = 'hidden';
+            } else { mobileOverlay.classList.remove('active'); menuToggle.innerText = '☰'; document.body.style.overflow = 'auto'; }
+        });
+
+        // 核心表单交互引擎 (无刷新异步提交)
+        const form = document.getElementById('bespokeForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const statusMsg = document.getElementById('formStatus');
+
+        // 👉 TODO: 这里需要替换为你申请的隐形 API 端点
+        // 获取方式：访问 https://formspree.io/ 或 https://web3forms.com/ 免费获取一个 Endpoint URL
+        const API_ENDPOINT = "https://formspree.io/f/YOUR_ENDPOINT_HERE"; 
+
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            submitBtn.disabled = true;
+            submitBtn.innerText = "⏳ 正在投递至主理人信箱...";
+            statusMsg.className = "status-msg"; // 重置样式
+
+            const formData = new FormData(form);
+
+            try {
+                const response = await fetch(API_ENDPOINT, {
+                    method: 'POST',
+                    body: formData,
+                    headers: { 'Accept': 'application/json' }
+                });
+
+                if (response.ok) {
+                    form.reset();
+                    statusMsg.innerText = "✅ 需求已成功送达。我将在极地无信号区外的 24 小时内与您联络。";
+                    statusMsg.classList.add('status-success');
+                    submitBtn.innerText = "提交成功";
+                } else {
+                    throw new Error("Network response was not ok.");
+                }
+            } catch (error) {
+                // 如果你还没填 Endpoint，或者网络报错，会走到这里
+                console.error(error);
+                statusMsg.innerText = "⚠️ 接口尚未配置就绪，或网络出现波动。目前请直接通过小红书私信联系。";
+                statusMsg.classList.add('status-error');
+                submitBtn.disabled = false;
+                submitBtn.innerText = "重新提交";
+            }
+        });
+    </script>
 </body>
 </html>
