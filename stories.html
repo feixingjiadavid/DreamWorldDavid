@@ -22,12 +22,13 @@
 
         .container { max-width: 1600px; margin: 0 auto; padding: 60px 6vw; min-height: 80vh; }
         .page-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 60px; gap: 40px; flex-wrap: wrap;}
-        .title-area h1 { font-size: 3.5rem; font-weight: 700; letter-spacing: -1px; margin-bottom: 10px; }
-        .title-area p { color: var(--text-dimmed); font-size: 1.1rem; }
+        .title-area h1 { font-size: 3.5rem; font-weight: 700; letter-spacing: -1px; margin-bottom: 10px; margin-top: 0;}
+        .title-area p { color: var(--text-dimmed); font-size: 1.1rem; margin: 0;}
 
         .search-wrapper { position: relative; width: 100%; max-width: 400px; }
-        #storySearch { width: 100%; background: transparent; border: none; border-bottom: 2px solid rgba(255,255,255,0.1); padding: 12px 0; color: #fff; font-size: 1.1rem; outline: none; transition: border-color 0.3s; }
+        #storySearch { width: 100%; background: transparent; border: none; border-bottom: 2px solid rgba(255,255,255,0.1); padding: 12px 0; color: #fff; font-size: 1.1rem; outline: none; transition: border-color 0.3s; font-family: 'Noto Sans SC', sans-serif;}
         #storySearch:focus { border-color: var(--gold); }
+        .search-wrapper::after { content: 'SEARCH'; position: absolute; right: 0; top: 15px; font-size: 0.7rem; color: var(--dim); letter-spacing: 2px; font-family: 'Inter'; }
 
         .story-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; }
 
@@ -66,6 +67,14 @@
             .play-icon::after { font-size: 1rem; margin-left: 3px; }
         }
     </style>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LJQMME1NDE"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-LJQMME1NDE');
+    </script>
 </head>
 <body>
 
@@ -117,7 +126,7 @@
                     const hasVideo = story.bilibili_bvid && story.bilibili_bvid.trim() !== '';
                     const playIconHtml = hasVideo ? `<div class="play-icon"></div>` : '';
                     
-                    // 核心接管：列表时间也优先读取真实的“行程日期”
+                    // 核心接管：优先读取真实的“行程日期”
                     const displayDate = (story.trip_date && story.trip_date.trim() !== '') ? story.trip_date : story.date;
                     
                     const cardHTML = `
