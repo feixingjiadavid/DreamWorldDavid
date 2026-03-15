@@ -14,7 +14,6 @@
         html { scroll-behavior: smooth; }
         body { background: var(--bg-base); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; -webkit-font-smoothing: antialiased; display: flex; flex-direction: column; min-height: 100vh;}
 
-        /* 瘦身后的 5 大核心导航 */
         nav { display: flex; justify-content: space-between; align-items: center; padding: 30px 6vw; font-size: 0.95rem; font-weight: 500; letter-spacing: 1px; border-bottom: 1px solid var(--border); background: rgba(5,5,5,0.8); backdrop-filter: blur(20px); z-index: 100; position: sticky; top: 0;}
         .nav-brand a { color: var(--text-primary); text-decoration: none; font-weight: 700; font-size: 1.2rem; letter-spacing: 2px;}
         .nav-brand a:hover { color: var(--gold); } 
@@ -59,6 +58,13 @@
         .link-card:hover { background: #111; transform: translateY(-5px); border-color: rgba(245, 158, 11, 0.4); box-shadow: 0 20px 40px rgba(0,0,0,0.6);}
         .link-card:hover::after { color: #f59e0b; transform: translate(3px, -3px);}
         
+        /* 置顶专属引擎卡片特效 */
+        .link-card.engine-card { border-color: rgba(34, 197, 94, 0.3); background: rgba(34, 197, 94, 0.05);}
+        .link-card.engine-card:hover { border-color: #22c55e; background: #0A0A0A; box-shadow: 0 20px 40px rgba(34, 197, 94, 0.2);}
+        .link-card.engine-card .lc-icon { color: #22c55e; border-color: rgba(34, 197, 94, 0.3); background: rgba(34, 197, 94, 0.1);}
+        .link-card.engine-card:hover .lc-title { color: #22c55e;}
+        .link-card.engine-card:hover::after { color: #22c55e;}
+        
         .lc-icon { width: 55px; height: 55px; background: rgba(255,255,255,0.03); border-radius: 12px; display: flex; justify-content: center; align-items: center; font-size: 1.8rem; flex-shrink: 0; transition: var(--transition); border: 1px solid rgba(255,255,255,0.05);}
         .link-card:hover .lc-icon { background: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.3); color: #f59e0b;}
         
@@ -66,13 +72,6 @@
         .lc-title { color: #fff; font-size: 1.15rem; font-weight: 700; margin: 0; transition: var(--transition); line-height: 1.3;}
         .link-card:hover .lc-title { color: #f59e0b; }
         .lc-desc { color: #888; font-size: 0.85rem; line-height: 1.5; margin: 0;}
-
-        /* 专属高亮引擎卡片样式 */
-        .link-card.engine-card { border-color: rgba(34, 197, 94, 0.3); background: rgba(34, 197, 94, 0.02);}
-        .link-card.engine-card:hover { border-color: #22c55e; background: #0A0A0A;}
-        .link-card.engine-card .lc-icon { color: #22c55e; border-color: rgba(34, 197, 94, 0.3);}
-        .link-card.engine-card:hover .lc-title { color: #22c55e;}
-        .link-card.engine-card:hover::after { color: #22c55e;}
 
         .site-footer { border-top: 1px solid var(--border); padding: 40px 0; text-align: center; font-family: 'Inter'; font-size: 0.8rem; color: #888; letter-spacing: 2px; margin-top: auto;}
 
@@ -145,16 +144,13 @@
             menuToggle.innerText = mobileOverlay.classList.contains('active') ? '✕' : '☰';
         });
 
-        // 默认数据，其中首个就是我们本站的超级智能路书引擎
+        // 默认内置的工具库
         const defaultHubs = [
-            { category: '核心工具引擎', title: '智能路线自动演算', icon: '🛣️', url: 'consult.html', desc: '【本站核心】选择你的探险条件，算法将自动绘制地图轨迹并提供行程防坑点。', isEngine: true },
-            { category: '签证与使馆', title: '申根签预约 (VFS)', icon: '🛂', url: 'https://visa.vfsglobal.com/', desc: 'VFS Global 官方预约中心，规避黄牛与虚假中介。' },
-            { category: '签证与使馆', title: '冰岛驻华大使馆', icon: '🇮🇸', url: 'https://www.government.is/', desc: '获取最新的冰岛出入境政策与官方声明。' },
+            { category: '核心引擎', title: '智能路线自动演算', icon: '🛣️', url: 'consult.html', desc: '【本站核心工具】基于主理人私有库，一键演算定制化路线图与防坑点。', isEngine: true },
+            { category: '签证与使馆', title: '申根签预约 (VFS)', icon: '🛂', url: 'https://visa.vfsglobal.com/', desc: 'VFS Global 官方预约中心，规避虚假中介。' },
             { category: '气象与路况', title: '冰岛气象雷达 (Vedur)', icon: '🌤️', url: 'https://en.vedur.is/', desc: '追极光必备：精准查询云层覆盖率与风暴预警。' },
             { category: '气象与路况', title: '官方实时路况 (Road.is)', icon: '🚙', url: 'https://umferdin.is/en', desc: '自驾保命神器，实时查看封路及黑冰警告。' },
-            { category: '气象与路况', title: '挪威气象局 (Yr.no)', icon: '🇳🇴', url: 'https://www.yr.no/en', desc: '北欧最准的天气预报，峡湾攀登前必看。' },
-            { category: '户外与徒步', title: 'Wikiloc 离线地图', icon: '🥾', url: 'https://www.wikiloc.com/', desc: '收录北欧众多未被开发的硬核野徒步路线。' },
-            { category: '户外与徒步', title: '冰岛冰川向导预定', icon: '⛏️', url: 'https://guidetoiceland.is/', desc: '本地最大的冰川徒步、蓝冰洞、火山项目预定中心。' }
+            { category: '户外与徒步', title: 'Wikiloc 离线地图', icon: '🥾', url: 'https://www.wikiloc.com/', desc: '收录北欧众多未被开发的硬核野徒步路线。' }
         ];
 
         document.addEventListener("DOMContentLoaded", function() {
@@ -163,7 +159,7 @@
             
             let hubs = defaultHubs;
             if (typeof dbData !== 'undefined' && dbData.hubs && dbData.hubs.length > 0) {
-                // 如果云端有数据，把智能路书强制置顶插入
+                // 如果云端有数据，把智能路书强制作为置顶对象塞入
                 hubs = [defaultHubs[0], ...dbData.hubs.sort((a,b) => new Date(b.date) - new Date(a.date))];
             }
 
@@ -204,7 +200,7 @@
                 isFirst = false;
             }
 
-            // 滚动监听高亮
+            // 滚动监听
             const sections = document.querySelectorAll('.hub-section');
             const navLinks = document.querySelectorAll('.hub-nav-link');
             const observer = new IntersectionObserver((entries) => {
