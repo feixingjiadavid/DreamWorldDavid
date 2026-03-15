@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>避坑雷达 | 戴维的梦想世界</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Noto+Sans+SC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <script>document.write('<script src="data.js?v=' + new Date().getTime() + '"><\/script>');</script>
     <style>
         :root { --bg-base: #050505; --text-primary: #FFFFFF; --gold: #D4AF37; --border: rgba(255,255,255,0.05); }
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -17,10 +18,8 @@
         .nav-links a { color: #888; text-decoration: none; position: relative; padding-bottom: 6px; transition: 0.3s; white-space: nowrap;}
         .nav-links a:hover, .nav-links a.active { color: var(--text-primary); }
         .nav-links a.active::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--text-primary); }
-        
         .mobile-menu-btn { display: none; background: transparent; border: none; color: #fff; font-size: 1.8rem; cursor: pointer; }
         
-        /* 核心修复：补充全屏菜单的隐藏样式 */
         .mobile-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(5,5,5,0.98); backdrop-filter: blur(15px); z-index: 99; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 0.4s; }
         .mobile-overlay.active { opacity: 1; visibility: visible; }
         .mobile-overlay a { color: #fff; text-decoration: none; font-size: 2rem; font-weight: 700; letter-spacing: 4px; margin: 20px 0; opacity: 0; transform: translateY(20px); transition: 0.4s; }
@@ -86,7 +85,7 @@
             <a href="guides.html">攻略指南</a>
             <a href="toolkit.html">资料下载</a>
             <a href="radar.html" class="active">避坑雷达</a>
-            <a href="consult.html">智能路书</a>
+            <a href="hub.html">极境导航</a>
         </div>
         <button class="mobile-menu-btn" id="menuToggle">☰</button>
     </nav>
@@ -96,7 +95,7 @@
         <a href="guides.html">攻略指南</a>
         <a href="toolkit.html">资料下载</a>
         <a href="radar.html" class="active">避坑雷达</a>
-        <a href="consult.html">智能路书</a>
+        <a href="hub.html">极境导航</a>
     </div>
 
     <div class="breadcrumb-nav">
@@ -113,46 +112,7 @@
             </div>
         </header>
 
-        <div class="radar-grid">
-            <div class="radar-card">
-                <div class="rc-icon">⚠️</div>
-                <div class="rc-content">
-                    <div class="rc-header">
-                        <h2 class="rc-title">冰岛冬季自驾：夺命暗冰与狂风</h2>
-                        <span class="rc-meta">LEVEL: FATAL</span>
-                    </div>
-                    <div class="rc-desc">
-                        每年冬天都有游客在冰岛翻车。切记：<strong>1. 绝对不要在风速超过 15m/s 时强行开上 1 号公路</strong>；2. 路上看起来像水反光的地方，大概率是<strong>黑冰 (Black Ice)</strong>，降速匀速通过，绝不可急刹！
-                    </div>
-                </div>
-            </div>
-
-            <div class="radar-card yellow">
-                <div class="rc-icon">🛂</div>
-                <div class="rc-content">
-                    <div class="rc-header">
-                        <h2 class="rc-title">近期北欧申根签：流水严查期</h2>
-                        <span class="rc-meta">LEVEL: ALERT</span>
-                    </div>
-                    <div class="rc-desc">
-                        近期使馆对单身、自由职业的流水审查极其严格。<strong>千万不要在送签前临时存入大笔资金！</strong> 保持账户有稳定的 3-5 万余额即可。解释信重点列出归国约束力。
-                    </div>
-                </div>
-            </div>
-
-            <div class="radar-card green">
-                <div class="rc-icon">🛃</div>
-                <div class="rc-content">
-                    <div class="rc-header">
-                        <h2 class="rc-title">挪威海关与租车保险指南</h2>
-                        <span class="rc-meta">LEVEL: CLEAR</span>
-                    </div>
-                    <div class="rc-desc">
-                        在北欧租车，推销的“碎石险/挡风玻璃险”<strong>非常有必要买</strong>。挪威山区落石极多。如果你有第三方年度旅行险，请确切确认其包含北极圈范围的拖车救援服务。
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div class="radar-grid" id="radarGrid"></div>
     </main>
 
     <footer class="site-footer">© 2026 戴维的梦想世界.</footer>
@@ -163,6 +123,42 @@
         menuToggle.addEventListener('click', () => {
             mobileOverlay.classList.toggle('active');
             menuToggle.innerText = mobileOverlay.classList.contains('active') ? '✕' : '☰';
+        });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const grid = document.getElementById('radarGrid');
+            let radars = [];
+
+            if (typeof dbData === 'undefined' || !dbData.radars || dbData.radars.length === 0) {
+                radars = [
+                    { level: 'FATAL', title: '冰岛冬季自驾：夺命暗冰与狂风', icon: '⚠️', desc: '每年冬天都有游客在冰岛翻车。切记：<strong>1. 绝对不要在风速超过 15m/s 时强行开上 1 号公路</strong>；2. 路上看起来像水反光的地方，大概率是<strong>黑冰 (Black Ice)</strong>，降速匀速通过，绝不可急刹！' },
+                    { level: 'ALERT', title: '近期北欧申根签：流水严查期', icon: '🛂', desc: '近期使馆对单身、自由职业的流水审查极其严格。<strong>千万不要在送签前临时存入大笔资金！</strong> 保持账户有稳定的 3-5 万余额即可。解释信重点列出归国约束力。' },
+                    { level: 'CLEAR', title: '挪威海关与租车保险指南', icon: '🛃', desc: '在北欧租车，推销的“碎石险/挡风玻璃险”<strong>非常有必要买</strong>。挪威山区落石极多。如果你有第三方年度旅行险，请确切确认其包含北极圈范围的拖车救援服务。' }
+                ];
+            } else {
+                radars = dbData.radars.sort((a, b) => new Date(b.date) - new Date(a.date));
+            }
+
+            radars.forEach(item => {
+                let colorClass = '';
+                let levelText = item.level || 'FATAL';
+                if (levelText === 'ALERT') colorClass = 'yellow';
+                if (levelText === 'CLEAR') colorClass = 'green';
+
+                const cardHTML = `
+                    <div class="radar-card ${colorClass}">
+                        <div class="rc-icon">${item.icon || '⚠️'}</div>
+                        <div class="rc-content">
+                            <div class="rc-header">
+                                <h2 class="rc-title">${item.title}</h2>
+                                <span class="rc-meta">LEVEL: ${levelText}</span>
+                            </div>
+                            <div class="rc-desc">${item.desc}</div>
+                        </div>
+                    </div>
+                `;
+                grid.insertAdjacentHTML('beforeend', cardHTML);
+            });
         });
     </script>
 </body>
