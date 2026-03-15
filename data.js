@@ -13,7 +13,7 @@ const dbData = {
         "==世界==**雪极**"
       ],
       "cta_text": "",
-      "cta_link": ""
+      "cta_link": "guide-detail.html?id=guide-faroe"
     },
     {
       "id": "story-faroe",
