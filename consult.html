@@ -19,7 +19,14 @@
         .nav-links { display: flex; gap: 50px; align-items: center; }
         .nav-links a { color: #888; text-decoration: none; position: relative; padding-bottom: 6px; transition: 0.3s; white-space: nowrap;}
         .nav-links a:hover, .nav-links a.active { color: var(--text-primary); }
+        .nav-links a.active::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--text-primary); }
         .mobile-menu-btn { display: none; background: transparent; border: none; color: #fff; font-size: 1.8rem; cursor: pointer; }
+        
+        .mobile-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(5,5,5,0.98); backdrop-filter: blur(15px); z-index: 99; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 0.4s; }
+        .mobile-overlay.active { opacity: 1; visibility: visible; }
+        .mobile-overlay a { color: #fff; text-decoration: none; font-size: 2rem; font-weight: 700; letter-spacing: 4px; margin: 20px 0; opacity: 0; transform: translateY(20px); transition: 0.4s; }
+        .mobile-overlay.active a { opacity: 1; transform: translateY(0); }
+        .mobile-overlay a.active { color: var(--gold); }
         
         .breadcrumb-nav { padding: 30px 6vw; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); font-family: 'Inter', sans-serif; font-size: 0.8rem; letter-spacing: 1px;}
         .crumb-link { color: #888; text-decoration: none; transition: 0.3s;}
@@ -33,7 +40,6 @@
         .cs-title { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900; margin-bottom: 20px; line-height: 1.2; text-align: center; }
         .cs-desc { color: #888; max-width: 600px; line-height: 1.8; font-size: 1.05rem; text-align: center; margin-bottom: 50px;}
 
-        /* 高级选配引擎面板 */
         .engine-panel { background: #0A0A0A; border: 1px solid rgba(56, 189, 248, 0.2); border-radius: 12px; padding: 40px; width: 100%; box-shadow: 0 20px 50px rgba(0,0,0,0.5);}
         .engine-row { margin-bottom: 35px;}
         .engine-label { display: block; font-family: 'Inter'; font-size: 0.85rem; color: #38bdf8; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 15px; font-weight: 700;}
@@ -45,22 +51,24 @@
         .opt-card:hover .opt-body { background: #1a1a1a; color: #ccc;}
         .opt-card input:checked ~ .opt-body { border-color: #38bdf8; background: rgba(56, 189, 248, 0.1); color: #fff;}
 
-        .btn-generate { background: #38bdf8; color: #000; border: none; padding: 18px; font-size: 1.1rem; font-weight: 700; letter-spacing: 2px; border-radius: 8px; cursor: pointer; transition: 0.3s; width: 100%; outline: none; display: flex; justify-content: center; align-items: center; gap: 10px;}
-        .btn-generate:hover { background: #fff;}
+        /* 自定义表单嵌入，无缝体验 */
+        .direct-form { display: none; width: 100%; border-top: 1px dashed rgba(255,255,255,0.1); margin-top: 30px; padding-top: 30px;}
+        .direct-form input { width: 100%; background: #111; border: 1px solid #333; color: #fff; padding: 15px; border-radius: 8px; margin-bottom: 15px; outline: none; transition: 0.3s;}
+        .direct-form input:focus { border-color: #38bdf8; }
 
-        /* 加载动画 */
+        .btn-generate { background: #38bdf8; color: #000; border: none; padding: 18px; font-size: 1.1rem; font-weight: 700; letter-spacing: 2px; border-radius: 8px; cursor: pointer; transition: 0.3s; width: 100%; outline: none; display: flex; justify-content: center; align-items: center;}
+        .btn-generate:hover { background: #fff;}
+        .btn-generate:disabled { background: #333; color: #888; cursor: not-allowed;}
+
         .loader-wrapper { display: none; flex-direction: column; align-items: center; padding: 60px 0;}
         .radar-spinner { width: 60px; height: 60px; border-top: 3px solid #38bdf8; border-right: 3px solid transparent; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px;}
         @keyframes spin { 100% { transform: rotate(360deg); } }
         .loader-text { font-family: 'JetBrains Mono', monospace; color: #38bdf8; font-size: 0.9rem; letter-spacing: 2px;}
 
-        /* 极致奢华的路书展示区 */
         .result-panel { display: none; width: 100%; margin-top: 40px; animation: fadeIn 0.8s ease;}
         @keyframes fadeIn { from{opacity:0; transform:translateY(30px);} to{opacity:1; transform:translateY(0);} }
         
         .itinerary-paper { background: #0A0A0A; border: 1px solid #333; border-radius: 16px; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.8);}
-        
-        /* 动态地图头图层 */
         .route-map-header { width: 100%; height: 300px; background: #111; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; padding: 40px;}
         .map-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.4; filter: contrast(120%) saturate(80%);}
         .map-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to top, #0A0A0A 0%, transparent 100%);}
@@ -68,20 +76,15 @@
         .ip-meta { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: #38bdf8; margin-bottom: 10px; letter-spacing: 2px;}
         .ip-title { font-size: 2.5rem; font-weight: 900; margin: 0; color: #fff; letter-spacing: -1px;}
 
-        /* 硬核行程节点 */
         .route-nodes { padding: 40px;}
         .day-node { border-left: 2px solid #222; padding-left: 35px; position: relative; margin-bottom: 45px;}
         .day-node:last-child { border-left-color: transparent; }
         .day-node::before { content: ''; position: absolute; left: -8px; top: 0; width: 14px; height: 14px; background: #050505; border: 3px solid #38bdf8; border-radius: 50%; box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);}
-        
         .day-num { font-family: 'Inter'; font-size: 0.8rem; color: #888; font-weight: 700; letter-spacing: 3px; margin-bottom: 8px; display: block;}
         .day-headline { font-size: 1.5rem; font-weight: 700; color: #fff; margin-bottom: 15px;}
-        
         .day-tags { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;}
         .day-tags span { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #ccc; font-size: 0.75rem; padding: 4px 10px; border-radius: 4px; font-family: 'JetBrains Mono', monospace;}
-        
         .day-detail { color: #aaa; font-size: 1rem; line-height: 1.8; font-weight: 300; text-align: justify;}
-        .day-detail strong { color: #fff; font-weight: 500; border-bottom: 1px dashed #38bdf8;}
 
         .action-footer { padding: 0 40px 40px 40px; display: flex; flex-direction: column; gap: 20px;}
         .btn-expert { background: transparent; color: #fff; border: 1px solid #333; padding: 15px; border-radius: 8px; text-align: center; cursor: pointer; transition: 0.3s; font-size: 0.95rem;}
@@ -92,6 +95,8 @@
         @media (max-width: 768px) {
             nav { padding: 20px 5vw; border-bottom: none;}
             .nav-links { display: none; }
+            .mobile-menu-btn { display: block; }
+            .nav-brand a { font-size: 1.1rem; }
             .container { padding: 30px 5vw; }
             .cs-title { font-size: 2.2rem; }
             .engine-panel { padding: 25px 20px; }
@@ -112,10 +117,19 @@
             <a href="stories.html">旅行故事</a>
             <a href="guides.html">攻略指南</a>
             <a href="toolkit.html">干货库</a>
-            <a href="gear.html">探险装备</a>
+            <a href="spots.html">极境坐标</a>
             <a href="consult.html" class="active">私人定制</a>
         </div>
+        <button class="mobile-menu-btn" id="menuToggle">☰</button>
     </nav>
+    <div class="mobile-overlay" id="mobileOverlay">
+        <a href="index.html">首页</a>
+        <a href="stories.html">旅行故事</a>
+        <a href="guides.html">攻略指南</a>
+        <a href="toolkit.html">干货库</a>
+        <a href="spots.html">极境坐标</a>
+        <a href="consult.html" class="active">私人定制</a>
+    </div>
 
     <div class="breadcrumb-nav">
         <a href="index.html" class="crumb-link">首页</a><span class="crumb-separator">/</span>
@@ -128,33 +142,41 @@
         <p class="cs-desc">选择您的探险约束条件。引擎将基于我实地勘测的非公开数据库，瞬间为您生成一份躲避人群的深度路书骨架。</p>
         
         <div class="engine-panel" id="controlPanel">
-            <div class="engine-row">
-                <span class="engine-label">1. 目标极境 (DESTINATION)</span>
-                <div class="options-grid">
-                    <label class="opt-card"><input type="radio" name="dest" value="冰岛" checked><div class="opt-body">🇮🇸 冰岛环岛</div></label>
-                    <label class="opt-card"><input type="radio" name="dest" value="挪威"><div class="opt-body">🇳🇴 挪威峡湾</div></label>
-                    <label class="opt-card"><input type="radio" name="dest" value="法罗群岛"><div class="opt-body">🇫🇴 法罗群岛</div></label>
+            <form id="bespokeForm" method="POST">
+                <div class="engine-row">
+                    <span class="engine-label">1. 目标极境 (DESTINATION)</span>
+                    <div class="options-grid">
+                        <label class="opt-card"><input type="radio" name="Destination" value="冰岛" checked><div class="opt-body">🇮🇸 冰岛环岛</div></label>
+                        <label class="opt-card"><input type="radio" name="Destination" value="挪威"><div class="opt-body">🇳🇴 挪威峡湾</div></label>
+                        <label class="opt-card"><input type="radio" name="Destination" value="法罗群岛"><div class="opt-body">🇫🇴 法罗群岛</div></label>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="engine-row">
-                <span class="engine-label">2. 可用天数 (DURATION)</span>
-                <div class="options-grid">
-                    <label class="opt-card"><input type="radio" name="days" value="5" checked><div class="opt-body">5 天 (紧凑)</div></label>
-                    <label class="opt-card"><input type="radio" name="days" value="7"><div class="opt-body">7 天 (经典)</div></label>
-                    <label class="opt-card"><input type="radio" name="days" value="10"><div class="opt-body">10 天+ (深度)</div></label>
+                
+                <div class="engine-row">
+                    <span class="engine-label">2. 可用天数 (DURATION)</span>
+                    <div class="options-grid">
+                        <label class="opt-card"><input type="radio" name="Duration" value="5" checked><div class="opt-body">5 天 (紧凑)</div></label>
+                        <label class="opt-card"><input type="radio" name="Duration" value="7"><div class="opt-body">7 天 (经典)</div></label>
+                        <label class="opt-card"><input type="radio" name="Duration" value="10"><div class="opt-body">10 天+ (深度)</div></label>
+                    </div>
                 </div>
-            </div>
 
-            <div class="engine-row">
-                <span class="engine-label">3. 探索风格 (STYLE)</span>
-                <div class="options-grid">
-                    <label class="opt-card"><input type="radio" name="style" value="风光摄影" checked><div class="opt-body">📷 风光摄影</div></label>
-                    <label class="opt-card"><input type="radio" name="style" value="硬核越野"><div class="opt-body">🚙 硬核越野 (F路)</div></label>
+                <div class="engine-row">
+                    <span class="engine-label">3. 探索风格 (STYLE)</span>
+                    <div class="options-grid">
+                        <label class="opt-card"><input type="radio" name="Style" value="风光摄影" checked><div class="opt-body">📷 风光摄影</div></label>
+                        <label class="opt-card"><input type="radio" name="Style" value="硬核越野"><div class="opt-body">🚙 硬核越野 (F路)</div></label>
+                    </div>
                 </div>
-            </div>
 
-            <button class="btn-generate" id="generateBtn">🚀 启动路书演算</button>
+                <div class="direct-form" id="contactFields">
+                    <span class="engine-label">4. 接收方式 (CONTACT)</span>
+                    <input type="text" name="Name" required placeholder="阁下的称呼...">
+                    <input type="text" name="WeChat" required placeholder="您的微信号/邮箱 (用于接收定制方案)...">
+                </div>
+
+                <button type="submit" class="btn-generate" id="generateBtn" style="margin-top: 15px;">🚀 启动路书演算</button>
+            </form>
         </div>
 
         <div class="loader-wrapper" id="loaderBox">
@@ -163,11 +185,10 @@
         </div>
 
         <div class="result-panel" id="resultBox">
-            <div class="itinerary-paper" id="itineraryContent">
-                </div>
+            <div class="itinerary-paper" id="itineraryContent"></div>
             <div class="action-footer">
-                <button class="btn-expert" onclick="window.location.reload()">重新演算路线</button>
-                <div style="font-size: 0.8rem; color: #666; text-align: center; margin-top: 10px;">注：此为算法生成的框架版路书。如需主理人一对一保姆级代订与指导，请于首页获取联系方式。</div>
+                <button class="btn-expert" onclick="window.location.reload()">重新演算</button>
+                <div style="font-size: 0.8rem; color: #666; text-align: center; margin-top: 10px;">注：此为算法生成的框架版路书。主理人已收到您的需求，将会在极地无信号区外的 24 小时内与您联络深度定制。</div>
             </div>
         </div>
     </main>
@@ -175,62 +196,74 @@
     <footer class="site-footer">© 2026 戴维的梦想世界.</footer>
 
     <script>
-        const generateBtn = document.getElementById('generateBtn');
-        const controlPanel = document.getElementById('controlPanel');
-        const loaderBox = document.getElementById('loaderBox');
-        const resultBox = document.getElementById('resultBox');
-        const itineraryContent = document.getElementById('itineraryContent');
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileOverlay = document.getElementById('mobileOverlay');
+        menuToggle.addEventListener('click', () => {
+            mobileOverlay.classList.toggle('active');
+            menuToggle.innerText = mobileOverlay.classList.contains('active') ? '✕' : '☰';
+        });
 
-        // 顶级专业路书数据库 (Mock)
+        // 路书核心数据库 Mockup
         const dataVault = {
             "冰岛_5_风光摄影": {
-                title: "冰岛南岸极地追光路线",
-                mapImg: "https://images.unsplash.com/photo-1476610182048-b716b8518aae?q=80&w=1200",
+                title: "冰岛南岸极地追光路线", mapImg: "https://images.unsplash.com/photo-1476610182048-b716b8518aae?q=80&w=1200",
                 days: [
-                    {d: "DAY 01", t: "空降冰火之国 & 蓝湖暗调摄影", tags: ["🚗 50KM", "📍 KEF机场 -> 蓝湖"], desc: "抵达基夫拉维克机场。提取四驱越野车后直奔蓝湖。建议利用<strong>黄昏蓝调时刻 (Blue Hour)</strong> 的冷暖对比，拍摄地热蒸汽与黑色熔岩的视觉张力。晚间完成市区物资补给。"},
-                    {d: "DAY 02", t: "黄金圈极致慢门与间歇泉抓拍", tags: ["🚗 230KM", "📷 滤镜: ND1000"], desc: "清晨 7 点避开大巴团直奔辛格维利尔。在古佛斯瀑布架设三脚架，使用 ND 滤镜进行长曝光拍摄丝滑水流。下午在间歇泉预判喷发周期，使用 <strong>1/1000s 高速快门</strong>凝固爆发瞬间。"},
-                    {d: "DAY 03", t: "南岸暗黑美学：黑沙滩与玄武岩", tags: ["🚗 180KM", "⚠️ 严防疯狗浪"], desc: "途径塞里雅兰瀑布，穿防水服进入瀑布背后拍摄逆光剪影。傍晚抵达维克镇黑沙滩，利用长焦压缩海浪与玄武岩石柱的空间感。<strong>警告：严禁背对大海拍摄。</strong>"},
-                    {d: "DAY 4-5", t: "冰川徒步与极光收尾", tags: ["🥾 体力消耗: 高", "🌌 极光守候"], desc: "早晨参加索尔黑马冰川向导徒步。下午返回首都，视 KP 指数（极光强度）前往 Grotta 灯塔守候。次日归还车辆离境。"}
+                    {d: "DAY 01", t: "空降冰火之国 & 蓝湖暗调摄影", tags: ["🚗 50KM", "📍 KEF机场 -> 蓝湖"], desc: "抵达基夫拉维克机场。提取四驱越野车后直奔蓝湖。建议利用黄昏蓝调时刻拍摄地热蒸汽与黑色熔岩的视觉张力。"},
+                    {d: "DAY 02", t: "黄金圈极致慢门与间歇泉", tags: ["🚗 230KM", "📷 滤镜: ND1000"], desc: "清晨 7 点避开大巴团直奔辛格维利尔。在古佛斯瀑布架设三脚架，使用 ND 滤镜进行长曝光拍摄。"},
+                    {d: "DAY 03", t: "南岸暗黑美学：黑沙滩", tags: ["🚗 180KM", "⚠️ 严防疯狗浪"], desc: "途径塞里雅兰瀑布。傍晚抵达维克镇黑沙滩，利用长焦压缩海浪与玄武岩石柱的空间感。"},
+                    {d: "DAY 4-5", t: "冰川徒步与极光收尾", tags: ["🥾 体力消耗: 高", "🌌 极光守候"], desc: "早晨参加索尔黑马冰川向导徒步。下午返回首都视 KP 指数守候极光。次日归还车辆离境。"}
                 ]
             },
             "挪威_7_硬核越野": {
-                title: "挪威峡湾硬派攀登路线",
-                mapImg: "https://images.unsplash.com/photo-1510798831971-661eb04b3739?q=80&w=1200",
+                title: "挪威峡湾硬派攀登路线", mapImg: "https://images.unsplash.com/photo-1510798831971-661eb04b3739?q=80&w=1200",
                 days: [
-                    {d: "DAY 01-02", t: "奥斯陆空降 & 深入极地森林", tags: ["🚗 350KM", "🌲 森林公路"], desc: "抵达奥斯陆，提取硬派四驱 SUV。驱车穿过蜿蜒的雪松森林，适应北欧狭窄且没有护栏的驾驶节奏。夜宿峡湾木屋。"},
-                    {d: "DAY 03", t: "奇迹石硬核攀登线", tags: ["🥾 单程 5KM", "⛰️ 裸露岩层"], desc: "早晨 6 点起步。多为裸露的花岗岩，坡度极陡，<strong>必须穿着专业级 V 底徒步鞋</strong>。下午到达奇迹石，拍摄悬崖悬空大片。"},
-                    {d: "DAY 04", t: "布道石悬崖航拍", tags: ["🚁 无人机警报", "📍 吕瑟峡湾"], desc: "转移至吕瑟峡湾，进行 4 小时往返的布道石徒步。在此可起飞无人机，但需时刻留意峡湾峡管效应造成的<strong>突发性妖风</strong>。"},
-                    {d: "DAY 05-07", t: "国家景观公路与恶魔之舌", tags: ["⛴️ 峡湾轮渡", "⛺ 高山露营"], desc: "沿途体验极致的桥隧基建。视体能决定是否挑战长达 22 公里的“恶魔之舌”徒步。第七日沿哈当厄尔峡湾返回奥斯陆还车。"}
+                    {d: "DAY 01-02", t: "奥斯陆空降 & 深入极地森林", tags: ["🚗 350KM", "🌲 森林公路"], desc: "提取硬派四驱 SUV。驱车穿过蜿蜒的雪松森林，适应北欧狭窄且没有护栏的驾驶节奏。"},
+                    {d: "DAY 03", t: "奇迹石硬核攀登线", tags: ["🥾 单程 5KM", "⛰️ 裸露岩层"], desc: "早晨 6 点起步。多为裸露的花岗岩，坡度极陡，必须穿着专业级 V 底徒步鞋。"},
+                    {d: "DAY 04", t: "布道石悬崖航拍", tags: ["🚁 无人机警报", "📍 吕瑟峡湾"], desc: "进行 4 小时往返的布道石徒步。可起飞无人机，但需时刻留意峡湾峡管效应造成的突发性妖风。"},
+                    {d: "DAY 05-07", t: "国家景观公路与恶魔之舌", tags: ["⛴️ 峡湾轮渡", "⛺ 高山露营"], desc: "体验极致的桥隧基建。视体能决定是否挑战长达 22 公里的“恶魔之舌”徒步。"}
                 ]
             }
         };
 
-        // 默认通用高级模板
         const defaultRoute = {
-            title: "极境未知穿越路线",
-            mapImg: "https://images.unsplash.com/photo-1520106212299-d99c443e4568?q=80&w=1200",
+            title: "极境未知穿越路线", mapImg: "https://images.unsplash.com/photo-1520106212299-d99c443e4568?q=80&w=1200",
             days: [
-                {d: "DAY 01", t: "抵达未知坐标", tags: ["🚗 适应驾驶", "🛒 极地补给"], desc: "提取车辆，熟悉当地严苛的交通与让行规则。完成超市生存级补给（重点购买饮用水、高热量能量棒）。"},
-                {d: "DAY 02", t: "深入腹地", tags: ["📷 随时备战", "🗺️ 离线导航"], desc: "驶离城市，沿途随停随拍。这里是摄影师的终极试炼场，请随时在副驾备好装有 ND 镜的相机。"},
-                {d: "DAY 03-N", t: "敬畏自然", tags: ["⚠️ 弹性行程", "🌪️ 天气预警"], desc: "系统依据您的要求，建议您将 30% 的时间留给不可抗力的恶劣天气。在极境，<strong>不赶路，就是最安全的越野。</strong>"},
+                {d: "DAY 01", t: "抵达未知坐标", tags: ["🚗 适应驾驶", "🛒 极地补给"], desc: "熟悉当地严苛的交通规则。完成超市生存级补给（饮用水、高热量能量棒）。"},
+                {d: "DAY 02", t: "深入腹地", tags: ["📷 随时备战", "🗺️ 离线导航"], desc: "驶离城市，沿途随停随拍。这里是试炼场，请随时在副驾备好装有 ND 镜的相机。"},
+                {d: "DAY 03-N", t: "敬畏自然", tags: ["⚠️ 弹性行程", "🌪️ 天气预警"], desc: "将 30% 的时间留给不可抗力的恶劣天气。在极境，不赶路，就是最安全的越野。"},
                 {d: "FINAL DAY", t: "文明的回归", tags: ["✈️ 离境", "💾 数据备份"], desc: "整理好 1TB 的原始素材，带着敬畏之心返回机场。"}
             ]
         };
 
-        generateBtn.addEventListener('click', () => {
-            const dest = document.querySelector('input[name="dest"]:checked').value;
-            const days = document.querySelector('input[name="days"]:checked').value;
-            const style = document.querySelector('input[name="style"]:checked').value;
+        // UI 逻辑强化：点击选项后展开输入框
+        const form = document.getElementById('bespokeForm');
+        const contactFields = document.getElementById('contactFields');
+        const generateBtn = document.getElementById('generateBtn');
+        const API_ENDPOINT = "https://formspree.io/f/xgonlznl"; 
+
+        form.addEventListener('change', () => { contactFields.style.display = 'block'; });
+
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
             
+            const dest = document.querySelector('input[name="Destination"]:checked').value;
+            const days = document.querySelector('input[name="Duration"]:checked').value;
+            const style = document.querySelector('input[name="Style"]:checked').value;
+
             controlPanel.style.display = 'none';
             loaderBox.style.display = 'flex';
 
+            // 1. 并行调用 API 静默发送数据
+            const formData = new FormData(form);
+            fetch(API_ENDPOINT, { method: 'POST', body: formData, headers: { 'Accept': 'application/json' } })
+            .catch(err => console.error("API投递失败, 但不阻断前台生成", err));
+
+            // 2. 炫酷演渲动画
             setTimeout(() => { document.getElementById('loaderText').innerText = "MATCHING SECRET LOCATIONS..."; }, 800);
             setTimeout(() => { document.getElementById('loaderText').innerText = "GENERATING TIMELINE..."; }, 1600);
 
             setTimeout(() => {
                 loaderBox.style.display = 'none';
-                
                 const dbKey = `${dest}_${days}_${style}`;
                 const routePlan = dataVault[dbKey] || defaultRoute;
                 
@@ -259,9 +292,8 @@
                 });
 
                 html += `</div>`;
-                itineraryContent.innerHTML = html;
-                resultBox.style.display = 'block';
-
+                document.getElementById('itineraryContent').innerHTML = html;
+                document.getElementById('resultBox').style.display = 'block';
             }, 2500);
         });
     </script>
