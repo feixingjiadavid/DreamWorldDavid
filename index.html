@@ -7,7 +7,6 @@
     
     <meta property="og:title" content="戴维的梦想世界 | DAVID EXPEDITION">
     <meta property="og:description" content="记录这个世界隐秘的B面。硬核干货储备：从签证策略到无人区驾驶指南。">
-    <meta property="og:image" content="https://images.unsplash.com/photo-1476610182048-b716b8518aae?q=80&w=1200&auto=format&fit=crop">
     <meta property="og:type" content="website">
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&family=JetBrains+Mono:wght@100;300;400&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
@@ -23,7 +22,7 @@
         html { scroll-behavior: smooth; }
         body { background-color: var(--bg-base); color: var(--text-primary); font-family: var(--font-zh); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
         
-        #init-loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--bg-base); z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.4s ease, visibility 0.4s ease; }
+        #init-loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--bg-base); z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.8s ease, visibility 0.8s ease; }
         .loader-brand { font-family: var(--font-zh); font-size: 1.2rem; font-weight: 700; letter-spacing: 4px; color: var(--gold); animation: breath 2s infinite ease-in-out;}
         @keyframes breath { 0% { opacity: 0.3; transform: scale(0.98); } 50% { opacity: 1; transform: scale(1); } 100% { opacity: 0.3; transform: scale(0.98); } }
         body.loaded #init-loader { opacity: 0; visibility: hidden; }
@@ -34,6 +33,7 @@
         .nav-brand a { color: var(--text-primary); text-decoration: none; font-weight: 700; font-size: 1.2rem; letter-spacing: 2px; transition: color 0.3s ease; position: relative; z-index: 101;}
         .nav-brand a:hover { color: var(--gold); } 
         
+        /* 导航已更新为“极境坐标” */
         .nav-links { display: flex; gap: 40px; align-items: center; font-family: var(--font-zh); font-size: 0.95rem;}
         .nav-links a { color: var(--text-dimmed); text-decoration: none; position: relative; padding-bottom: 6px; transition: color 0.3s ease; letter-spacing: 1px; white-space: nowrap;}
         .nav-links a:hover, .nav-links a.active { color: var(--text-primary); }
@@ -97,17 +97,16 @@
         .btn-view-more { display: inline-block; padding: 14px 35px; background: transparent; border: 1px solid rgba(255,255,255,0.2); color: var(--text-primary); font-family: var(--font-zh); font-size: 0.95rem; font-weight: 500; letter-spacing: 2px; border-radius: 40px; text-decoration: none; transition: all 0.3s ease; }
         .btn-view-more:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-3px); }
 
-        /* 核心修复：防折行的大气联系版块 */
+        /* 纯净版极简底部联系区块 */
         .footer-contact-section { margin-top: 100px; padding: 60px 6vw; background: #0A0A0A; border-radius: 20px; border: 1px solid rgba(255,255,255,0.03); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 40px;}
-        .fc-left { display: flex; flex-direction: column; gap: 15px;}
-        .fc-title { font-size: 2.5rem; font-weight: 900; margin: 0; letter-spacing: 2px; color: #fff;}
-        .fc-email { font-family: var(--font-mono); font-size: 1.4rem; color: var(--gold); text-decoration: none; border-bottom: 1px dashed var(--gold); padding-bottom: 5px; transition: 0.3s; width: max-content;}
+        .fc-left { display: flex; flex-direction: column; gap: 20px;}
+        .fc-title { font-size: 3rem; font-weight: 900; margin: 0; letter-spacing: 2px; color: #fff;}
+        .fc-email { font-family: var(--font-mono); font-size: 1.5rem; color: var(--gold); text-decoration: none; border-bottom: 1px dashed var(--gold); padding-bottom: 5px; transition: 0.3s; width: max-content;}
         .fc-email:hover { color: #fff; border-color: #fff;}
         
-        .qr-row { display: flex; gap: 20px; align-items: flex-end; flex-wrap: nowrap;} /* 强制不换行 */
+        .qr-row { display: flex; gap: 20px; align-items: flex-end; flex-wrap: nowrap;} 
         .qr-item { display: flex; flex-direction: column; align-items: center; gap: 12px;}
         .qr-label { font-size: 0.75rem; color: #666; letter-spacing: 2px; text-transform: uppercase; font-weight: 700;}
-        /* 尺寸放大到 160px，这是保证 3 个码在各种屏幕不换行的黄金比例 */
         .qr-box { width: 160px; height: 160px; background: #111; border-radius: 12px; padding: 12px; border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: center; align-items: center;}
         .qr-box img { width: 100%; height: 100%; object-fit: contain; border-radius: 6px;}
 
@@ -156,7 +155,6 @@
             
             .btn-view-more { padding: 12px 20px; font-size: 0.85rem; width: 100%; text-align: center; border-radius: 30px;}
 
-            /* 手机端二维码也尽可能保持一行或紧凑 */
             .footer-contact-section { padding: 50px 20px; margin-top: 60px; }
             .fc-title { font-size: 2rem;}
             .fc-email { font-size: 1.2rem; }
@@ -185,7 +183,7 @@
                 <a href="stories.html">旅行故事</a>
                 <a href="guides.html">攻略指南</a>
                 <a href="toolkit.html">干货库</a>
-                <a href="gear.html">探险装备</a>
+                <a href="spots.html">极境坐标</a>
                 <a href="consult.html">私人定制</a>
             </div>
             <button class="mobile-menu-btn" id="menuToggle">☰</button>
@@ -196,7 +194,7 @@
             <a href="stories.html">STORIES / 旅行故事</a>
             <a href="guides.html">GUIDES / 攻略指南</a>
             <a href="toolkit.html">TOOLKIT / 干货库</a>
-            <a href="gear.html">GEAR / 探险装备</a>
+            <a href="spots.html">SPOTS / 极境坐标</a>
             <a href="consult.html">BESPOKE / 私人定制</a>
         </div>
 
@@ -256,15 +254,15 @@
             </div>
             <div class="qr-row">
                 <div class="qr-item">
-                    <div class="qr-box"><img src="https://images.unsplash.com/photo-1520106212299-d99c443e4568?q=80&w=400" id="qrXhs" style="display:block;"></div>
+                    <div class="qr-box"><img src="https://images.unsplash.com/photo-1520106212299-d99c443e4568?q=80&w=400" id="qrXhs" style="display:block;" alt="QR"></div>
                     <span class="qr-label">小红书</span>
                 </div>
                 <div class="qr-item">
-                    <div class="qr-box"><img src="https://images.unsplash.com/photo-1510798831971-661eb04b3739?q=80&w=400" id="qrBili" style="display:block;"></div>
+                    <div class="qr-box"><img src="https://images.unsplash.com/photo-1510798831971-661eb04b3739?q=80&w=400" id="qrBili" style="display:block;" alt="QR"></div>
                     <span class="qr-label">Bilibili</span>
                 </div>
                 <div class="qr-item">
-                    <div class="qr-box"><img src="https://images.unsplash.com/photo-1522031309322-68b321a30896?q=80&w=400" id="qrDouyin" style="display:block;"></div>
+                    <div class="qr-box"><img src="https://images.unsplash.com/photo-1522031309322-68b321a30896?q=80&w=400" id="qrDouyin" style="display:block;" alt="QR"></div>
                     <span class="qr-label">抖音</span>
                 </div>
             </div>
@@ -320,6 +318,7 @@
 
                 if(g.email) { const eEl = document.getElementById('renderEmail'); eEl.innerText = g.email; eEl.href = `mailto:${g.email}`; }
                 
+                // 核心逻辑修正：尝试读取后台真实二维码
                 if(g.qrXhs) { document.getElementById('qrXhs').src = getFastCdnUrl(g.qrXhs); }
                 if(g.qrBili) { document.getElementById('qrBili').src = getFastCdnUrl(g.qrBili); }
                 if(g.qrDouyin) { document.getElementById('qrDouyin').src = getFastCdnUrl(g.qrDouyin); }
@@ -361,8 +360,8 @@
                 }
             }
 
-            renderItemsGrid(getFeaturedItems(db.stories, db.global?.featS1, db.global?.featS2), 'storiesGrid', '旅行故事');
-            renderItemsGrid(getFeaturedItems(db.guides, db.global?.featG1, db.global?.featG2), 'guidesGrid', '硬核干货');
+            renderItemsGrid(getFeaturedItems(db.stories, db.global?.featS1, db.global?.featS2), 'storiesGrid', 'STORY');
+            renderItemsGrid(getFeaturedItems(db.guides, db.global?.featG1, db.global?.featG2), 'guidesGrid', 'GUIDE');
         });
     </script>
 </body>
