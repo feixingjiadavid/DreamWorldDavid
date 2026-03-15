@@ -144,7 +144,6 @@
             menuToggle.innerText = mobileOverlay.classList.contains('active') ? '✕' : '☰';
         });
 
-        // 默认数据，新加了“住宿与其他”
         const defaultHubs = [
             { category: '核心引擎', title: '智能路线自动演算', icon: '🛣️', url: 'consult.html', desc: '【本站核心】选择你的探险条件，算法将自动绘制地图轨迹并提供行程防坑点。', isEngine: true },
             { category: '签证与使馆', title: '申根签预约 (VFS)', icon: '🛂', url: 'https://visa.vfsglobal.com/', desc: 'VFS Global 官方预约中心，规避虚假中介。' },
@@ -158,13 +157,27 @@
             const sidebar = document.getElementById('hubSidebar');
             const content = document.getElementById('hubContent');
             
-            let hubs = defaultHubs;
+            let hubs = [defaultHubs[0]]; // 强制保留第一个核心引擎
+
+            // 核心修复：将后台存的大类(含links数组)解构成扁平数组，彻底解决 undefined 报错
             if (typeof dbData !== 'undefined' && dbData.hubs && dbData.hubs.length > 0) {
-                // 如果云端有数据，把智能路书强制置顶插入
-                hubs = [defaultHubs[0], ...dbData.hubs.sort((a,b) => new Date(b.date) - new Date(a.date))];
+                dbData.hubs.sort((a,b) => new Date(b.date) - new Date(a.date)).forEach(hubCat => {
+                    if(hubCat.links && hubCat.links.length > 0) {
+                        hubCat.links.forEach(link => {
+                            hubs.push({
+                                category: hubCat.category,
+                                title: link.title,
+                                icon: link.icon,
+                                url: link.url,
+                                desc: link.desc
+                            });
+                        });
+                    }
+                });
+            } else {
+                hubs = defaultHubs;
             }
 
-            // 按 Category 分组
             const grouped = hubs.reduce((acc, item) => {
                 if (!acc[item.category]) acc[item.category] = [];
                 acc[item.category].push(item);
@@ -201,7 +214,6 @@
                 isFirst = false;
             }
 
-            // 滚动监听
             const sections = document.querySelectorAll('.hub-section');
             const navLinks = document.querySelectorAll('.hub-nav-link');
             const observer = new IntersectionObserver((entries) => {
