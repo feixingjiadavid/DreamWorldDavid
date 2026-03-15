@@ -10,16 +10,17 @@
     <meta property="og:type" content="website">
 
     <title>攻略加载中... | 戴维的梦想世界</title>
+    <meta name="description" content="硬核干货储备：从签证策略到无人区驾驶指南。">
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=Noto+Sans+SC:wght@300;500;700&display=swap" rel="stylesheet">
+    <script>document.write('<script src="data.js?v=' + new Date().getTime() + '"><\/script>');</script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
-    <script>document.write('<script src="data.js?v=' + new Date().getTime() + '"><\/script>');</script>
     
     <style>
         :root { --bg: #050505; --text: #fff; --gold: #D4AF37; --dim: #888; --radius: 8px; --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);}
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: var(--bg); color: var(--text); font-family: 'Noto Sans SC', sans-serif; margin: 0; -webkit-font-smoothing: antialiased; overflow-x: hidden;}
+        body { background: var(--bg); color: var(--text); font-family: 'Noto Sans SC', sans-serif; margin: 0; -webkit-font-smoothing: antialiased; overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh;}
         
         #init-loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--bg); z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.4s ease, visibility 0.4s ease; }
         .loader-brand { font-family: 'Noto Sans SC', sans-serif; font-size: 1.2rem; font-weight: 700; letter-spacing: 4px; color: var(--gold); animation: breath 1.5s infinite ease-in-out;}
@@ -40,13 +41,14 @@
         .mobile-overlay.active a { opacity: 1; transform: translateY(0); }
         .mobile-overlay a.active { color: var(--gold); }
 
-        .breadcrumb-nav { padding: 30px 6vw; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); font-family: 'Inter', sans-serif; font-size: 0.8rem; letter-spacing: 1px;}
+        .breadcrumb-nav { padding: 30px 6vw; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); font-family: 'Inter', sans-serif; font-size: 0.8rem; letter-spacing: 1px; white-space: nowrap; overflow-x: auto;}
+        .breadcrumb-nav::-webkit-scrollbar { display: none; }
         .crumb-link { color: var(--dim); text-decoration: none; transition: color 0.3s;}
         .crumb-link:hover { color: var(--gold); }
         .crumb-separator { color: #444; font-size: 0.8rem;}
-        .crumb-current { color: var(--text);}
+        .crumb-current { color: var(--text); font-family: 'Noto Sans SC', sans-serif; overflow: hidden; text-overflow: ellipsis; max-width: 250px;}
 
-        .container { max-width: 1400px; margin: 0 auto; padding: 40px 6vw 80px 6vw; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 40px 6vw 80px 6vw; flex: 1; width: 100%;}
         .guide-header { margin-bottom: 50px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 40px;}
         .guide-tag { font-family: 'Inter'; font-size: 0.8rem; color: #38bdf8; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 20px; display: block; font-weight: 700;}
         .guide-title { font-size: clamp(2.5rem, 4vw, 4rem); font-weight: 900; line-height: 1.1; letter-spacing: -1px; margin-bottom: 20px; }
@@ -73,12 +75,14 @@
 
         .gallery-section { margin-bottom: 60px; }
         .gallery-carousel { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 20px; scroll-snap-type: x mandatory; scrollbar-width: thin; scrollbar-color: var(--gold) #222; -webkit-overflow-scrolling: touch; }
-        .gallery-item { flex: 0 0 85%; max-width: 700px; aspect-ratio: 16/10; border-radius: var(--radius); scroll-snap-align: center; object-fit: cover; cursor: zoom-in; border: 1px solid rgba(255,255,255,0.05); transition: transform 0.3s; }
+        .gallery-item { flex: 0 0 85%; max-width: 700px; aspect-ratio: 16/10; border-radius: var(--radius); scroll-snap-align: center; object-fit: cover; cursor: zoom-in; border: 1px solid rgba(255,255,255,0.05); transition: transform 0.3s; animation: imgFadeIn 0.8s ease forwards;}
         .gallery-item:hover { filter: brightness(1.1); }
 
         .guide-content strong { color: #fff; font-weight: 700; box-shadow: inset 0 -10px 0 rgba(212,175,55,0.3);}
         .guide-content a { color: var(--gold); text-decoration: none; border-bottom: 1px dashed var(--gold); transition: var(--transition);}
-        .guide-content img { max-width: 100%; border-radius: 6px; cursor: zoom-in; margin: 15px 0; display: block; }
+        .guide-content a:hover { color: #fff; border-bottom-color: #fff;}
+        .guide-content img { max-width: 100%; border-radius: 6px; cursor: zoom-in; margin: 15px 0; transition: filter 0.3s ease; display: block; animation: imgFadeIn 0.8s ease forwards;}
+        .guide-content img:hover { filter: brightness(1.1); }
         
         .pull-quote { border-left: 3px solid var(--gold); background: rgba(212, 175, 55, 0.05); padding: 15px 20px; margin: 25px 0; color: #E0E0E0; font-size: 1.1rem; font-style: italic; border-radius: 0 8px 8px 0; position: relative; }
         .pull-quote::before { content: '“'; position: absolute; top: -10px; left: 10px; font-size: 3rem; color: rgba(212, 175, 55, 0.2); font-family: Georgia, serif; line-height: 1; }
@@ -101,10 +105,10 @@
         .cta-btn { padding: 12px 30px; background: transparent; color: var(--gold); border: 1px solid var(--gold); border-radius: 40px; text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: var(--transition); white-space: nowrap;}
         .cta-btn:hover { background: rgba(212,175,55,0.1); transform: translateX(5px); }
 
-        .action-bar { display: flex; gap: 20px; align-items: center; margin-top: 80px; padding-top: 30px; border-top: 1px dashed rgba(255,255,255,0.1); }
-        .action-btn { background: transparent; border: none; color: var(--dim); font-family: 'Noto Sans SC', sans-serif; font-size: 0.85rem; letter-spacing: 2px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: var(--transition); outline: none; padding: 0;}
+        .action-bar { display: flex; gap: 20px; align-items: center; margin-top: 80px; padding-top: 30px; border-top: 1px dashed rgba(255,255,255,0.1); position: relative; z-index: 20;}
+        .action-btn { background: transparent; border: none; color: var(--dim); font-family: 'Noto Sans SC', sans-serif; font-size: 0.85rem; letter-spacing: 2px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: var(--transition); outline: none; padding: 10px; position: relative; z-index: 20;}
         .action-btn:hover { color: var(--gold); transform: translateY(-2px); }
-        .action-btn svg { width: 16px; height: 16px; fill: currentColor; }
+        .action-btn svg { width: 16px; height: 16px; fill: currentColor; pointer-events: none;}
         
         .related-section { max-width: 1400px; margin: 0 auto; padding: 40px 6vw 80px 6vw; border-top: 1px solid rgba(255,255,255,0.05); }
         .related-title { font-family: 'Inter'; font-size: 0.8rem; color: var(--dim); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 30px; text-align: center;}
@@ -128,12 +132,10 @@
         .lb-next { right: 20px; }
         .lb-close { position: absolute; top: 20px; right: 20px; width: 40px; height: 40px; background: rgba(255,255,255,0.1); color:#fff; border:none; border-radius:50%; font-size:1.2rem; cursor:pointer; z-index:10001; transition:0.3s;}
 
-        /* 核心修复：海报分享框的防遮挡死锁 CSS */
         .share-modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.92); backdrop-filter: blur(20px); z-index: 11000; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: var(--transition); }
         .share-modal-overlay.active { opacity: 1; visibility: visible; }
         .share-card { background: #0A0A0A; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; width: 88%; max-width: 360px; overflow: hidden; transform: translateY(30px) scale(0.95); transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 30px 60px rgba(0,0,0,0.8); position: relative;}
         .share-modal-overlay.active .share-card { transform: translateY(0) scale(1); }
-        /* 绝对最高层级保证 X 按钮永远可点 */
         .close-share { position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.8); border: 1px solid rgba(255,255,255,0.2); color: #fff; width: 34px; height: 34px; border-radius: 50%; font-size: 1.1rem; cursor: pointer; z-index: 9999 !important; display:flex; justify-content:center; align-items:center; transition: 0.3s;}
         .close-share:hover { background: #ff4d4f; border-color: #ff4d4f; }
         .share-card-cover { width: 100%; height: 200px; position: relative; background: #222; overflow: hidden;}
@@ -148,45 +150,52 @@
         .share-modal-overlay.active .share-actions { opacity: 1; transform: translateY(0); }
         .share-copy-btn { padding: 14px 35px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; border-radius: 40px; cursor: pointer; font-size: 0.85rem; transition: 0.3s; outline: none;}
         .share-copy-btn:hover { background: #fff; color: #000;}
-        /* 稍微降低生成的图的层级，防止盖住一切 */
         #generatedShareImage { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; z-index: 50; cursor: pointer; border-radius: 16px; display: none;}
 
-        #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: #111; border: 1px solid var(--gold); color: var(--gold); padding: 12px 25px; border-radius: 40px; font-size: 0.85rem; letter-spacing: 1px; opacity: 0; transition: var(--transition); z-index: 9999;}
+        #toast { fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: #111; border: 1px solid var(--gold); color: var(--gold); padding: 12px 25px; border-radius: 40px; font-size: 0.85rem; letter-spacing: 1px; opacity: 0; transition: var(--transition); z-index: 9999; box-shadow: 0 10px 30px rgba(0,0,0,0.8); pointer-events: none;}
         #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
         .back-to-top { position: fixed; bottom: 40px; right: 40px; width: 45px; height: 45px; border-radius: 50%; background: rgba(17,17,17,0.8); border: 1px solid rgba(212,175,55,0.3); color: var(--gold); font-size: 1.2rem; cursor: pointer; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: var(--transition); z-index: 99; backdrop-filter: blur(5px);}
         .back-to-top.show { opacity: 1; visibility: visible; transform: translateY(0); }
-        .site-footer { border-top: 1px solid rgba(255,255,255,0.05); padding: 40px 0; text-align: center; font-family: 'Inter'; font-size: 0.8rem; color: var(--dim); letter-spacing: 2px; }
+        .site-footer { border-top: 1px solid rgba(255,255,255,0.05); padding: 40px 0; text-align: center; font-family: 'Inter'; font-size: 0.8rem; color: var(--dim); letter-spacing: 2px; margin-top: auto;}
+        
+        .error-state { text-align: center; padding: 100px 20px; }
+        .error-title { font-size: 2rem; color: #ff4d4f; margin-bottom: 20px; font-weight: 700;}
+        .error-desc { color: #888; margin-bottom: 40px; line-height: 1.6;}
+        .btn-home { display: inline-block; padding: 12px 30px; border: 1px solid var(--gold); color: var(--gold); text-decoration: none; border-radius: 30px; transition: 0.3s; }
+        .btn-home:hover { background: rgba(212,175,55,0.1); transform: translateY(-3px);}
 
+        @media (min-width: 768px) { .gallery-item { flex: 0 0 45%; } }
         @media (max-width: 900px) {
             .guide-layout { grid-template-columns: 1fr; gap: 40px; }
             .toc-sidebar { position: relative; top: 0; display: block; background: #111; padding: 25px 20px; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.05); margin-bottom: 10px;}
             .toc-list { border-left: none; display: flex; flex-direction: column; gap: 8px;}
             .toc-link { background: rgba(255,255,255,0.03); border-left: 2px solid transparent; border-radius: 4px; padding: 12px 15px; margin-left: 0;}
             .toc-link.active { background: rgba(212,175,55,0.1); border-left-color: var(--gold); }
+            .lb-btn { display: none; }
         }
         @media (max-width: 768px) {
-            nav { padding: 20px 5vw; border-bottom: none; background: var(--bg-base); position: relative;}
+            nav { padding: 20px 5vw; border-bottom: none;}
             .nav-links { display: none; }
             .mobile-menu-btn { display: block; }
+            .nav-brand a { font-size: 1.1rem; }
+            .breadcrumb-nav { padding: 20px 5vw; font-size: 0.75rem;}
             .container { padding: 20px 5vw 60px 5vw; }
             .media-container { border-radius: 0; margin-left: -5vw; width: 100vw; aspect-ratio: 16/9; margin-bottom: 40px;}
             .related-grid { grid-template-columns: 1fr; gap: 20px; }
+            .r-card-title { font-size: 1.1rem; }
         }
     </style>
 </head>
 <body>
-
-    <div id="init-loader"><div class="loader-brand">戴维的梦想世界</div></div>
-
     <nav>
         <div class="nav-brand"><a href="index.html">戴维的梦想世界</a></div>
         <div class="nav-links">
             <a href="index.html">首页</a>
             <a href="stories.html">旅行故事</a>
             <a href="guides.html" class="active">攻略指南</a>
-            <a href="toolkit.html">干货库</a>
-            <a href="gear.html">装备库</a>
-            <a href="consult.html">私人定制</a>
+            <a href="toolkit.html">资料下载</a>
+            <a href="radar.html">避坑雷达</a>
+            <a href="consult.html">智能路书</a>
         </div>
         <button class="mobile-menu-btn" id="menuToggle">☰</button>
     </nav>
@@ -194,9 +203,9 @@
         <a href="index.html">首页</a>
         <a href="stories.html">旅行故事</a>
         <a href="guides.html" class="active">攻略指南</a>
-        <a href="toolkit.html">干货库</a>
-        <a href="gear.html">装备库</a>
-        <a href="consult.html">私人定制</a>
+        <a href="toolkit.html">资料下载</a>
+        <a href="radar.html">避坑雷达</a>
+        <a href="consult.html">智能路书</a>
     </div>
 
     <div class="breadcrumb-nav">
@@ -204,6 +213,14 @@
         <a href="guides.html" class="crumb-link">攻略指南</a><span class="crumb-separator">/</span>
         <span class="crumb-current" id="r_breadcrumb_title">读取中...</span>
     </div>
+
+    <main class="container" id="errorContent" style="display: none;">
+        <div class="error-state">
+            <h1 class="error-title">MISSION ABORTED</h1>
+            <p class="error-desc">该探险档案已被封存或销毁。<br>迷路也是探险的一部分，请返回基地重新选择路线。</p>
+            <a href="index.html" class="btn-home">← 返回大本营</a>
+        </div>
+    </main>
 
     <main class="container" id="mainContent" style="display: none;">
         <header class="guide-header">
@@ -252,6 +269,14 @@
         <div class="related-grid" id="r_related_grid"></div>
     </section>
 
+    <div class="lightbox-overlay" id="globalLightbox">
+        <button class="lb-close" onclick="closeLightbox()">✕</button>
+        <button class="lb-btn lb-prev" onclick="navLightbox(-1)">‹</button>
+        <img src="" class="lightbox-img" id="lightboxImg">
+        <button class="lb-btn lb-next" onclick="navLightbox(1)">›</button>
+        <div class="lb-counter" id="lbCounter">1 / 1</div>
+    </div>
+
     <div class="share-modal-overlay" id="shareModal">
         <div class="share-card" id="shareCardHTML">
             <button class="close-share" onclick="closeShareModal()">✕</button>
@@ -286,7 +311,6 @@
             menuToggle.innerText = mobileOverlay.classList.contains('active') ? '✕' : '☰';
         });
 
-        // 数据驱动卸载白屏
         function dismissGlobalLoader() { document.body.classList.add('loaded'); }
         function getFastCdnUrl(url) { if (!url) return ''; if (url.startsWith('images/')) return `https://cdn.jsdelivr.net/gh/feixingjiadavid/DreamWorldDavid/${url}`; return url; }
 
@@ -295,7 +319,46 @@
             box.innerHTML = `<iframe src="//player.bilibili.com/player.html?bvid=${vid}&page=1&high_quality=1&danmaku=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true" style="width:100%; height:100%;"></iframe>`;
         }
 
-        // 核心突破：点击黑色背景外壳也能直接关闭海报
+        let galleryImages = []; let currentGalleryIndex = 0;
+        const lightbox = document.getElementById('globalLightbox'); const lbImg = document.getElementById('lightboxImg'); const lbCounter = document.getElementById('lbCounter');
+        
+        function initLightbox() {
+            galleryImages = Array.from(document.querySelectorAll('.guide-content img, .gallery-item'));
+            galleryImages.forEach((img, idx) => {
+                img.style.cursor = 'zoom-in';
+                img.addEventListener('click', () => {
+                    currentGalleryIndex = idx; updateLightbox();
+                    lightbox.classList.add('active'); document.body.style.overflow = 'hidden';
+                });
+            });
+            const carousel = document.getElementById('r_gallery');
+            if(carousel) {
+                carousel.addEventListener('wheel', (evt) => {
+                    if (evt.deltaY !== 0) { evt.preventDefault(); carousel.scrollLeft += evt.deltaY; }
+                }, { passive: false });
+            }
+        }
+        function updateLightbox() {
+            if(galleryImages.length === 0) return;
+            lbImg.src = galleryImages[currentGalleryIndex].src;
+            lbCounter.innerText = `${currentGalleryIndex + 1} / ${galleryImages.length}`;
+        }
+        function navLightbox(dir) {
+            currentGalleryIndex += dir;
+            if(currentGalleryIndex < 0) currentGalleryIndex = galleryImages.length - 1;
+            if(currentGalleryIndex >= galleryImages.length) currentGalleryIndex = 0;
+            updateLightbox();
+        }
+        function closeLightbox() { lightbox.classList.remove('active'); document.body.style.overflow = 'auto'; setTimeout(() => lbImg.src = '', 400); }
+        
+        let touchStartX = 0; let touchEndX = 0;
+        lightbox.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; });
+        lightbox.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            if(touchStartX - touchEndX > 50) navLightbox(1);
+            if(touchEndX - touchStartX > 50) navLightbox(-1);
+        });
+
         document.getElementById('shareModal').addEventListener('click', function(e) {
             if (e.target === this) closeShareModal();
         });
@@ -432,7 +495,7 @@
                 others.slice(0, 2).forEach(item => {
                     relatedGrid.innerHTML += `
                         <a href="guide-detail.html?id=${item.id}" class="related-card">
-                            <img src="${getFastCdnUrl(item.cover)}" class="r-card-img" loading="lazy">
+                            <img src="${getFastCdnUrl(item.cover)}" class="r-card-img" loading="lazy" decoding="async">
                             <div class="r-card-overlay"></div>
                             <div class="r-card-content"><span class="r-card-tag">GUIDE</span><h3 class="r-card-title">${item.title}</h3></div>
                         </a>`;
@@ -440,7 +503,10 @@
             }
 
             document.getElementById('mainContent').style.display = 'block';
-            dismissGlobalLoader(); clearTimeout(fallbackLoader);
+            setTimeout(initLightbox, 500);
+            
+            dismissGlobalLoader();
+            clearTimeout(fallbackLoader);
         });
     </script>
 </body>
