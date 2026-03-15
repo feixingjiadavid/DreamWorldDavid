@@ -2,17 +2,19 @@ const dbData = {
   "stories": [
     {
       "id": "story-faroe",
-      "date": "2026-03-14",
-      "location": "62°00′N",
       "title": "法罗群岛：在世界尽头拥抱风暴",
+      "date": "2026-03-14",
+      "trip_date": "2026-03-15",
       "cover": "https://images.unsplash.com/photo-1529963183134-61a90db47eaf?q=80&w=1600&auto=format&fit=crop",
+      "location": "冰岛",
       "bilibili_bvid": "BV1xx411c7mD",
       "short_desc": "法罗群岛双季实录 / 感受被狂风撕裂的真实",
       "paragraphs": [
         "这并不是一段被精心剪辑过的美好，而是法罗群岛最真实的呼吸。在那段被年假换来的珍贵时光里，我站在玄武岩峭壁边缘，感受着北大西洋能瞬间撕裂一切的狂风。",
         "大厂的忙碌与日常在这一刻被彻底屏蔽，我唯一能听见的是自己的心跳。这就是我一直在寻找的“世界的B面”——它不温婉，不讨好，却拥有让人重获新生的原始力量。"
       ],
-      "guide_link_id": "guide-faroe"
+      "cta_text": "",
+      "cta_link": ""
     },
     {
       "id": "story-turkey",
@@ -232,5 +234,5 @@ const dbData = {
     "footer": ""
   },
   "trash": [],
-  "version": "2.0"
+  "version": "2.1"
 };
