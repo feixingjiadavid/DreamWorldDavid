@@ -4,26 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="referrer" content="no-referrer">
+    
     <meta property="og:title" content="戴维的梦想世界 | 硬核攻略">
-    <meta property="og:description" content="记录这个世界隐秘的B面。从签证策略到无人区驾驶指南。">
+    <meta property="og:description" content="硬核干货储备：从签证策略到无人区驾驶指南。">
     <meta property="og:image" content="https://images.unsplash.com/photo-1476610182048-b716b8518aae?q=80&w=1200&auto=format&fit=crop">
     <meta property="og:type" content="article">
     
     <title>攻略加载中... | DAVID EXPEDITION</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-    
     <script>document.write('<script src="data.js?v=' + new Date().getTime() + '"><\/script>');</script>
     
     <style>
-        :root {
-            --bg-base: #050505; --bg-panel: #111; --text-primary: #FFFFFF; --text-dimmed: #888888;
-            --gold: #D4AF37; --radius: 8px; --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
+        :root { --bg-base: #050505; --bg-panel: #111; --text-primary: #FFFFFF; --text-dimmed: #888888; --gold: #D4AF37; --radius: 8px; --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: var(--bg-base); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; -webkit-font-smoothing: antialiased; line-height: 1.8; overflow-x: hidden;}
 
         #init-loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--bg-base); z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.8s ease, visibility 0.8s ease; }
-        .loader-brand { font-family: 'Inter', sans-serif; font-size: 1.2rem; font-weight: 700; letter-spacing: 6px; color: var(--gold); animation: breath 2s infinite ease-in-out; text-transform: uppercase;}
+        .loader-brand { font-family: 'Inter', sans-serif; font-size: 1.2rem; font-weight: 700; letter-spacing: 6px; color: var(--gold); animation: breath 2s infinite ease-in-out;}
         @keyframes breath { 0% { opacity: 0.3; transform: scale(0.98); } 50% { opacity: 1; transform: scale(1); } 100% { opacity: 0.3; transform: scale(0.98); } }
         body.loaded #init-loader { opacity: 0; visibility: hidden; }
 
@@ -34,8 +31,7 @@
         .crumb-separator { color: #444; font-size: 0.8rem; flex-shrink: 0;}
         .crumb-current { color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; overflow: hidden; text-overflow: ellipsis; max-width: 250px; flex-shrink: 0;}
 
-        .container { max-width: 1400px; margin: 0 auto; padding: 40px 6vw 120px 6vw; }
-
+        .container { max-width: 1400px; margin: 0 auto; padding: 40px 6vw 80px 6vw; }
         .guide-header { margin-bottom: 50px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 40px;}
         .guide-tag { font-family: 'Inter'; font-size: 0.8rem; color: #38bdf8; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 20px; display: block; font-weight: 700;}
         .guide-title { font-size: clamp(2.5rem, 4vw, 4rem); font-weight: 900; line-height: 1.1; letter-spacing: -1px; margin-bottom: 20px; }
@@ -45,11 +41,9 @@
         .media-container iframe, .media-container img, .media-container video { width: 100%; height: 100%; object-fit: cover; display: block; border: none; }
 
         .guide-layout { display: grid; grid-template-columns: 240px 1fr; gap: 60px; align-items: start; }
-
         .toc-sidebar { position: sticky; top: 40px; padding-right: 20px; }
         .toc-title { font-family: 'Inter'; font-size: 0.75rem; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px; font-weight: 700; border-bottom: 1px solid rgba(212,175,55,0.2); padding-bottom: 10px;}
         .toc-list { list-style: none; padding: 0; margin: 0; border-left: 1px solid rgba(255,255,255,0.05);}
-        .toc-item { margin-bottom: 5px; }
         .toc-link { color: var(--text-dimmed); text-decoration: none; font-size: 0.9rem; transition: var(--transition); display: block; padding: 8px 0 8px 15px; border-left: 2px solid transparent; margin-left: -1px; }
         .toc-link:hover { color: #fff; background: rgba(255,255,255,0.02); }
         .toc-link.active { color: var(--gold); border-left-color: var(--gold); font-weight: 500; background: rgba(212,175,55,0.05);}
@@ -57,8 +51,11 @@
         .guide-content { font-size: 1.05rem; color: #CCC; font-weight: 300; line-height: 1.8; }
         .intro-text { font-size: 1.15rem; margin-bottom: 60px; color: #fff; line-height: 1.9;}
 
-        /* 智能图片样式：正文图片自动支持放大手势 */
-        .guide-content img { max-width: 100%; border-radius: 6px; cursor: zoom-in; margin: 15px 0; transition: filter 0.3s ease; }
+        /* Markdown 解析支持 */
+        .guide-content strong { color: #fff; font-weight: 700; box-shadow: inset 0 -10px 0 rgba(212,175,55,0.3);}
+        .guide-content a { color: var(--gold); text-decoration: none; border-bottom: 1px dashed var(--gold); transition: var(--transition);}
+        .guide-content a:hover { color: #fff; border-bottom-color: #fff;}
+        .guide-content img { max-width: 100%; border-radius: 6px; cursor: zoom-in; margin: 15px 0; transition: filter 0.3s ease; display: block;}
         .guide-content img:hover { filter: brightness(1.1); }
 
         .section-title { font-family: 'Inter'; font-size: 0.85rem; color: var(--gold); letter-spacing: 4px; text-transform: uppercase; margin: 60px 0 30px 0; font-weight: 700; display: flex; align-items: center; gap: 15px;}
@@ -82,14 +79,24 @@
         .action-btn:hover { color: var(--gold); transform: translateY(-2px); }
         .action-btn svg { width: 16px; height: 16px; fill: currentColor; }
         
+        /* 流量闭环推荐 */
+        .related-section { max-width: 1400px; margin: 0 auto; padding: 40px 6vw 80px 6vw; border-top: 1px solid rgba(255,255,255,0.05); }
+        .related-title { font-family: 'Inter'; font-size: 0.8rem; color: var(--text-dimmed); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 30px; text-align: center;}
+        .related-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+        .related-card { position: relative; border-radius: var(--radius); overflow: hidden; aspect-ratio: 16/9; background: #111; cursor: pointer; display: block; border: 1px solid rgba(255,255,255,0.03); transition: var(--transition); }
+        .related-card:hover { transform: translateY(-5px); border-color: rgba(212,175,55,0.3); box-shadow: 0 15px 30px rgba(0,0,0,0.5); }
+        .r-card-img { width: 100%; height: 100%; object-fit: cover; opacity: 0.5; transition: 1s ease; }
+        .related-card:hover .r-card-img { opacity: 0.8; transform: scale(1.05); }
+        .r-card-overlay { position: absolute; bottom: 0; left: 0; width: 100%; height: 80%; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); z-index: 1;}
+        .r-card-content { position: absolute; bottom: 25px; left: 25px; right: 25px; z-index: 2;}
+        .r-card-tag { color: var(--gold); font-size: 0.7rem; letter-spacing: 2px; margin-bottom: 8px; display: block;}
+        .r-card-title { color: #fff; font-size: 1.1rem; font-weight: 700; margin: 0; line-height: 1.3;}
+
         #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: #111; border: 1px solid var(--gold); color: var(--gold); padding: 12px 25px; border-radius: 40px; font-size: 0.85rem; letter-spacing: 1px; opacity: 0; transition: var(--transition); z-index: 9999; box-shadow: 0 10px 30px rgba(0,0,0,0.8); pointer-events: none; }
         #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-
         .back-to-top { position: fixed; bottom: 40px; right: 40px; width: 45px; height: 45px; border-radius: 50%; background: rgba(17,17,17,0.8); border: 1px solid rgba(212,175,55,0.3); color: var(--gold); font-size: 1.2rem; cursor: pointer; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: var(--transition); z-index: 99; backdrop-filter: blur(5px);}
         .back-to-top.show { opacity: 1; visibility: visible; transform: translateY(0); }
-        .back-to-top:hover { background: var(--gold); color: #000; border-color: var(--gold); }
 
-        /* 全屏图片灯箱 (Lightbox) 核心样式 */
         .lightbox-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.95); z-index: 10000; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: var(--transition); cursor: zoom-out; backdrop-filter: blur(10px); }
         .lightbox-overlay.active { opacity: 1; visibility: visible; }
         .lightbox-img { max-width: 95vw; max-height: 95vh; object-fit: contain; transform: scale(0.9); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); border-radius: 4px; box-shadow: 0 20px 50px rgba(0,0,0,0.8);}
@@ -100,6 +107,7 @@
 
         @media (max-width: 1024px) {
             .intel-grid { grid-template-columns: 1fr; }
+            .related-grid { grid-template-columns: 1fr 1fr; }
         }
         @media (max-width: 900px) {
             .guide-layout { grid-template-columns: 1fr; gap: 40px; }
@@ -112,7 +120,7 @@
         @media (max-width: 768px) {
             .breadcrumb-nav { padding: 20px 5vw; font-size: 0.75rem;}
             .crumb-current { max-width: none; } 
-            .container { padding: 20px 5vw 80px 5vw; }
+            .container { padding: 20px 5vw 60px 5vw; }
             .guide-title { font-size: 1.8rem; }
             .guide-meta { font-size: 0.85rem; flex-direction: column; gap: 5px; }
             .media-container { border-radius: 0; margin-left: -5vw; width: 100vw; aspect-ratio: 16/9; margin-bottom: 40px;}
@@ -121,33 +129,25 @@
             .intro-text { font-size: 1rem; }
             .action-bar { margin-top: 40px; padding-top: 20px; justify-content: space-around; width: 100%;}
             .back-to-top { bottom: 25px; right: 25px; width: 44px; height: 44px; font-size: 1.1rem; box-shadow: 0 4px 15px rgba(0,0,0,0.5);}
+            .related-section { padding: 30px 5vw 60px 5vw; }
+            .related-grid { grid-template-columns: 1fr; gap: 20px; }
         }
     </style>
-
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-LJQMME1NDE"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-LJQMME1NDE');
-    </script>
+    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-LJQMME1NDE');</script>
 </head>
 <body>
 
     <div id="init-loader"><div class="loader-brand">DAVID EXPEDITION</div></div>
 
     <nav class="breadcrumb-nav">
-        <a href="index.html" class="crumb-link">Home / 首页</a>
-        <span class="crumb-separator">/</span>
-        <a href="guides.html" class="crumb-link">Guides / 攻略指南</a>
-        <span class="crumb-separator">/</span>
+        <a href="index.html" class="crumb-link">Home / 首页</a><span class="crumb-separator">/</span>
+        <a href="guides.html" class="crumb-link">Guides / 攻略指南</a><span class="crumb-separator">/</span>
         <span class="crumb-current" id="r_breadcrumb_title">读取中...</span>
     </nav>
-
     <div id="loadingState">调取硬核数据中...</div>
 
     <main class="container" id="mainContent" style="display: none;">
-        
         <header class="guide-header">
             <span class="guide-tag">EXPEDITION GUIDE</span>
             <h1 class="guide-title" id="r_title"></h1>
@@ -160,7 +160,6 @@
         <div class="media-container" id="r_media"></div>
 
         <div class="guide-layout">
-            
             <aside class="toc-sidebar">
                 <div class="toc-title">INDEX / 攻略目录</div>
                 <ul class="toc-list" id="r_toc_list">
@@ -170,214 +169,135 @@
 
             <div class="guide-content">
                 <div class="intro-text" id="r_intro"></div>
-
                 <div class="section-title" id="section-intel">CRITICAL INTEL // 干货情报区</div>
                 <div class="intel-grid" id="r_intel"></div>
-
                 <div class="section-title" id="section-itinerary">ACTION PLAN // 逐日拔草路线</div>
                 <div id="r_itinerary"></div>
 
                 <div class="action-bar">
-                    <button class="action-btn" onclick="sharePage()">
-                        <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>
-                        分享攻略
-                    </button>
-                    <button class="action-btn" onclick="bookmarkPage()">
-                        <svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-1.99.9-1.99 2L5 21l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>
-                        收藏本页
-                    </button>
+                    <button class="action-btn" onclick="sharePage()"><svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>分享</button>
+                    <button class="action-btn" onclick="bookmarkPage()"><svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-1.99.9-1.99 2L5 21l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>收藏</button>
                 </div>
             </div>
         </div>
     </main>
 
+    <section class="related-section" id="relatedSection" style="display: none;">
+        <div class="related-title">CONTINUE EXPLORING / 延伸阅读</div>
+        <div class="related-grid" id="r_related_grid"></div>
+    </section>
+
     <button id="backToTop" class="back-to-top" title="回到顶部">↑</button>
-
-    <footer class="site-footer">
-        © 2026 DAVID EXPEDITION.
-    </footer>
-
-    <div class="lightbox-overlay" id="globalLightbox">
-        <img src="" class="lightbox-img" id="lightboxImg">
-    </div>
-
+    <footer class="site-footer">© 2026 DAVID EXPEDITION.</footer>
+    <div class="lightbox-overlay" id="globalLightbox"><img src="" class="lightbox-img" id="lightboxImg"></div>
     <div id="toast">提示信息</div>
 
     <script>
-        function getFastCdnUrl(url) {
-            if (!url) return '';
-            if (url.startsWith('images/')) return `https://cdn.jsdelivr.net/gh/feixingjiadavid/DreamWorldDavid/${url}`;
-            return url;
-        }
-
-        function sharePage() {
-            if (navigator.share) {
-                navigator.share({ title: document.title, text: '这篇硬核攻略值得一看：', url: window.location.href }).catch(console.error);
-            } else {
-                navigator.clipboard.writeText(window.location.href);
-                showToast("✓ 链接已复制，去粘贴分享吧！");
-            }
-        }
-
-        function bookmarkPage() {
-            const isMac = /macintosh|mac os x/i.test(navigator.userAgent.toLowerCase());
-            const key = isMac ? '⌘+D' : 'Ctrl+D';
-            showToast(`⭐ 请按 ${key} 将本页加入收藏夹`);
-        }
-
-        function showToast(msg) {
-            const toast = document.getElementById('toast');
-            toast.innerText = msg; toast.classList.add('show');
-            setTimeout(() => { toast.classList.remove('show'); }, 3000);
+        function getFastCdnUrl(url) { if (!url) return ''; if (url.startsWith('images/')) return `https://cdn.jsdelivr.net/gh/feixingjiadavid/DreamWorldDavid/${url}`; return url; }
+        function sharePage() { if(navigator.share){navigator.share({title:document.title,url:window.location.href}).catch(console.error);}else{navigator.clipboard.writeText(window.location.href);showToast("✓ 链接已复制！");} }
+        function bookmarkPage() { showToast(/macintosh|mac os x/i.test(navigator.userAgent.toLowerCase()) ? `⭐ 请按 ⌘+D 收藏` : `⭐ 请按 Ctrl+D 收藏`); }
+        function showToast(msg) { const t = document.getElementById('toast'); t.innerText = msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'), 3000); }
+        
+        // 极简 Markdown 解析引擎
+        function parseMarkdown(text) {
+            let html = text;
+            html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            html = html.replace(/!\[(.*?)\]\((.*?)\)/g, '<img src="$2" alt="$1" loading="lazy">');
+            html = html.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank">$1</a>');
+            return html;
         }
 
         const backToTopBtn = document.getElementById('backToTop');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 400) {
-                backToTopBtn.classList.add('show');
-            } else {
-                backToTopBtn.classList.remove('show');
-            }
-        });
-        backToTopBtn.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
+        window.addEventListener('scroll', () => { window.scrollY > 400 ? backToTopBtn.classList.add('show') : backToTopBtn.classList.remove('show'); });
+        backToTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-        // 绑定全屏灯箱事件
         function bindLightbox() {
-            const lightbox = document.getElementById('globalLightbox');
-            const lightboxImg = document.getElementById('lightboxImg');
-            
+            const lb = document.getElementById('globalLightbox'); const lbImg = document.getElementById('lightboxImg');
             document.querySelectorAll('.guide-content img').forEach(img => {
-                img.addEventListener('click', function() {
-                    lightboxImg.src = this.src;
-                    lightbox.classList.add('active');
-                });
+                img.addEventListener('click', function() { lbImg.src = this.src; lb.classList.add('active'); });
             });
-
-            lightbox.addEventListener('click', function() {
-                this.classList.remove('active');
-                setTimeout(() => { lightboxImg.src = ''; }, 400); 
-            });
+            lb.addEventListener('click', function() { this.classList.remove('active'); setTimeout(() => lbImg.src = '', 400); });
         }
 
         document.addEventListener("DOMContentLoaded", function() {
-            const loaderTimeout = setTimeout(() => { document.body.classList.add('loaded'); }, 2500);
-            function removeLoader() { clearTimeout(loaderTimeout); setTimeout(() => { document.body.classList.add('loaded'); }, 300); }
+            const loaderTimeout = setTimeout(() => document.body.classList.add('loaded'), 2500);
+            function removeLoader() { clearTimeout(loaderTimeout); setTimeout(() => document.body.classList.add('loaded'), 300); }
 
-            const urlParams = new URLSearchParams(window.location.search);
-            const guideId = urlParams.get('id');
-
-            if (!guideId) {
-                removeLoader();
-                document.getElementById('loadingState').innerText = "ERROR: 缺少攻略编号参数";
-                document.getElementById('loadingState').style.display = "block";
-                return;
-            }
-
-            const data = typeof dbData !== 'undefined' ? dbData : null; 
-            if(!data || !data.guides) { removeLoader(); return; }
+            const guideId = new URLSearchParams(window.location.search).get('id');
+            if (!guideId || typeof dbData === 'undefined' || !dbData.guides) { removeLoader(); return; }
             
-            const guide = data.guides.find(g => g.id === guideId);
-
-            if (!guide) {
-                removeLoader();
-                document.getElementById('loadingState').innerText = "ERROR: 在数据库中未找到该攻略";
-                document.getElementById('loadingState').style.display = "block";
-                return;
-            }
+            const guide = dbData.guides.find(g => g.id === guideId);
+            if (!guide) { document.getElementById('loadingState').innerText="未找到攻略"; return; }
 
             document.title = `${guide.title} | DAVID EXPEDITION`;
-
             document.getElementById('r_breadcrumb_title').innerText = guide.title;
             document.getElementById('r_title').innerHTML = guide.title.replace('：', '：<br>');
-            
-            const displayDate = (guide.trip_date && guide.trip_date.trim() !== '') ? guide.trip_date : guide.date;
-            document.getElementById('r_date').innerText = displayDate.replace(/-/g, '.');
+            document.getElementById('r_date').innerText = ((guide.trip_date && guide.trip_date.trim()) ? guide.trip_date : guide.date).replace(/-/g, '.');
             document.getElementById('r_short').innerText = guide.short_desc;
-            document.getElementById('r_intro').innerHTML = guide.intro_desc.replace(/\n/g, '<br><br>');
+            document.getElementById('r_intro').innerHTML = parseMarkdown(getFastCdnUrl(guide.intro_desc.replace(/\n/g, '<br><br>')));
 
             const mediaBox = document.getElementById('r_media');
-            const finalCoverUrl = getFastCdnUrl(guide.cover);
-            
-            if (guide.video && guide.video.trim() !== "") {
+            const coverUrl = getFastCdnUrl(guide.cover);
+            if (guide.video && guide.video.trim()) {
                 let vid = guide.video.trim();
-                if (!vid.endsWith('.mp4')) {
-                    const bvMatch = vid.match(/(BV[a-zA-Z0-9]+)/);
-                    if (bvMatch) vid = bvMatch[1];
-                }
-
-                if (vid.endsWith('.mp4')) {
-                    mediaBox.innerHTML = `<video controls poster="${finalCoverUrl}"><source src="${vid}" type="video/mp4"></video>`;
-                } else {
-                    mediaBox.innerHTML = `<iframe src="//player.bilibili.com/player.html?bvid=${vid}&page=1&high_quality=1&danmaku=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>`;
-                }
-            } else {
-                mediaBox.innerHTML = `<img src="${finalCoverUrl}" alt="Cover">`;
-            }
+                if (!vid.endsWith('.mp4')) { const m = vid.match(/(BV[a-zA-Z0-9]+)/); if (m) vid = m[1]; }
+                mediaBox.innerHTML = vid.endsWith('.mp4') ? `<video controls poster="${coverUrl}"><source src="${vid}" type="video/mp4"></video>` : `<iframe src="//player.bilibili.com/player.html?bvid=${vid}&page=1&high_quality=1&danmaku=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>`;
+            } else { mediaBox.innerHTML = `<img src="${coverUrl}">`; }
 
             const intelBox = document.getElementById('r_intel');
             if(guide.intel && guide.intel.length > 0) {
-                guide.intel.forEach(item => {
-                    intelBox.innerHTML += `<div class="intel-card"><div class="intel-title">${item.title}</div><p class="intel-desc">${item.content}</p></div>`;
-                });
+                guide.intel.forEach(item => { intelBox.innerHTML += `<div class="intel-card"><div class="intel-title">${item.title}</div><p class="intel-desc">${parseMarkdown(getFastCdnUrl(item.content))}</p></div>`; });
             }
 
             const itinBox = document.getElementById('r_itinerary');
             const tocList = document.getElementById('r_toc_list');
-
             if(guide.itinerary && guide.itinerary.length > 0) {
                 guide.itinerary.forEach((item, index) => {
                     const blockId = `day-${index + 1}`;
-                    let tagsHtml = '';
-                    if (item.tags && item.tags.length > 0) {
-                        tagsHtml = `<div class="day-tags">${item.tags.map(t => `<span class="tag-pill">${t}</span>`).join('')}</div>`;
-                    }
+                    const tagsHtml = (item.tags && item.tags.length > 0) ? `<div class="day-tags">${item.tags.map(t => `<span class="tag-pill">${t}</span>`).join('')}</div>` : '';
                     itinBox.innerHTML += `
                         <div class="day-block" id="${blockId}">
-                            <span class="day-num">${item.day}</span>
-                            <h3 class="day-title">${item.title}</h3>
-                            <div class="day-desc">${item.desc.replace(/\n/g, '<br>')}</div>
+                            <span class="day-num">${item.day}</span><h3 class="day-title">${item.title}</h3>
+                            <div class="day-desc">${parseMarkdown(getFastCdnUrl(item.desc.replace(/\n/g, '<br>')))}</div>
                             ${tagsHtml}
-                        </div>
-                    `;
+                        </div>`;
                     tocList.innerHTML += `<li><a href="#${blockId}" class="toc-link">${item.day.split('//')[0].trim()}: ${item.title}</a></li>`;
                 });
             }
 
             const tocLinks = document.querySelectorAll('.toc-link');
             const sections = document.querySelectorAll('.section-title, .day-block');
-            
-            const observerOptions = { root: null, rootMargin: '-10% 0px -70% 0px', threshold: 0 };
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         tocLinks.forEach(link => link.classList.remove('active'));
-                        const id = entry.target.getAttribute('id');
-                        const activeLink = document.querySelector(`.toc-link[href="#${id}"]`);
+                        const activeLink = document.querySelector(`.toc-link[href="#${entry.target.getAttribute('id')}"]`);
                         if (activeLink) activeLink.classList.add('active');
                     }
                 });
-            }, observerOptions);
-
+            }, { root: null, rootMargin: '-10% 0px -70% 0px', threshold: 0 });
             sections.forEach(sec => observer.observe(sec));
 
-            tocLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href').substring(1);
-                    const targetEl = document.getElementById(targetId);
-                    if (targetEl) {
-                        window.scrollTo({ top: targetEl.offsetTop - 60, behavior: 'smooth' });
-                    }
+            tocLinks.forEach(link => { link.addEventListener('click', function(e) { e.preventDefault(); window.scrollTo({ top: document.getElementById(this.getAttribute('href').substring(1)).offsetTop - 60, behavior: 'smooth' }); }); });
+
+            // 渲染相关推荐 (排除自己，随机选3篇)
+            const relatedGrid = document.getElementById('r_related_grid');
+            let others = dbData.guides.filter(g => g.id !== guideId);
+            if (others.length > 0) {
+                document.getElementById('relatedSection').style.display = 'block';
+                others.sort(() => 0.5 - Math.random()); 
+                others.slice(0, 3).forEach(item => {
+                    relatedGrid.innerHTML += `
+                        <a href="guide-detail.html?id=${item.id}" class="related-card">
+                            <img src="${getFastCdnUrl(item.cover)}" class="r-card-img" loading="lazy">
+                            <div class="r-card-overlay"></div>
+                            <div class="r-card-content"><span class="r-card-tag">GUIDE</span><h3 class="r-card-title">${item.title}</h3></div>
+                        </a>`;
                 });
-            });
+            }
 
             document.getElementById('mainContent').style.display = 'block';
-            
-            // 激活灯箱
-            bindLightbox();
-            removeLoader();
+            bindLightbox(); removeLoader();
         });
     </script>
 </body>
