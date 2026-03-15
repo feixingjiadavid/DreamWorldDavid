@@ -9,19 +9,21 @@
     <meta property="og:description" content="硬核干货储备：从签证策略到无人区驾驶指南。">
     <meta property="og:type" content="website">
 
-    <title>攻略指南 | 戴维的梦想世界</title>
+    <title>攻略加载中... | 戴维的梦想世界</title>
     <meta name="description" content="硬核干货储备：从签证策略到无人区驾驶指南。">
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=Noto+Sans+SC:wght@300;500;700&display=swap" rel="stylesheet">
     
     <script>document.write('<script src="data.js?v=' + new Date().getTime() + '"><\/script>');</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
     
     <style>
-        :root { --bg: #050505; --text: #fff; --gold: #D4AF37; --dim: #888; --radius: 8px; }
+        :root { --bg: #050505; --text: #fff; --gold: #D4AF37; --dim: #888; --radius: 8px; --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);}
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: var(--bg); color: var(--text); font-family: 'Noto Sans SC', sans-serif; margin: 0; -webkit-font-smoothing: antialiased; overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh;}
+        body { background: var(--bg); color: var(--text); font-family: 'Noto Sans SC', sans-serif; margin: 0; -webkit-font-smoothing: antialiased; overflow-x: hidden;}
         
-        #init-loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--bg); z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.8s ease, visibility 0.8s ease; }
+        #init-loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--bg); z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.5s ease, visibility 0.5s ease; }
         .loader-brand { font-family: 'Noto Sans SC', sans-serif; font-size: 1.2rem; font-weight: 700; letter-spacing: 4px; color: var(--gold); animation: breath 2s infinite ease-in-out; text-transform: uppercase;}
         @keyframes breath { 0% { opacity: 0.3; transform: scale(0.98); } 50% { opacity: 1; transform: scale(1); } 100% { opacity: 0.3; transform: scale(0.98); } }
         body.loaded #init-loader { opacity: 0; visibility: hidden; }
@@ -29,10 +31,12 @@
         nav { display: flex; justify-content: space-between; align-items: center; padding: 30px 6vw; font-size: 0.95rem; font-weight: 500; letter-spacing: 1px; border-bottom: 1px solid rgba(255,255,255,0.05); position: sticky; top: 0; background: rgba(5,5,5,0.8); backdrop-filter: blur(20px); z-index: 100;}
         .nav-brand a { color: var(--text); text-decoration: none; font-weight: 700; font-size: 1.2rem; letter-spacing: 2px; transition: color 0.3s ease; position: relative; z-index: 101;}
         .nav-brand a:hover { color: var(--gold); } 
-        .nav-links { display: flex; gap: 50px; align-items: center; }
-        .nav-links a { color: var(--dim); text-decoration: none; position: relative; padding-bottom: 6px; transition: color 0.3s ease; letter-spacing: 1px; white-space: nowrap;}
+        
+        .nav-links { display: flex; gap: 40px; align-items: center; font-family: 'Noto Sans SC', sans-serif; font-size: 0.95rem;}
+        .nav-links a { color: var(--dim); text-decoration: none; position: relative; padding-bottom: 6px; transition: color 0.3s ease; white-space: nowrap;}
         .nav-links a:hover, .nav-links a.active { color: var(--text); }
         .nav-links a.active::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--text); }
+        
         .mobile-menu-btn { display: none; background: transparent; border: none; color: #fff; font-size: 1.8rem; cursor: pointer; z-index: 101; position: relative; width: 40px; height: 40px; }
         .mobile-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(5,5,5,0.98); backdrop-filter: blur(15px); z-index: 99; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: var(--transition); }
         .mobile-overlay.active { opacity: 1; visibility: visible; }
@@ -47,7 +51,7 @@
         .crumb-separator { color: #444; font-size: 0.8rem;}
         .crumb-current { color: var(--text); font-family: 'Noto Sans SC', sans-serif; overflow: hidden; text-overflow: ellipsis; max-width: 250px; flex-shrink: 0;}
 
-        .container { max-width: 1400px; margin: 0 auto; padding: 40px 6vw 80px 6vw; flex: 1; width: 100%;}
+        .container { max-width: 1400px; margin: 0 auto; padding: 40px 6vw 80px 6vw; }
         .guide-header { margin-bottom: 50px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 40px;}
         .guide-tag { font-family: 'Inter'; font-size: 0.8rem; color: #38bdf8; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 20px; display: block; font-weight: 700;}
         .guide-title { font-size: clamp(2.5rem, 4vw, 4rem); font-weight: 900; line-height: 1.1; letter-spacing: -1px; margin-bottom: 20px; }
@@ -111,22 +115,26 @@
         .cta-btn { padding: 12px 30px; background: transparent; color: var(--gold); border: 1px solid var(--gold); border-radius: 40px; text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: var(--transition); white-space: nowrap;}
         .cta-btn:hover { background: rgba(212,175,55,0.1); transform: translateX(5px); }
 
-        .action-bar { display: flex; gap: 20px; align-items: center; margin-top: 80px; padding-top: 30px; border-top: 1px dashed rgba(255,255,255,0.1); }
-        .action-btn { background: transparent; border: none; color: var(--dim); font-family: 'Noto Sans SC', sans-serif; font-size: 0.85rem; letter-spacing: 2px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: var(--transition); outline: none; padding: 0;}
+        /* 核心修复 1：将 z-index 设高，并确保 cursor 是指针状态，解除遮挡死锁 */
+        .action-bar { display: flex; gap: 20px; align-items: center; margin-top: 80px; padding-top: 30px; border-top: 1px dashed rgba(255,255,255,0.1); position: relative; z-index: 20; }
+        .action-btn { background: transparent; border: none; color: var(--dim); font-family: 'Noto Sans SC', sans-serif; font-size: 0.85rem; letter-spacing: 2px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: var(--transition); outline: none; padding: 10px; position: relative; z-index: 20;}
         .action-btn:hover { color: var(--gold); transform: translateY(-2px); }
-        .action-btn svg { width: 16px; height: 16px; fill: currentColor; }
+        .action-btn svg { width: 16px; height: 16px; fill: currentColor; pointer-events: none;}
         
         .related-section { max-width: 1400px; margin: 0 auto; padding: 40px 6vw 80px 6vw; border-top: 1px solid rgba(255,255,255,0.05); }
         .related-title { font-family: 'Inter'; font-size: 0.8rem; color: var(--dim); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 30px; text-align: center;}
-        .related-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+        
+        /* 核心修复 2：将延伸阅读的网格改回大气的两列排版 */
+        .related-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; }
+        
         .related-card { position: relative; border-radius: var(--radius); overflow: hidden; aspect-ratio: 16/9; background: #111; cursor: pointer; display: block; border: 1px solid rgba(255,255,255,0.03); transition: var(--transition); }
         .related-card:hover { transform: translateY(-5px); border-color: rgba(212,175,55,0.3); box-shadow: 0 15px 30px rgba(0,0,0,0.5); }
         .r-card-img { width: 100%; height: 100%; object-fit: cover; opacity: 0.5; transition: 1s ease; }
         .related-card:hover .r-card-img { opacity: 0.8; transform: scale(1.05); }
         .r-card-overlay { position: absolute; bottom: 0; left: 0; width: 100%; height: 80%; background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); z-index: 1;}
         .r-card-content { position: absolute; bottom: 25px; left: 25px; right: 25px; z-index: 2;}
-        .r-card-tag { color: var(--gold); font-size: 0.7rem; letter-spacing: 2px; margin-bottom: 8px; display: block;}
-        .r-card-title { color: #fff; font-size: 1.1rem; font-weight: 700; margin: 0; line-height: 1.3;}
+        .r-card-tag { color: var(--gold); font-size: 0.7rem; letter-spacing: 2px; margin-bottom: 8px; display: block; font-family: 'Inter'; font-weight: 700;}
+        .r-card-title { color: #fff; font-size: 1.3rem; font-weight: 700; margin: 0; line-height: 1.3;}
 
         .lightbox-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.96); z-index: 10000; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: var(--transition); backdrop-filter: blur(10px); }
         .lightbox-overlay.active { opacity: 1; visibility: visible; }
@@ -178,7 +186,7 @@
         @media (min-width: 768px) { .gallery-item { flex: 0 0 45%; } }
         @media (max-width: 1024px) {
             .intel-grid { grid-template-columns: 1fr; }
-            .related-grid { grid-template-columns: 1fr 1fr; }
+            .related-grid { grid-template-columns: 1fr; } /* 平板以下直接1列更宽广 */
         }
         @media (max-width: 900px) {
             .guide-layout { grid-template-columns: 1fr; gap: 40px; }
@@ -210,7 +218,6 @@
             .action-bar { margin-top: 40px; padding-top: 20px; justify-content: space-around; width: 100%;}
             .back-to-top { bottom: 25px; right: 25px; width: 44px; height: 44px; font-size: 1.1rem; box-shadow: 0 4px 15px rgba(0,0,0,0.5);}
             .related-section { padding: 30px 5vw 60px 5vw; }
-            .related-grid { grid-template-columns: 1fr; gap: 20px; }
             .r-card-title { font-size: 1.1rem; }
         }
     </style>
@@ -539,7 +546,8 @@
             if (others.length > 0) {
                 document.getElementById('relatedSection').style.display = 'block';
                 others.sort(() => 0.5 - Math.random()); 
-                others.slice(0, 3).forEach(item => {
+                // 核心控制：延伸阅读只展示 2 个，并且舒展开
+                others.slice(0, 2).forEach(item => {
                     relatedGrid.innerHTML += `
                         <a href="guide-detail.html?id=${item.id}" class="related-card">
                             <img src="${getFastCdnUrl(item.cover)}" class="r-card-img" loading="lazy" decoding="async">
