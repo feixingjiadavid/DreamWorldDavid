@@ -1,6 +1,21 @@
 const dbData = {
   "stories": [
     {
+      "id": "story-1773560740523",
+      "title": "青森故事",
+      "date": "2026-03-15",
+      "trip_date": "2026-02-21",
+      "cover": "https://cdn.jsdelivr.net/gh/feixingjiadavid/David-Image-Bank-01/images/img_1773559850506.webp",
+      "location": "青森",
+      "bilibili_bvid": "",
+      "short_desc": "世界雪极",
+      "paragraphs": [
+        "==世界==**雪极**"
+      ],
+      "cta_text": "",
+      "cta_link": ""
+    },
+    {
       "id": "story-faroe",
       "title": "法罗群岛：在世界尽头拥抱风暴",
       "date": "2025-05-01",
@@ -240,5 +255,5 @@ const dbData = {
     "footer": ""
   },
   "trash": [],
-  "version": "4.1"
+  "version": "11.3 Stable (Upload Hotfix)"
 };
