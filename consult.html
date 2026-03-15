@@ -7,42 +7,42 @@
     <title>智能路书工作台 | 戴维的梦想世界</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Noto+Sans+SC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-    
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>document.write('<script src="data.js?v=' + new Date().getTime() + '"><\/script>');</script>
     
     <style>
-        :root { --bg-base: #050505; --text-primary: #FFFFFF; --gold: #D4AF37; --border: rgba(255,255,255,0.05); }
+        :root { --bg-base: #050505; --text-primary: #FFFFFF; --gold: #D4AF37; --border: rgba(255,255,255,0.05); --transition: 0.3s cubic-bezier(0.16, 1, 0.3, 1);}
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
         body { background: var(--bg-base); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; -webkit-font-smoothing: antialiased; display: flex; flex-direction: column; min-height: 100vh;}
 
         nav { display: flex; justify-content: space-between; align-items: center; padding: 30px 6vw; font-size: 0.95rem; font-weight: 500; letter-spacing: 1px; border-bottom: 1px solid var(--border); background: rgba(5,5,5,0.8); backdrop-filter: blur(20px); z-index: 100; position: sticky; top: 0;}
         .nav-brand a { color: var(--text-primary); text-decoration: none; font-weight: 700; font-size: 1.2rem; letter-spacing: 2px;}
         .nav-brand a:hover { color: var(--gold); } 
-        .nav-links { display: flex; gap: 50px; align-items: center; }
-        .nav-links a { color: #888; text-decoration: none; position: relative; padding-bottom: 6px; transition: 0.3s; white-space: nowrap;}
+        .nav-links { display: flex; gap: 40px; align-items: center; }
+        .nav-links a { color: #888; text-decoration: none; position: relative; padding-bottom: 6px; transition: var(--transition); white-space: nowrap;}
         .nav-links a:hover, .nav-links a.active { color: var(--text-primary); }
         .nav-links a.active::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--text-primary); }
         .mobile-menu-btn { display: none; background: transparent; border: none; color: #fff; font-size: 1.8rem; cursor: pointer; }
         
-        .mobile-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(5,5,5,0.98); backdrop-filter: blur(15px); z-index: 99; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 0.4s; }
+        .mobile-overlay { position: fixed; inset: 0; background: rgba(5,5,5,0.98); backdrop-filter: blur(15px); z-index: 99; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 0.4s; }
         .mobile-overlay.active { opacity: 1; visibility: visible; }
-        .mobile-overlay a { color: #fff; text-decoration: none; font-size: 2rem; font-weight: 700; letter-spacing: 4px; margin: 20px 0; opacity: 0; transform: translateY(20px); transition: 0.4s; }
+        .mobile-overlay a { color: #fff; text-decoration: none; font-size: 2rem; font-weight: 700; letter-spacing: 4px; margin: 15px 0; opacity: 0; transform: translateY(20px); transition: 0.4s; }
         .mobile-overlay.active a { opacity: 1; transform: translateY(0); }
         .mobile-overlay a.active { color: var(--gold); }
 
-        .breadcrumb-nav { padding: 30px 6vw; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); font-family: 'Inter', sans-serif; font-size: 0.8rem; letter-spacing: 1px;}
-        .crumb-link { color: #888; text-decoration: none; transition: 0.3s;}
+        .breadcrumb-nav { padding: 30px 6vw; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); font-family: 'Inter', sans-serif; font-size: 0.8rem; letter-spacing: 1px; white-space: nowrap; overflow-x: auto;}
+        .crumb-link { color: #888; text-decoration: none; transition: var(--transition);}
         .crumb-link:hover { color: var(--gold); }
         .crumb-separator { color: #444;}
         .crumb-current { color: var(--text-primary);}
 
-        .container { max-width: 1400px; margin: 0 auto; padding: 40px 6vw 80px 6vw; flex: 1; width: 100%; display: flex; flex-direction: column; align-items: center;}
+        .container { max-width: 1500px; margin: 0 auto; padding: 60px 6vw; flex: 1; width: 100%; }
         
         .cs-tag { color: #38bdf8; font-family: 'JetBrains Mono', monospace; letter-spacing: 4px; font-size: 0.8rem; margin-bottom: 20px; display: block; text-align: center;}
         .cs-title { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 900; margin-bottom: 20px; line-height: 1.2; text-align: center; letter-spacing: -1px;}
-        .cs-desc { color: #888; max-width: 700px; line-height: 1.8; font-size: 1.05rem; text-align: center; margin-bottom: 60px;}
+        .cs-desc { color: #888; max-width: 700px; line-height: 1.8; font-size: 1.05rem; text-align: center; margin-bottom: 60px; margin-left: auto; margin-right: auto;}
 
         .split-layout { display: grid; grid-template-columns: 1.6fr 1fr; gap: 50px; width: 100%; align-items: start;}
         
@@ -113,20 +113,21 @@
         .btn-expert { background: transparent; color: #fff; border: 1px solid #333; padding: 15px 40px; border-radius: 40px; cursor: pointer; transition: 0.3s; font-size: 0.95rem; font-family: 'Noto Sans SC'; letter-spacing: 1px;}
         .btn-expert:hover { border-color: #38bdf8; color: #38bdf8;}
 
-        .tools-right { position: sticky; top: 100px; display: flex; flex-direction: column; gap: 20px;}
-        
+        .tools-right { position: sticky; top: 120px; display: flex; flex-direction: column; gap: 20px;}
         .tool-header { font-family: 'Inter'; font-size: 0.8rem; color: var(--gold); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 10px; font-weight: 700; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 15px;}
         
-        .tool-card { display: flex; align-items: center; gap: 20px; background: #0A0A0A; border: 1px solid rgba(255,255,255,0.05); padding: 25px; border-radius: 12px; text-decoration: none; transition: 0.4s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.5);}
-        .tool-card:hover { background: #111; transform: translateY(-5px); border-color: rgba(212,175,55,0.4); box-shadow: 0 15px 40px rgba(0,0,0,0.8);}
+        .tool-card { display: flex; align-items: center; gap: 20px; background: #0A0A0A; border: 1px solid rgba(255,255,255,0.05); padding: 25px; border-radius: 12px; text-decoration: none; transition: var(--transition); box-shadow: 0 10px 30px rgba(0,0,0,0.3); position: relative; overflow: hidden;}
+        .tool-card::after { content: '↗'; position: absolute; top: 20px; right: 25px; color: #333; font-size: 1.2rem; transition: var(--transition); font-family: 'Inter';}
+        .tool-card:hover { background: #111; transform: translateY(-5px); border-color: rgba(245, 158, 11, 0.4); box-shadow: 0 20px 40px rgba(0,0,0,0.6);}
+        .tool-card:hover::after { color: #f59e0b; transform: translate(3px, -3px);}
         
-        .tc-icon { width: 50px; height: 50px; background: rgba(255,255,255,0.03); border-radius: 8px; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; flex-shrink: 0; transition: 0.3s; border: 1px solid rgba(255,255,255,0.05);}
-        .tool-card:hover .tc-icon { background: rgba(212,175,55,0.1); border-color: rgba(212,175,55,0.3); color: var(--gold);}
+        .lc-icon { width: 55px; height: 55px; background: rgba(255,255,255,0.03); border-radius: 12px; display: flex; justify-content: center; align-items: center; font-size: 1.8rem; flex-shrink: 0; transition: var(--transition); border: 1px solid rgba(255,255,255,0.05);}
+        .tool-card:hover .lc-icon { background: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.3); color: #f59e0b;}
         
-        .tc-info { flex: 1; display: flex; flex-direction: column; gap: 5px;}
-        .tc-title { color: #fff; font-size: 1.1rem; font-weight: 700; margin: 0; transition: 0.3s;}
-        .tool-card:hover .tc-title { color: var(--gold); }
-        .tc-desc { color: #888; font-size: 0.85rem; line-height: 1.5; margin: 0;}
+        .lc-info { flex: 1; display: flex; flex-direction: column; gap: 8px; padding-right: 20px;}
+        .lc-title { color: #fff; font-size: 1.15rem; font-weight: 700; margin: 0; transition: var(--transition); line-height: 1.3;}
+        .tool-card:hover .lc-title { color: #f59e0b; }
+        .lc-desc { color: #888; font-size: 0.85rem; line-height: 1.5; margin: 0;}
 
         .site-footer { border-top: 1px solid var(--border); padding: 40px 0; text-align: center; font-family: 'Inter'; font-size: 0.8rem; color: #888; letter-spacing: 2px; margin-top: auto;}
 
@@ -139,9 +140,8 @@
             .split-layout { grid-template-columns: 1fr; gap: 60px;}
             .tools-right { position: relative; top: 0; }
         }
-
         @media (max-width: 768px) {
-            nav { padding: 20px 5vw; border-bottom: none;}
+            nav { padding: 20px 5vw; border-bottom: none; position: relative;}
             .nav-links { display: none; }
             .mobile-menu-btn { display: block; }
             .nav-brand a { font-size: 1.1rem; }
@@ -157,6 +157,7 @@
             .day-headline { font-size: 1.3rem; }
             .action-footer { padding: 0 20px 30px 20px; }
             .tool-card { padding: 20px; flex-direction: column; text-align: center; gap: 15px;}
+            .link-card::after { display: none; }
         }
     </style>
 </head>
@@ -168,29 +169,31 @@
             <a href="stories.html">旅行故事</a>
             <a href="guides.html">攻略指南</a>
             <a href="toolkit.html">资料下载</a>
-            <a href="spots.html">极境坐标</a>
-            <a href="consult.html" class="active">私人定制</a>
+            <a href="radar.html">避坑雷达</a>
+            <a href="hub.html" class="active">极境导航</a>
         </div>
         <button class="mobile-menu-btn" id="menuToggle">☰</button>
     </nav>
+    
     <div class="mobile-overlay" id="mobileOverlay">
         <a href="index.html">首页</a>
         <a href="stories.html">旅行故事</a>
         <a href="guides.html">攻略指南</a>
         <a href="toolkit.html">资料下载</a>
-        <a href="spots.html">极境坐标</a>
-        <a href="consult.html" class="active">私人定制</a>
+        <a href="radar.html">避坑雷达</a>
+        <a href="hub.html" class="active">极境导航</a>
     </div>
 
     <div class="breadcrumb-nav">
         <a href="index.html" class="crumb-link">首页</a><span class="crumb-separator">/</span>
-        <span class="crumb-current">私人定制</span>
+        <a href="hub.html" class="crumb-link">极境导航</a><span class="crumb-separator">/</span>
+        <span class="crumb-current">智能路线演算引擎</span>
     </div>
 
     <main class="container">
         <span class="cs-tag">AI ITINERARY ENGINE</span>
-        <h1 class="cs-title">极境路线智能演算工作台</h1>
-        <p class="cs-desc">选择探险条件，算法将自动调取主理人实地勘测的私有坐标库，生成包含动态轨迹与防坑指南的硬核路书。或使用右侧工具箱自助查询。</p>
+        <h1 class="cs-title">极境路线智能演算</h1>
+        <p class="cs-desc">选择探险条件，算法将自动调取主理人实地勘测的私有坐标库，生成包含动态轨迹与防坑指南的硬核路书。或使用右侧导航库自助查询。</p>
         
         <div class="split-layout">
             
@@ -264,7 +267,7 @@
 
             <aside class="tools-right" id="dynamicToolsContainer">
                 <div class="tool-header">EXTERNAL TOOLS // 极境工具箱</div>
-                </aside>
+            </aside>
 
         </div>
     </main>
@@ -279,11 +282,9 @@
             menuToggle.innerText = mobileOverlay.classList.contains('active') ? '✕' : '☰';
         });
 
-        // 核心突破：前台工具箱动态渲染逻辑
+        // 动态工具箱渲染
         document.addEventListener("DOMContentLoaded", function() {
             const toolsContainer = document.getElementById('dynamicToolsContainer');
-            
-            // 兜底的默认工具
             let toolsArray = [
                 { icon: '🌤️', title: '极光与云图监控', desc: '冰岛官方气象雷达 (vedur.is)，精准查询云层覆盖率与 KP 极光指数。', link: 'https://en.vedur.is/' },
                 { icon: '🚙', title: '官方实时路况排雷', desc: '冬季自驾保命神器 (road.is)，实时查看封路、风速、积雪及暗冰警告。', link: 'https://umferdin.is/en' },
@@ -291,12 +292,10 @@
                 { icon: '🛂', title: '申根签直达预约', desc: 'VFS Global 官方签证中心入口，规避黄牛与虚假中介的纯净通道。', link: 'https://visa.vfsglobal.com/' }
             ];
 
-            // 尝试读取全局数据库覆盖默认数据
             if (typeof dbData !== 'undefined' && dbData.global && dbData.global.tools && dbData.global.tools.length > 0) {
                 toolsArray = dbData.global.tools;
             }
 
-            // 动态生成工具卡片
             toolsArray.forEach(tool => {
                 const toolCard = `
                     <a href="${tool.link}" target="_blank" class="tool-card">
