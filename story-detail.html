@@ -13,8 +13,8 @@
     <title>故事加载中... | DAVID EXPEDITION</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Noto+Sans+SC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
     <script>document.write('<script src="data.js?v=' + new Date().getTime() + '"><\/script>');</script>
     
@@ -77,7 +77,7 @@
         .r-card-tag { color: var(--gold); font-size: 0.7rem; letter-spacing: 2px; margin-bottom: 8px; display: block;}
         .r-card-title { color: #fff; font-size: 1.3rem; font-weight: 700; margin: 0; line-height: 1.3;}
 
-        /* --- 修正后的海报分享中枢 Modal --- */
+        /* --- 高级海报分享 Modal --- */
         .share-modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.92); backdrop-filter: blur(20px); z-index: 11000; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: var(--transition); }
         .share-modal-overlay.active { opacity: 1; visibility: visible; }
         
@@ -87,10 +87,8 @@
         .close-share { position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1); color: #fff; width: 32px; height: 32px; border-radius: 50%; font-size: 1rem; cursor: pointer; z-index: 10; display:flex; justify-content:center; align-items:center; backdrop-filter: blur(4px); transition: 0.3s;}
         .close-share:hover { background: #fff; color: #000; }
         
-        .share-card-cover { width: 100%; height: 200px; position: relative; background: #222; overflow: hidden;}
-        /* 核心修复：废除 background-image，改用真实的 img 标签强行注入 CORS */
-        .share-card-cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        .share-card-cover::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 60%; background: linear-gradient(to top, #0A0A0A, transparent); z-index: 1;}
+        .share-card-cover { width: 100%; height: 200px; background-size: cover; background-position: center; position: relative;}
+        .share-card-cover::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 60%; background: linear-gradient(to top, #0A0A0A, transparent); }
         
         .share-card-content { padding: 0 25px 30px 25px; position: relative; z-index: 2; margin-top: -30px;}
         .share-card-tag { font-family: var(--font-mono); font-size: 0.65rem; color: var(--gold); letter-spacing: 3px; margin-bottom: 12px; }
@@ -101,14 +99,14 @@
         .share-brand span { font-family: var(--font-zh); font-weight: 300; font-size: 0.65rem; letter-spacing: 1px; color: #555; display: block; margin-top: 5px; text-transform: none;}
         .qr-wrapper { background: #fff; padding: 6px; border-radius: 6px; width: 64px; height: 64px; flex-shrink: 0;}
         
-        .share-actions { display: flex; flex-direction: column; align-items: center; margin-top: 30px; opacity: 0; transform: translateY(10px); transition: 0.5s; transition-delay: 0.2s; position: relative; z-index: 102;}
+        .share-actions { display: flex; flex-direction: column; align-items: center; margin-top: 30px; opacity: 0; transform: translateY(10px); transition: 0.5s; transition-delay: 0.2s;}
         .share-modal-overlay.active .share-actions { opacity: 1; transform: translateY(0); }
         .share-tip { font-size: 0.8rem; color: var(--text-dimmed); letter-spacing: 1px; margin-bottom: 15px;}
         .share-copy-btn { padding: 14px 35px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; border-radius: 40px; cursor: pointer; font-size: 0.85rem; transition: 0.3s; font-family: 'Noto Sans SC'; letter-spacing: 1px;}
         .share-copy-btn:hover { background: #fff; color: #000;}
 
-        /* 用于承载图片的绝对透明覆盖层 */
-        #generatedShareImage { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; z-index: 100; cursor: pointer; border-radius: 16px; display: none;}
+        /* --- 生成并叠加的图片 --- */
+        #generatedShareImage { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; z-index: 100; cursor: pointer;}
 
         #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: #111; border: 1px solid var(--gold); color: var(--gold); padding: 12px 25px; border-radius: 40px; font-size: 0.85rem; letter-spacing: 1px; opacity: 0; transition: var(--transition); z-index: 9999; box-shadow: 0 10px 30px rgba(0,0,0,0.8); pointer-events: none; }
         #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
@@ -192,12 +190,10 @@
     <div class="share-modal-overlay" id="shareModal">
         <div class="share-card" id="shareCardHTML">
             <button class="close-share" onclick="closeShareModal()">✕</button>
-            <div class="share-card-cover">
-                <img src="" id="shareCoverImg" crossorigin="anonymous">
-            </div>
+            <div class="share-card-cover" id="shareCover"></div>
             <div class="share-card-content">
                 <div class="share-card-tag">STORY LOG</div>
-                <h3 class="share-card-title" id="shareTitle">加载中...</h3>
+                <h3 class="share-card-title" id="shareTitle">文章标题</h3>
                 <div class="share-card-footer">
                     <div class="share-brand">DAVID EXPEDITION<span>探索世界隐秘的B面</span></div>
                     <div class="qr-wrapper" id="qrcode-container"></div>
@@ -206,7 +202,7 @@
             <img src="" id="generatedShareImage">
         </div>
         <div class="share-actions">
-            <p class="share-tip" id="shareTipText">提取视觉资产中...</p>
+            <p class="share-tip" id="shareTipText">海报生成中...</p>
             <button class="share-copy-btn" onclick="copyShareText()">📄 复制精美图文链接</button>
         </div>
     </div>
@@ -223,63 +219,46 @@
         
         async function openShareModal() {
             if(!currentArticleData) return;
-            const modal = document.getElementById('shareModal');
-            const tip = document.getElementById('shareTipText');
-            const target = document.getElementById('shareCardHTML');
-            const generatedImg = document.getElementById('generatedShareImage');
-            const coverImg = document.getElementById('shareCoverImg');
-            
-            // 初始化清理重置
-            generatedImg.style.display = 'none';
-            generatedImg.src = '';
-            tip.innerText = "⏳ 正在拉取高清影像...";
+            document.getElementById('shareCover').style.backgroundImage = `url('${currentArticleData.cover}')`;
             document.getElementById('shareTitle').innerText = currentArticleData.title;
             
+            const modal = document.getElementById('shareModal');
             const qrContainer = document.getElementById('qrcode-container');
             qrContainer.innerHTML = ''; 
             new QRCode(qrContainer, { text: window.location.href, width: 52, height: 52, colorDark : "#000", colorLight : "#fff", correctLevel : QRCode.CorrectLevel.M });
             
             modal.classList.add('active');
+            
+            const target = document.getElementById('shareCardHTML');
+            const tip = document.getElementById('shareTipText');
+            tip.innerText = "⏳ 正在生成专属分享海报...";
+
+            await new Promise(r => setTimeout(r, 200));
 
             try {
-                // 核心突破 1：必须强行挂载跨域头并彻底规避缓存污染
-                await new Promise((resolve) => {
-                    coverImg.onload = resolve;
-                    coverImg.onerror = resolve; // 即使加载失败，也强行通过避免死锁
-                    const cleanUrl = currentArticleData.cover;
-                    // 强制追加时间戳破坏本地受污染缓存
-                    coverImg.src = cleanUrl + (cleanUrl.includes('?') ? '&' : '?') + 'cors_bypass=' + Date.now();
-                });
-
-                tip.innerText = "⏳ 正在刻录专属海报...";
-                
-                // 核心突破 2：让出 300ms 线程，确保浏览器把图片和二维码彻底画进 DOM 里
-                await new Promise(r => setTimeout(r, 300));
-
                 const canvas = await html2canvas(target, {
                     useCORS: true,
-                    allowTaint: false, // 必须设为 false 才能执行 toDataURL
+                    allowTaint: false,
                     scale: 2,
-                    backgroundColor: "#0A0A0A",
-                    logging: false
+                    backgroundColor: "#0A0A0A"
                 });
 
                 const imgData = canvas.toDataURL("image/jpeg", 0.9);
                 tip.innerText = "👍 生成成功！请长按上方海报保存";
                 
-                // 核心突破 3：用这层生成的图片严格遮盖在顶层，截获用户的长按手势
+                const generatedImg = document.getElementById('generatedShareImage');
                 generatedImg.src = imgData;
-                generatedImg.style.display = 'block';
-                generatedImg.style.opacity = '0.01'; // 赋予极弱不透明度，彻底规避某些浏览器的防透明层判定
+                generatedImg.style.opacity = '0'; 
 
             } catch (e) {
-                console.error("Poster generation error:", e);
-                tip.innerText = "❌ 海报生成失败，请尝试直接手机截屏";
+                console.error("Poster generation failed:", e);
+                tip.innerText = "❌ 海报生成失败，请尝试手机截屏分享";
             }
         }
         
         function closeShareModal() { 
             document.getElementById('shareModal').classList.remove('active'); 
+            document.getElementById('shareTipText').innerText = "海报生成中..."; 
         }
         
         function copyShareText() {
