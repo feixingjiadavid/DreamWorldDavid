@@ -18,13 +18,11 @@
     <style>
         :root {
             --bg-base: #050505; --text-primary: #FFFFFF; --text-dimmed: #888888;
-            --gold: #D4AF37; --radius: 8px; --transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            --border: rgba(255,255,255,0.05);
+            --gold: #D4AF37; --border: rgba(255,255,255,0.05); --radius: 8px; --transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: var(--bg-base); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; -webkit-font-smoothing: antialiased; overflow-x: hidden;}
+        body { background: var(--bg-base); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; -webkit-font-smoothing: antialiased; overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh;}
 
-        /* 全站统一高定暗黑菜单 */
         nav { padding: 30px 6vw; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: rgba(5,5,5,0.8); backdrop-filter: blur(20px); z-index: 100; font-size: 0.95rem; font-weight: 500; letter-spacing: 1px;}
         .nav-brand a { color: var(--text-primary); text-decoration: none; font-weight: 700; font-size: 1.2rem; letter-spacing: 2px; transition: color 0.3s ease; position: relative; z-index: 101;}
         .nav-brand a:hover { color: var(--gold); } 
@@ -33,20 +31,20 @@
         .nav-links a:hover, .nav-links a.active { color: var(--text-primary); }
         .nav-links a.active::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--text-primary); }
         .mobile-menu-btn { display: none; background: transparent; border: none; color: #fff; font-size: 1.8rem; cursor: pointer; z-index: 101; position: relative; width: 40px; height: 40px; }
+        
         .mobile-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(5,5,5,0.98); backdrop-filter: blur(15px); z-index: 99; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: var(--transition); }
         .mobile-overlay.active { opacity: 1; visibility: visible; }
         .mobile-overlay a { color: #fff; text-decoration: none; font-size: 2rem; font-weight: 700; letter-spacing: 4px; margin: 20px 0; opacity: 0; transform: translateY(20px); transition: var(--transition); }
         .mobile-overlay.active a { opacity: 1; transform: translateY(0); }
         .mobile-overlay a.active { color: var(--gold); }
 
-        /* 面包屑导航 (纯正中文) */
         .breadcrumb-nav { padding: 30px 6vw; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); font-family: 'Inter', sans-serif; font-size: 0.8rem; letter-spacing: 1px;}
         .crumb-link { color: var(--text-dimmed); text-decoration: none; transition: color 0.3s;}
         .crumb-link:hover { color: var(--gold); }
         .crumb-separator { color: #444; font-size: 0.8rem;}
-        .crumb-current { color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif;}
+        .crumb-current { color: var(--text-primary);}
 
-        .container { max-width: 1600px; margin: 0 auto; padding: 60px 6vw; min-height: 80vh; }
+        .container { max-width: 1600px; margin: 0 auto; padding: 60px 6vw; flex: 1; width: 100%; }
         .page-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 60px; gap: 40px; flex-wrap: wrap;}
         .title-area h1 { font-size: 3.5rem; font-weight: 700; letter-spacing: -1px; margin-bottom: 10px; margin-top: 0;}
         .title-area p { color: var(--text-dimmed); font-size: 1.1rem; margin: 0;}
@@ -76,13 +74,15 @@
         .btn-load-more { display: inline-block; padding: 14px 40px; background: transparent; border: 1px solid rgba(255,255,255,0.2); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; font-size: 0.95rem; font-weight: 500; letter-spacing: 2px; border-radius: 40px; cursor: pointer; transition: var(--transition); outline: none;}
         .btn-load-more:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-3px); }
 
+        .site-footer { border-top: 1px solid var(--border); padding: 40px 0; text-align: center; font-family: 'Inter'; font-size: 0.8rem; color: var(--text-dimmed); letter-spacing: 2px; margin-top: auto;}
+
         @media (max-width: 900px) {
             .page-header { flex-direction: column; align-items: flex-start; }
             .story-grid { grid-template-columns: 1fr; gap: 30px; }
         }
 
         @media (max-width: 768px) {
-            nav { padding: 20px 5vw; border-bottom: none; background: var(--bg-base);}
+            nav { padding: 20px 5vw; position: relative; backdrop-filter: none; background: var(--bg-base); }
             .nav-links { display: none; }
             .mobile-menu-btn { display: block; }
             .nav-brand a { font-size: 1.1rem; letter-spacing: 2px; }
@@ -103,14 +103,6 @@
             .btn-load-more { width: 100%; padding: 12px 0; font-size: 0.85rem; }
         }
     </style>
-
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LJQMME1NDE"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-LJQMME1NDE');
-    </script>
 </head>
 <body>
 
@@ -159,24 +151,25 @@
         </div>
     </main>
 
+    <footer class="site-footer">© 2026 戴维的梦想世界.</footer>
+
     <script>
         const menuToggle = document.getElementById('menuToggle');
         const mobileOverlay = document.getElementById('mobileOverlay');
         let isMenuOpen = false;
-        if(menuToggle && mobileOverlay) {
-            menuToggle.addEventListener('click', () => {
-                isMenuOpen = !isMenuOpen;
-                if(isMenuOpen) {
-                    mobileOverlay.classList.add('active');
-                    menuToggle.innerText = '✕';
-                    document.body.style.overflow = 'hidden';
-                } else {
-                    mobileOverlay.classList.remove('active');
-                    menuToggle.innerText = '☰';
-                    document.body.style.overflow = 'auto';
-                }
-            });
-        }
+
+        menuToggle.addEventListener('click', () => {
+            isMenuOpen = !isMenuOpen;
+            if(isMenuOpen) {
+                mobileOverlay.classList.add('active');
+                menuToggle.innerText = '✕';
+                document.body.style.overflow = 'hidden';
+            } else {
+                mobileOverlay.classList.remove('active');
+                menuToggle.innerText = '☰';
+                document.body.style.overflow = 'auto';
+            }
+        });
 
         function getFastCdnUrl(url) {
             if (!url) return '';
