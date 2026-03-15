@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="referrer" content="no-referrer">
-    <title>故事详情 | DAVID EXPEDITION</title>
+    
+    <title>故事加载中... | DAVID EXPEDITION</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     
     <script>document.write('<script src="data.js?v=' + new Date().getTime() + '"><\/script>');</script>
@@ -22,7 +23,6 @@
         @keyframes breath { 0% { opacity: 0.3; transform: scale(0.98); } 50% { opacity: 1; transform: scale(1); } 100% { opacity: 0.3; transform: scale(0.98); } }
         body.loaded #init-loader { opacity: 0; visibility: hidden; }
 
-        /* 面包屑导航 (横向滚动优化) */
         .breadcrumb-nav { padding: 30px 6vw; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); font-family: 'Inter', sans-serif; font-size: 0.8rem; letter-spacing: 1px; white-space: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;}
         .breadcrumb-nav::-webkit-scrollbar { display: none; }
         .crumb-link { color: var(--text-dimmed); text-decoration: none; transition: color 0.3s; text-transform: uppercase; flex-shrink: 0;}
@@ -59,7 +59,6 @@
         #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: #111; border: 1px solid var(--gold); color: var(--gold); padding: 12px 25px; border-radius: 40px; font-size: 0.85rem; letter-spacing: 1px; opacity: 0; transition: var(--transition); z-index: 9999; box-shadow: 0 10px 30px rgba(0,0,0,0.8); pointer-events: none; }
         #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
-        /* 回到顶部按钮 */
         .back-to-top { position: fixed; bottom: 40px; right: 40px; width: 45px; height: 45px; border-radius: 50%; background: rgba(17,17,17,0.8); border: 1px solid rgba(212,175,55,0.3); color: var(--gold); font-size: 1.2rem; cursor: pointer; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: var(--transition); z-index: 99; backdrop-filter: blur(5px);}
         .back-to-top.show { opacity: 1; visibility: visible; transform: translateY(0); }
         .back-to-top:hover { background: var(--gold); color: #000; border-color: var(--gold); }
@@ -67,7 +66,6 @@
         .site-footer { border-top: 1px solid rgba(255,255,255,0.05); padding: 40px 0; text-align: center; font-family: 'Inter'; font-size: 0.8rem; color: var(--text-dimmed); letter-spacing: 2px; }
         #loadingState { text-align: center; color: var(--gold); letter-spacing: 2px; margin-top: 100px; font-family: 'Inter'; display: none; }
 
-        /* 移动端专属适配 */
         @media (max-width: 900px) {
             .story-grid-layout { grid-template-columns: 1fr; gap: 40px; }
             .story-article { border-left: none; padding-left: 0; }
@@ -76,8 +74,7 @@
 
         @media (max-width: 768px) {
             .breadcrumb-nav { padding: 20px 5vw; font-size: 0.75rem;}
-            .crumb-current { max-width: none; } /* 允许手机上横划看完标题 */
-            
+            .crumb-current { max-width: none; } 
             .container { padding: 20px 5vw 80px 5vw; }
             .media-container { border-radius: 0; margin-left: -5vw; width: 100vw; margin-bottom: 30px; border-left: none; border-right: none;}
             .story-tag { font-size: 0.75rem; margin-bottom: 15px; }
@@ -89,8 +86,6 @@
             .cta-text { font-size: 0.85rem; line-height: 1.6;}
             .cta-btn { width: 100%; text-align: center; }
             .action-bar { margin-top: 30px; padding-top: 20px; justify-content: space-around; width: 100%;}
-            
-            /* 拇指友好的回到顶部位置 */
             .back-to-top { bottom: 25px; right: 25px; width: 44px; height: 44px; font-size: 1.1rem; box-shadow: 0 4px 15px rgba(0,0,0,0.5);}
         }
     </style>
@@ -188,7 +183,6 @@
             setTimeout(() => { toast.classList.remove('show'); }, 3000);
         }
 
-        // 回到顶部逻辑
         const backToTopBtn = document.getElementById('backToTop');
         window.addEventListener('scroll', () => {
             if (window.scrollY > 400) {
@@ -227,10 +221,12 @@
                 return;
             }
 
-            // 面包屑渲染
-            document.getElementById('r_breadcrumb_title').innerText = story.title;
+            // 【极致修复】动态植入真实 SEO 网页标题
+            document.title = `${story.title} | DAVID EXPEDITION`;
 
+            document.getElementById('r_breadcrumb_title').innerText = story.title;
             document.getElementById('r_title').innerHTML = story.title.replace('：', '：<br>');
+            
             const displayDate = (story.trip_date && story.trip_date.trim() !== '') ? story.trip_date : story.date;
             document.getElementById('r_date').innerText = displayDate.replace(/-/g, '.');
             document.getElementById('r_location').innerText = story.location || "未知";
@@ -239,7 +235,14 @@
             const finalCoverUrl = getFastCdnUrl(story.cover);
 
             if (story.bilibili_bvid && story.bilibili_bvid.trim() !== "") {
-                const vid = story.bilibili_bvid.trim();
+                let vid = story.bilibili_bvid.trim();
+                
+                // 【极致修复】防呆设计：如果运营人员傻傻地粘贴了完整的网址，智能提取 BV 号
+                if (!vid.endsWith('.mp4')) {
+                    const bvMatch = vid.match(/(BV[a-zA-Z0-9]+)/);
+                    if (bvMatch) vid = bvMatch[1];
+                }
+
                 if (vid.endsWith('.mp4')) {
                     mediaBox.innerHTML = `<video controls poster="${finalCoverUrl}"><source src="${vid}" type="video/mp4"></video>`;
                 } else {
