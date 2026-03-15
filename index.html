@@ -7,7 +7,6 @@
     
     <meta property="og:title" content="戴维的梦想世界 | DAVID EXPEDITION">
     <meta property="og:description" content="记录这个世界隐秘的B面。硬核干货储备：从签证策略到无人区驾驶指南。">
-    <meta property="og:image" content="https://images.unsplash.com/photo-1476610182048-b716b8518aae?q=80&w=1200&auto=format&fit=crop">
     <meta property="og:type" content="website">
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&family=JetBrains+Mono:wght@100;300;400&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
@@ -23,7 +22,7 @@
         html { scroll-behavior: smooth; }
         body { background-color: var(--bg-base); color: var(--text-primary); font-family: var(--font-zh); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
         
-        #init-loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--bg-base); z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.4s ease, visibility 0.4s ease; }
+        #init-loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--bg-base); z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.8s ease, visibility 0.8s ease; }
         .loader-brand { font-family: var(--font-zh); font-size: 1.2rem; font-weight: 700; letter-spacing: 4px; color: var(--gold); animation: breath 2s infinite ease-in-out;}
         @keyframes breath { 0% { opacity: 0.3; transform: scale(0.98); } 50% { opacity: 1; transform: scale(1); } 100% { opacity: 0.3; transform: scale(0.98); } }
         body.loaded #init-loader { opacity: 0; visibility: hidden; }
@@ -97,27 +96,31 @@
         .btn-view-more { display: inline-block; padding: 14px 35px; background: transparent; border: 1px solid rgba(255,255,255,0.2); color: var(--text-primary); font-family: var(--font-zh); font-size: 0.95rem; font-weight: 500; letter-spacing: 2px; border-radius: 40px; text-decoration: none; transition: all 0.3s ease; }
         .btn-view-more:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-3px); }
 
-        /* 纯净版极简底部联系区块 */
+        /* 核心修复：纯净版左右分栏底部 */
         .footer-contact-section { margin-top: 100px; padding: 60px 6vw; background: #0A0A0A; border-radius: 20px; border: 1px solid rgba(255,255,255,0.03); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 40px;}
-        .fc-left { display: flex; flex-direction: column; gap: 20px;}
+        .fc-left { display: flex; flex-direction: column; gap: 15px;}
         .fc-title { font-size: 3rem; font-weight: 900; margin: 0; letter-spacing: 2px; color: #fff;}
         .fc-email { font-family: var(--font-mono); font-size: 1.5rem; color: var(--gold); text-decoration: none; border-bottom: 1px dashed var(--gold); padding-bottom: 5px; transition: 0.3s; width: max-content;}
         .fc-email:hover { color: #fff; border-color: #fff;}
         
-        .qr-row { display: flex; gap: 20px; align-items: flex-end; flex-wrap: nowrap;} 
+        .qr-matrix { display: flex; gap: 40px; align-items: flex-end;} 
         .qr-item { display: flex; flex-direction: column; align-items: center; gap: 12px;}
-        .qr-label { font-size: 0.75rem; color: #666; letter-spacing: 2px; text-transform: uppercase; font-weight: 700;}
-        /* 巨大化二维码，保证横排显示 */
-        .qr-box { width: 160px; height: 160px; background: #111; border-radius: 12px; padding: 12px; border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: center; align-items: center;}
+        .qr-label { font-size: 0.8rem; color: #888; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; font-family: 'Noto Sans SC', sans-serif;}
+        
+        /* 二维码尺寸控制在150px，保证左右对齐时绝不折行 */
+        .qr-box { width: 150px; height: 150px; background: #111; border-radius: 12px; padding: 12px; border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: center; align-items: center; transition: 0.3s;}
+        .qr-box:hover { border-color: #38bdf8; box-shadow: 0 10px 30px rgba(0,0,0,0.8); transform: translateY(-5px);}
         .qr-box img { width: 100%; height: 100%; object-fit: contain; border-radius: 6px;}
 
         .site-footer { border-top: 1px solid rgba(255,255,255,0.05); padding: 40px 0; text-align: center; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-dimmed); text-transform: uppercase; letter-spacing: 2px; margin-top: 40px;}
 
         @media (max-width: 1024px) {
             .video-grid { grid-template-columns: 1fr; }
-            .footer-contact-section { flex-direction: column; text-align: center; align-items: center;}
+            /* 平板及以下屏幕才允许折叠居中 */
+            .footer-contact-section { flex-direction: column; text-align: center; justify-content: center; gap: 50px;}
             .fc-left { align-items: center;}
-            .qr-box { width: 140px; height: 140px;}
+            .qr-matrix { flex-wrap: wrap; justify-content: center; gap: 30px;}
+            .qr-box { width: 140px; height: 140px; }
         }
         @media (max-width: 768px) {
             .page-wrapper { padding: 25px 20px; }
@@ -156,10 +159,9 @@
             
             .btn-view-more { padding: 12px 20px; font-size: 0.85rem; width: 100%; text-align: center; border-radius: 30px;}
 
-            .footer-contact-section { padding: 50px 20px; margin-top: 60px; }
+            .footer-contact-section { padding: 50px 20px; margin-top: 60px; gap: 40px;}
             .fc-title { font-size: 2rem;}
             .fc-email { font-size: 1.2rem; }
-            .qr-row { gap: 15px; flex-wrap: wrap; justify-content: center;}
             .qr-box { width: 120px; height: 120px; }
         }
     </style>
@@ -183,20 +185,20 @@
                 <a href="index.html" class="active">首页</a>
                 <a href="stories.html">旅行故事</a>
                 <a href="guides.html">攻略指南</a>
-                <a href="toolkit.html">干货库</a>
+                <a href="toolkit.html">资料下载</a>
                 <a href="spots.html">极境坐标</a>
-                <a href="consult.html">私人定制</a>
+                <a href="consult.html">智能路书</a>
             </div>
             <button class="mobile-menu-btn" id="menuToggle">☰</button>
         </nav>
 
         <div class="mobile-overlay" id="mobileOverlay">
-            <a href="index.html" class="active">首页</a>
-            <a href="stories.html">旅行故事</a>
-            <a href="guides.html">攻略指南</a>
-            <a href="toolkit.html">干货库</a>
-            <a href="spots.html">极境坐标</a>
-            <a href="consult.html">私人定制</a>
+            <a href="index.html" class="active">HOME / 首页</a>
+            <a href="stories.html">STORIES / 旅行故事</a>
+            <a href="guides.html">GUIDES / 攻略指南</a>
+            <a href="toolkit.html">TOOLKIT / 资料下载</a>
+            <a href="spots.html">SPOTS / 极境坐标</a>
+            <a href="consult.html">BESPOKE / 智能路书</a>
         </div>
 
         <a href="stories.html" class="teaser-strip">
@@ -225,7 +227,7 @@
                 <p class="philosophy-desc" id="renderBio">“互联网大厂打工人，用年假去拍世界的B面”——这是我的真实身份，也是创作的底色。作为一名冷门目的地的记录者，我用心讲述每一次旅程，拒绝平庸的叙事逻辑。无论是法罗群岛的极夜风暴，还是冰岛的无人区冰川，在这里，我将用真实的镜头和纯粹的文字，将极境最原本的故事带回现实。</p>
                 <div class="philosophy-signature">
                     <div id="renderName" style="display:inline;">DAVID.</div>
-                    <span id="renderTags">// 冷门目的地记录者</span>
+                    <span id="renderTags">// 记录者</span>
                 </div>
             </div>
         </section>
@@ -253,7 +255,7 @@
                 <h2 class="fc-title">联系我们</h2>
                 <a href="#" class="fc-email" id="renderEmail">Awaiting Database...</a>
             </div>
-            <div class="qr-row">
+            <div class="qr-matrix">
                 <div class="qr-item">
                     <div class="qr-box"><img src="https://images.unsplash.com/photo-1520106212299-d99c443e4568?q=80&w=400" id="qrXhs" style="display:block;" alt="QR"></div>
                     <span class="qr-label">小红书</span>
@@ -313,7 +315,6 @@
                 if(g.heroBanner && g.heroBanner.trim() !== '') document.getElementById('heroBannerImg').src = getFastCdnUrl(g.heroBanner); 
                 if(g.footer && g.footer.trim() !== '') document.getElementById('renderFooter').innerText = g.footer;
                 
-                // 核心修复：解决双斜杠叠加问题
                 if(g.tags && g.tags.trim() !== '') {
                     let t = g.tags.trim();
                     if(!t.startsWith('//')) t = '// ' + t;
@@ -350,6 +351,7 @@
                     targetArray.forEach(item => {
                         const hasVideo = (item.bilibili_bvid && item.bilibili_bvid.trim() !== '') || (item.video && item.video.trim() !== '');
                         const playIconHtml = hasVideo ? `<div class="play-icon"></div>` : '';
+                        const tagClass = item.bilibili_bvid ? 'tag-story' : 'tag-guide';
                         const targetUrl = item.paragraphs ? 'story-detail.html' : 'guide-detail.html';
                         
                         grid.innerHTML += `
@@ -358,7 +360,7 @@
                                 <div class="card-overlay"></div>
                                 ${playIconHtml}
                                 <div class="card-content">
-                                    <span class="card-tag" style="font-family:'Inter'; color:#38bdf8;">${defaultTagText}</span>
+                                    <span class="card-tag ${tagClass}">${defaultTagText}</span>
                                     <h2 class="card-title">${item.title}</h2>
                                 </div>
                             </a>`;
