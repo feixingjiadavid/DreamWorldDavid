@@ -6,12 +6,12 @@
     <meta name="referrer" content="no-referrer">
     <meta name="theme-color" content="#050505">
     
-    <meta property="og:title" content="探索记录 | DAVID EXPEDITION">
+    <meta property="og:title" content="探索记录 | 戴维的梦想世界">
     <meta property="og:description" content="记录世界的隐秘B面，不走马观花。">
     <meta property="og:image" content="https://images.unsplash.com/photo-1476610182048-b716b8518aae?q=80&w=1200&auto=format&fit=crop">
     <meta property="og:type" content="article">
     
-    <title>故事加载中... | DAVID EXPEDITION</title>
+    <title>故事加载中... | 戴维的梦想世界</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Noto+Sans+SC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
@@ -22,38 +22,39 @@
     <style>
         :root { --bg-base: #050505; --text-primary: #FFFFFF; --text-dimmed: #888888; --gold: #D4AF37; --border: rgba(255,255,255,0.05); --radius: 8px; --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); --font-mono: 'JetBrains Mono', monospace;}
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: var(--bg-base); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; -webkit-font-smoothing: antialiased; line-height: 1.8; overflow-x: hidden;}
+        body { background: var(--bg-base); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; -webkit-font-smoothing: antialiased; line-height: 1.8; overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh;}
 
         #init-loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--bg-base); z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.5s ease, visibility 0.5s ease; }
-        .loader-brand { font-family: 'Inter', sans-serif; font-size: 1.2rem; font-weight: 700; letter-spacing: 6px; color: var(--gold); animation: breath 2s infinite ease-in-out; text-transform: uppercase;}
+        .loader-brand { font-family: 'Noto Sans SC', sans-serif; font-size: 1.2rem; font-weight: 700; letter-spacing: 4px; color: var(--gold); animation: breath 2s infinite ease-in-out; text-transform: uppercase;}
         @keyframes breath { 0% { opacity: 0.3; transform: scale(0.98); } 50% { opacity: 1; transform: scale(1); } 100% { opacity: 0.3; transform: scale(0.98); } }
         body.loaded #init-loader { opacity: 0; visibility: hidden; }
 
         /* 全站统一高定暗黑菜单 */
         nav { display: flex; justify-content: space-between; align-items: center; padding: 30px 6vw; font-size: 0.95rem; font-weight: 500; letter-spacing: 1px; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: rgba(5,5,5,0.8); backdrop-filter: blur(20px); z-index: 100;}
-        .nav-brand a { color: var(--text-primary); text-decoration: none; font-weight: 500; font-size: 1.2rem; letter-spacing: 4px; transition: color 0.3s ease; position: relative; z-index: 101;}
+        .nav-brand a { color: var(--text-primary); text-decoration: none; font-weight: 700; font-size: 1.2rem; letter-spacing: 2px; transition: color 0.3s ease; position: relative; z-index: 101;}
         .nav-brand a:hover { color: var(--gold); } 
         .nav-links { display: flex; gap: 50px; align-items: center; }
         .nav-links a { color: var(--text-dimmed); text-decoration: none; position: relative; padding-bottom: 6px; transition: color 0.3s ease; letter-spacing: 1px; white-space: nowrap;}
         .nav-links a:hover, .nav-links a.active { color: var(--text-primary); }
         .nav-links a.active::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--text-primary); }
         .mobile-menu-btn { display: none; background: transparent; border: none; color: #fff; font-size: 1.8rem; cursor: pointer; z-index: 101; position: relative; width: 40px; height: 40px; }
+        
         .mobile-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(5,5,5,0.98); backdrop-filter: blur(15px); z-index: 99; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: var(--transition); }
         .mobile-overlay.active { opacity: 1; visibility: visible; }
         .mobile-overlay a { color: #fff; text-decoration: none; font-size: 2rem; font-weight: 700; letter-spacing: 4px; margin: 20px 0; opacity: 0; transform: translateY(20px); transition: var(--transition); }
         .mobile-overlay.active a { opacity: 1; transform: translateY(0); }
         .mobile-overlay a.active { color: var(--gold); }
 
+        /* 中文面包屑 */
         .breadcrumb-nav { padding: 30px 6vw; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); font-family: 'Inter', sans-serif; font-size: 0.8rem; letter-spacing: 1px; white-space: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;}
         .breadcrumb-nav::-webkit-scrollbar { display: none; }
-        .crumb-link { color: var(--text-dimmed); text-decoration: none; transition: color 0.3s; text-transform: uppercase; flex-shrink: 0;}
+        .crumb-link { color: var(--text-dimmed); text-decoration: none; transition: color 0.3s;}
         .crumb-link:hover { color: var(--gold); }
         .crumb-separator { color: #444; font-size: 0.8rem; flex-shrink: 0;}
         .crumb-current { color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; overflow: hidden; text-overflow: ellipsis; max-width: 250px; flex-shrink: 0;}
 
-        .container { max-width: 1200px; margin: 0 auto; padding: 40px 6vw 80px 6vw; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 6vw 80px 6vw; flex: 1; width: 100%;}
         
-        /* 核心：防塌陷动画与视频伪装层 (Facade) */
         @keyframes imgFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .media-container { width: 100%; border-radius: var(--radius); overflow: hidden; margin-bottom: 60px; background: #111; border: 1px solid var(--border); box-shadow: 0 30px 60px rgba(0,0,0,0.5); aspect-ratio: 16/9; position: relative;}
         .media-container iframe, .media-container img, .media-container video { width: 100%; height: 100%; object-fit: cover; display: block; border: none; animation: imgFadeIn 0.8s ease forwards;}
@@ -104,12 +105,11 @@
         .r-card-tag { color: var(--gold); font-size: 0.7rem; letter-spacing: 2px; margin-bottom: 8px; display: block;}
         .r-card-title { color: #fff; font-size: 1.3rem; font-weight: 700; margin: 0; line-height: 1.3;}
 
-        /* --- 核心优化：全屏滑动画廊 (Swipe Lightbox) --- */
+        /* 滑动灯箱 */
         .lightbox-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.96); z-index: 10000; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: var(--transition); backdrop-filter: blur(10px); }
         .lightbox-overlay.active { opacity: 1; visibility: visible; }
         .lightbox-img { max-width: 95vw; max-height: 90vh; object-fit: contain; transform: scale(0.9); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); user-select: none;}
         .lightbox-overlay.active .lightbox-img { transform: scale(1); }
-        
         .lb-btn { position: absolute; top: 50%; transform: translateY(-50%); width: 50px; height: 50px; background: rgba(255,255,255,0.1); border: none; border-radius: 50%; color: #fff; font-size: 1.5rem; cursor: pointer; z-index: 10001; transition: 0.3s; display: flex; justify-content: center; align-items: center;}
         .lb-btn:hover { background: var(--gold); color: #000; }
         .lb-prev { left: 20px; }
@@ -118,7 +118,7 @@
         .lb-close:hover { background: #ff4d4f; }
         .lb-counter { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,0.6); font-family: var(--font-mono); font-size: 0.85rem; letter-spacing: 2px;}
 
-        /* 分享卡片模块 */
+        /* 分享海报 Modal */
         .share-modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.92); backdrop-filter: blur(20px); z-index: 11000; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: var(--transition); }
         .share-modal-overlay.active { opacity: 1; visibility: visible; }
         .share-card { background: #0A0A0A; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; width: 88%; max-width: 360px; overflow: hidden; transform: translateY(30px) scale(0.95); transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 30px 60px rgba(0,0,0,0.8); position: relative;}
@@ -146,17 +146,23 @@
         #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
         .back-to-top { position: fixed; bottom: 40px; right: 40px; width: 45px; height: 45px; border-radius: 50%; background: rgba(17,17,17,0.8); border: 1px solid rgba(212,175,55,0.3); color: var(--gold); font-size: 1.2rem; cursor: pointer; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: var(--transition); z-index: 99; backdrop-filter: blur(5px);}
         .back-to-top.show { opacity: 1; visibility: visible; transform: translateY(0); }
-        .site-footer { border-top: 1px solid var(--border); padding: 40px 0; text-align: center; font-family: 'Inter'; font-size: 0.8rem; color: var(--text-dimmed); letter-spacing: 2px; }
-        #loadingState { text-align: center; color: var(--gold); letter-spacing: 2px; margin-top: 100px; font-family: 'Inter'; display: none; }
+        .site-footer { border-top: 1px solid var(--border); padding: 40px 0; text-align: center; font-family: 'Inter'; font-size: 0.8rem; color: var(--text-dimmed); letter-spacing: 2px; margin-top: auto;}
+
+        /* 错误页 */
+        .error-state { text-align: center; padding: 100px 20px; }
+        .error-title { font-size: 2rem; color: #ff4d4f; margin-bottom: 20px; font-weight: 700;}
+        .error-desc { color: #888; margin-bottom: 40px; line-height: 1.6;}
+        .btn-home { display: inline-block; padding: 12px 30px; border: 1px solid var(--gold); color: var(--gold); text-decoration: none; border-radius: 30px; transition: 0.3s; }
+        .btn-home:hover { background: rgba(212,175,55,0.1); transform: translateY(-3px);}
 
         @media (max-width: 900px) {
             .story-grid-layout { grid-template-columns: 1fr; gap: 40px; }
             .story-article { border-left: none; padding-left: 0; }
             .story-sidebar { padding-right: 0; }
-            .lb-btn { display: none; /* 手机端隐藏物理按键，采用滑动手势 */ }
+            .lb-btn { display: none; }
         }
         @media (max-width: 768px) {
-            nav { padding: 20px 5vw; border-bottom: none; background: var(--bg-base);}
+            nav { padding: 20px 5vw; border-bottom: none; background: var(--bg-base); position: relative;}
             .nav-links { display: none; }
             .mobile-menu-btn { display: block; }
             .nav-brand a { font-size: 1.1rem; letter-spacing: 2px; }
@@ -179,36 +185,44 @@
             .r-card-title { font-size: 1.1rem; }
         }
     </style>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LJQMME1NDE"></script>
-    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-LJQMME1NDE');</script>
 </head>
 <body>
-    <div id="init-loader"><div class="loader-brand">DAVID EXPEDITION</div></div>
+    <div id="init-loader"><div class="loader-brand">戴维的梦想世界</div></div>
     
     <nav>
-        <div class="nav-brand"><a href="index.html">DAVID EXPEDITION</a></div>
+        <div class="nav-brand"><a href="index.html">戴维的梦想世界</a></div>
         <div class="nav-links">
             <a href="index.html">首页</a>
             <a href="stories.html" class="active">旅行故事</a>
             <a href="guides.html">攻略指南</a>
-            <a href="contact.html">合作联系</a>
+            <a href="toolkit.html">干货库</a>
+            <a href="gear.html">装备库</a>
+            <a href="consult.html">私人定制</a>
         </div>
         <button class="mobile-menu-btn" id="menuToggle">☰</button>
     </nav>
     <div class="mobile-overlay" id="mobileOverlay">
-        <a href="index.html">HOME / 首页</a>
-        <a href="stories.html" class="active">STORIES / 旅行故事</a>
-        <a href="guides.html">GUIDES / 攻略指南</a>
-        <a href="contact.html">CONTACT / 合作</a>
+        <a href="index.html">首页</a>
+        <a href="stories.html" class="active">旅行故事</a>
+        <a href="guides.html">攻略指南</a>
+        <a href="toolkit.html">干货库</a>
+        <a href="gear.html">装备库</a>
+        <a href="consult.html">私人定制</a>
     </div>
     
     <div class="breadcrumb-nav">
-        <a href="index.html" class="crumb-link">Home</a><span class="crumb-separator">/</span>
-        <a href="stories.html" class="crumb-link">Stories</a><span class="crumb-separator">/</span>
+        <a href="index.html" class="crumb-link">首页</a><span class="crumb-separator">/</span>
+        <a href="stories.html" class="crumb-link">旅行故事</a><span class="crumb-separator">/</span>
         <span class="crumb-current" id="r_breadcrumb_title">加载中...</span>
     </div>
     
-    <div id="loadingState">读取数据中...</div>
+    <main class="container" id="errorContent" style="display: none;">
+        <div class="error-state">
+            <h1 class="error-title">MISSION ABORTED</h1>
+            <p class="error-desc">该探险档案已被封存或销毁。<br>迷路也是探险的一部分，请返回基地重新选择路线。</p>
+            <a href="index.html" class="btn-home">← 返回大本营</a>
+        </div>
+    </main>
 
     <main class="container" id="mainContent" style="display: none;">
         <div class="media-container" id="r_media"></div>
@@ -255,7 +269,7 @@
                 <div class="share-card-tag">STORY LOG</div>
                 <h3 class="share-card-title" id="shareTitle">加载中...</h3>
                 <div class="share-card-footer">
-                    <div class="share-brand">DAVID EXPEDITION<span>探索世界隐秘的B面</span></div>
+                    <div class="share-brand">戴维的梦想世界<span>探索世界隐秘的B面</span></div>
                     <div class="qr-wrapper" id="qrcode-container"></div>
                 </div>
             </div>
@@ -268,7 +282,7 @@
     </div>
 
     <button id="backToTop" class="back-to-top" title="回到顶部">↑</button>
-    <footer class="site-footer">© 2026 DAVID EXPEDITION.</footer>
+    <footer class="site-footer">© 2026 戴维的梦想世界.</footer>
     <div id="toast">提示信息</div>
 
     <script>
@@ -351,7 +365,7 @@
             } catch (e) { tip.innerText = "❌ 海报生成失败，请尝试直接手机截屏"; }
         }
         function closeShareModal() { document.getElementById('shareModal').classList.remove('active'); document.getElementById('shareTipText').innerText = "海报生成中..."; }
-        function copyShareText() { navigator.clipboard.writeText(`▬ DAVID EXPEDITION ▬\n\n《${document.title.split(' | ')[0]}》\n探索世界隐秘的B面 ↘\n${window.location.href}`); showToast('✓ 专属邀请文案已复制！'); closeShareModal(); }
+        function copyShareText() { navigator.clipboard.writeText(`▬ 戴维的梦想世界 ▬\n\n《${document.title.split(' | ')[0]}》\n探索世界隐秘的B面 ↘\n${window.location.href}`); showToast('✓ 专属邀请文案已复制！'); closeShareModal(); }
 
         function bookmarkPage() { showToast(/macintosh|mac os x/i.test(navigator.userAgent.toLowerCase()) ? `⭐ 请按 ⌘+D 收藏` : `⭐ 请按 Ctrl+D 收藏`); }
         function showToast(msg) { const t = document.getElementById('toast'); t.innerText = msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'), 3000); }
@@ -374,14 +388,20 @@
             const fallbackLoader = setTimeout(dismissGlobalLoader, 8000);
 
             const storyId = new URLSearchParams(window.location.search).get('id');
-            if (!storyId || typeof dbData === 'undefined' || !dbData.stories) { dismissGlobalLoader(); clearTimeout(fallbackLoader); return; }
+            if (!storyId || typeof dbData === 'undefined' || !dbData.stories) { 
+                document.getElementById('errorContent').style.display = "block";
+                dismissGlobalLoader(); clearTimeout(fallbackLoader); return; 
+            }
             
             const story = dbData.stories.find(s => s.id === storyId);
-            if (!story) { dismissGlobalLoader(); clearTimeout(fallbackLoader); return; }
+            if (!story) { 
+                document.getElementById('errorContent').style.display = "block";
+                dismissGlobalLoader(); clearTimeout(fallbackLoader); return; 
+            }
 
             currentArticleData = { title: story.title, cover: getFastCdnUrl(story.cover) };
 
-            document.title = `${story.title} | DAVID EXPEDITION`;
+            document.title = `${story.title} | 戴维的梦想世界`;
             document.getElementById('r_breadcrumb_title').innerText = story.title;
             document.getElementById('r_title').innerHTML = story.title.replace('：', '：<br>');
             document.getElementById('r_date').innerText = ((story.trip_date && story.trip_date.trim()) ? story.trip_date : story.date).replace(/-/g, '.');
