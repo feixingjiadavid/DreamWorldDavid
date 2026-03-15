@@ -236,5 +236,5 @@ const dbData = {
     "footer": ""
   },
   "trash": [],
-  "version": "2.5"
+  "version": "2.6"
 };
