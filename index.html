@@ -36,7 +36,7 @@
 
         .page-wrapper { padding: 40px 6vw; max-width: 1600px; margin: 0 auto;}
         
-        /* 导航栏瘦身：统一6大全矩阵 */
+        /* 全站统一 6 项导航 */
         nav { display: flex; justify-content: space-between; align-items: center; padding-bottom: 20px; font-family: var(--font-zh); font-size: 0.95rem; font-weight: 500; letter-spacing: 1px; border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 20px; position: relative; z-index: 100;}
         .nav-brand a { color: var(--text-primary); text-decoration: none; font-weight: 700; font-size: 1.2rem; letter-spacing: 2px; transition: color 0.3s ease; position: relative; z-index: 101;}
         .nav-brand a:hover { color: var(--gold); } 
@@ -70,7 +70,7 @@
         .teaser-title { font-size: 1.4rem; font-weight: 700; letter-spacing: 2px; margin: 0; text-shadow: 0 2px 10px rgba(0,0,0,0.8);}
         .teaser-meta { font-family: var(--font-zh); font-size: 0.85rem; color: var(--text-dimmed); letter-spacing: 2px; text-shadow: 0 2px 10px rgba(0,0,0,0.8); }
 
-        /* LIVE STATUS 组件 */
+        /* LIVE STATUS 动态组件样式 */
         .live-status-bar { display: inline-flex; align-items: center; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 8px 20px; border-radius: 40px; margin-bottom: 30px; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 1px;}
         .status-dot { width: 8px; height: 8px; background: #52c41a; border-radius: 50%; margin-right: 12px; box-shadow: 0 0 10px #52c41a; animation: pulse 2s infinite;}
         .status-label { color: #888; margin-right: 8px;}
@@ -111,7 +111,7 @@
         .btn-view-more { display: inline-block; padding: 14px 35px; background: transparent; border: 1px solid rgba(255,255,255,0.2); color: var(--text-primary); font-family: var(--font-zh); font-size: 0.95rem; font-weight: 500; letter-spacing: 2px; border-radius: 40px; text-decoration: none; transition: all 0.3s ease; }
         .btn-view-more:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-3px); }
 
-        /* 底部商务合作区块 */
+        /* 补回：首页底部联系区块 */
         .footer-contact-section { margin-top: 100px; padding: 80px 6vw; background: #080808; border-radius: 20px; border: 1px solid rgba(255,255,255,0.03); display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;}
         .fc-title { font-size: 2.5rem; font-weight: 900; margin-bottom: 20px; text-transform: uppercase; letter-spacing: -1px;}
         .fc-email { font-family: var(--font-mono); font-size: 1.4rem; color: var(--gold); text-decoration: none; border-bottom: 1px dashed var(--gold); transition: 0.3s;}
@@ -129,7 +129,6 @@
         }
         @media (max-width: 768px) {
             .page-wrapper { padding: 25px 20px; }
-            
             nav { padding-bottom: 15px; border-bottom: none; }
             .nav-links { display: none; }
             .mobile-menu-btn { display: block; }
@@ -212,7 +211,7 @@
             <div class="teaser-content">
                 <div class="teaser-left">
                     <span class="teaser-tag">COMING SOON</span> 
-                    <h2 class="teaser-title" id="heroTitle">冰岛极境</h2> 
+                    <h2 class="teaser-title" id="heroTitle">加载中...</h2> 
                 </div>
                 <div class="teaser-meta">故事正在路上...</div>
             </div>
@@ -226,13 +225,14 @@
                     <span class="status-text">正在筹备 2026 探险计划</span>
                     <span class="status-location">📍 NEXT DROP: Awaiting...</span>
                 </div>
-                <h1 class="philosophy-statement" id="renderDeclare">世界不缺走马观花的打卡，<br>我用珍贵的<span class="highlight">年假</span>逃离日常，<br>去记录这个世界隐秘的<span class="highlight no-wrap">B面</span></h1>
+
+                <h1 class="philosophy-statement" id="renderDeclare">记录这个世界隐秘的<span class="highlight">B面</span></h1>
             </div>
             <div class="philosophy-body">
-                <p class="philosophy-desc" id="renderBio">“互联网大厂打工人，用年假去拍世界的B面”——这是我的真实身份，也是创作的底色。作为一名冷门目的地的记录者，我用心讲述每一次旅程，拒绝平庸的叙事逻辑。无论是法罗群岛的极夜风暴，还是冰岛的无人区冰川，在这里，我将用真实的镜头和纯粹的文字，将极境最原本的故事带回现实。</p>
+                <p class="philosophy-desc" id="renderBio">读取中...</p>
                 <div class="philosophy-signature">
                     <div id="renderName" style="display:inline;">DAVID.</div>
-                    <span id="renderTags">// 冷门目的地记录者</span>
+                    <span id="renderTags">// 记录者</span>
                 </div>
             </div>
         </section>
@@ -264,13 +264,13 @@
             </div>
             <div class="qr-row">
                 <div class="qr-item"><div class="qr-box"><img src="" id="qrXhs" style="display:none;"></div>小红书</div>
-                <div class="qr-item"><div class="qr-box"><img src="" id="qrBili" style="display:none;"></div>Bilibili</div>
+                <div class="qr-item"><div class="qr-box"><img src="" id="qrBili" style="display:none;"></div>BILIBILI</div>
                 <div class="qr-item"><div class="qr-box"><img src="" id="qrDouyin" style="display:none;"></div>抖音</div>
             </div>
         </section>
     </div>
 
-    <footer class="site-footer" id="renderFooter">© 2026 戴维的梦想世界. ALL RIGHTS RESERVED.</footer>
+    <footer class="site-footer" id="renderFooter">© 2026 戴维的梦想世界.</footer>
 
     <script>
         function getFastCdnUrl(url) {
@@ -279,7 +279,6 @@
             return url;
         }
 
-        // 移动端菜单逻辑
         const menuToggle = document.getElementById('menuToggle');
         const mobileOverlay = document.getElementById('mobileOverlay');
         let isMenuOpen = false;
@@ -289,7 +288,7 @@
             if(isMenuOpen) {
                 mobileOverlay.classList.add('active');
                 menuToggle.innerText = '✕';
-                document.body.style.overflow = 'hidden';
+                document.body.style.overflow = 'hidden'; 
             } else {
                 mobileOverlay.classList.remove('active');
                 menuToggle.innerText = '☰';
@@ -319,7 +318,7 @@
                 if(g.heroDeclare && g.heroDeclare.trim() !== '') document.getElementById('renderDeclare').innerHTML = parseHighlighting(g.heroDeclare);
                 if(g.bio && g.bio.trim() !== '') document.getElementById('renderBio').innerText = g.bio;
 
-                // 底部联系方式自动渲染
+                // 动态渲染页脚联系方式
                 if(g.email) { const eEl = document.getElementById('renderEmail'); eEl.innerText = g.email; eEl.href = `mailto:${g.email}`; }
                 if(g.qrXhs) { const i = document.getElementById('qrXhs'); i.src = getFastCdnUrl(g.qrXhs); i.style.display = 'block'; }
                 if(g.qrBili) { const i = document.getElementById('qrBili'); i.src = getFastCdnUrl(g.qrBili); i.style.display = 'block'; }
