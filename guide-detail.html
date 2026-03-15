@@ -16,32 +16,30 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: var(--bg-base); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; -webkit-font-smoothing: antialiased; line-height: 1.8; overflow-x: hidden;}
 
-        /* 首屏加载幕布 */
         #init-loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--bg-base); z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.8s ease, visibility 0.8s ease; }
         .loader-brand { font-family: 'Inter', sans-serif; font-size: 1.2rem; font-weight: 700; letter-spacing: 6px; color: var(--gold); animation: breath 2s infinite ease-in-out; text-transform: uppercase;}
         @keyframes breath { 0% { opacity: 0.3; transform: scale(0.98); } 50% { opacity: 1; transform: scale(1); } 100% { opacity: 0.3; transform: scale(0.98); } }
         body.loaded #init-loader { opacity: 0; visibility: hidden; }
 
-        nav { padding: 30px 6vw; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .back-btn { color: var(--text-primary); text-decoration: none; font-size: 0.95rem; font-weight: 500; transition: color 0.3s; letter-spacing: 1px;}
-        .back-btn:hover { color: var(--gold); }
+        /* 升级版面包屑导航 */
+        .breadcrumb-nav { padding: 30px 6vw; display: flex; align-items: center; flex-wrap: wrap; gap: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); font-family: 'Inter', sans-serif; font-size: 0.8rem; letter-spacing: 1px;}
+        .crumb-link { color: var(--text-dimmed); text-decoration: none; transition: color 0.3s; text-transform: uppercase;}
+        .crumb-link:hover { color: var(--gold); }
+        .crumb-separator { color: #444; font-size: 0.8rem; }
+        .crumb-current { color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 250px;}
 
         .container { max-width: 1400px; margin: 0 auto; padding: 40px 6vw 120px 6vw; }
 
-        /* 头部信息区 */
         .guide-header { margin-bottom: 50px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 40px;}
         .guide-tag { font-family: 'Inter'; font-size: 0.8rem; color: #38bdf8; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 20px; display: block; font-weight: 700;}
         .guide-title { font-size: clamp(2.5rem, 4vw, 4rem); font-weight: 900; line-height: 1.1; letter-spacing: -1px; margin-bottom: 20px; }
         .guide-meta { color: var(--text-dimmed); font-size: 0.95rem; display: flex; gap: 20px; font-weight: 300;}
 
-        /* 媒体区 */
         .media-container { width: 100%; border-radius: var(--radius); overflow: hidden; margin-bottom: 60px; background: var(--bg-panel); aspect-ratio: 21/9;}
         .media-container iframe, .media-container img, .media-container video { width: 100%; height: 100%; object-fit: cover; display: block; border: none; }
 
-        /* 核心网格布局：侧边目录 + 主内容 */
         .guide-layout { display: grid; grid-template-columns: 240px 1fr; gap: 60px; align-items: start; }
 
-        /* 悬浮目录 (TOC) */
         .toc-sidebar { position: sticky; top: 40px; padding-right: 20px; }
         .toc-title { font-family: 'Inter'; font-size: 0.75rem; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px; font-weight: 700; border-bottom: 1px solid rgba(212,175,55,0.2); padding-bottom: 10px;}
         .toc-list { list-style: none; padding: 0; margin: 0; border-left: 1px solid rgba(255,255,255,0.05);}
@@ -50,11 +48,9 @@
         .toc-link:hover { color: #fff; background: rgba(255,255,255,0.02); }
         .toc-link.active { color: var(--gold); border-left-color: var(--gold); font-weight: 500; background: rgba(212,175,55,0.05);}
 
-        /* 主内容区 */
         .guide-content { font-size: 1.05rem; color: #CCC; font-weight: 300; line-height: 1.8; }
         .intro-text { font-size: 1.15rem; margin-bottom: 60px; color: #fff; line-height: 1.9;}
 
-        /* 干货六宫格 */
         .section-title { font-family: 'Inter'; font-size: 0.85rem; color: var(--gold); letter-spacing: 4px; text-transform: uppercase; margin: 60px 0 30px 0; font-weight: 700; display: flex; align-items: center; gap: 15px;}
         .section-title::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.05); }
         
@@ -63,7 +59,6 @@
         .intel-title { font-size: 1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 10px; }
         .intel-desc { font-size: 0.9rem; color: var(--text-dimmed); margin: 0; }
 
-        /* 逐日行程 */
         .day-block { border-left: 1px dashed rgba(255,255,255,0.1); padding-left: 40px; margin-bottom: 50px; position: relative; scroll-margin-top: 40px;}
         .day-block::before { content: ''; position: absolute; left: -5px; top: 0; width: 9px; height: 9px; background: var(--bg-base); border: 2px solid var(--gold); border-radius: 50%; }
         .day-num { font-family: 'Inter'; font-size: 0.8rem; color: var(--gold); font-weight: 700; letter-spacing: 2px; display: block; margin-bottom: 10px; }
@@ -72,7 +67,6 @@
         .day-tags { display: flex; gap: 10px; flex-wrap: wrap; }
         .tag-pill { background: rgba(255,255,255,0.05); color: #aaa; font-size: 0.8rem; padding: 4px 12px; border-radius: 20px; font-family: 'Inter'; }
 
-        /* 极简分享与收藏模块 CSS */
         .action-bar { display: flex; gap: 20px; align-items: center; margin-top: 80px; padding-top: 30px; border-top: 1px dashed rgba(255,255,255,0.1); }
         .action-btn { background: transparent; border: none; color: var(--text-dimmed); font-family: var(--font-zh); font-size: 0.85rem; letter-spacing: 2px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: var(--transition); outline: none; padding: 0;}
         .action-btn:hover { color: var(--gold); transform: translateY(-2px); }
@@ -81,19 +75,24 @@
         #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: #111; border: 1px solid var(--gold); color: var(--gold); padding: 12px 25px; border-radius: 40px; font-size: 0.85rem; letter-spacing: 1px; opacity: 0; transition: var(--transition); z-index: 9999; box-shadow: 0 10px 30px rgba(0,0,0,0.8); pointer-events: none; }
         #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
+        /* 回到顶部按钮 */
+        .back-to-top { position: fixed; bottom: 40px; right: 40px; width: 45px; height: 45px; border-radius: 50%; background: rgba(17,17,17,0.8); border: 1px solid rgba(212,175,55,0.3); color: var(--gold); font-size: 1.2rem; cursor: pointer; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: var(--transition); z-index: 99; backdrop-filter: blur(5px);}
+        .back-to-top.show { opacity: 1; visibility: visible; transform: translateY(0); }
+        .back-to-top:hover { background: var(--gold); color: #000; border-color: var(--gold); }
+
         .site-footer { border-top: 1px solid rgba(255,255,255,0.05); padding: 40px 0; text-align: center; font-family: 'Inter'; font-size: 0.8rem; color: var(--text-dimmed); letter-spacing: 2px; }
         #loadingState { text-align: center; color: var(--gold); letter-spacing: 2px; margin-top: 100px; font-family: 'Inter'; display: none;}
 
-        /* 移动端适配 */
         @media (max-width: 1024px) {
             .intel-grid { grid-template-columns: 1fr; }
         }
         @media (max-width: 900px) {
             .guide-layout { grid-template-columns: 1fr; gap: 40px; }
-            .toc-sidebar { display: none; /* 移动端隐藏侧边目录，保持纯粹阅读 */ }
+            .toc-sidebar { display: none; }
         }
         @media (max-width: 768px) {
-            nav { padding: 20px 5vw; }
+            .breadcrumb-nav { padding: 20px 5vw; }
+            .crumb-current { max-width: 150px; }
             .container { padding: 20px 5vw 80px 5vw; }
             .guide-title { font-size: 1.8rem; }
             .guide-meta { font-size: 0.85rem; flex-direction: column; gap: 5px; }
@@ -102,6 +101,7 @@
             .day-title { font-size: 1.3rem; }
             .intro-text { font-size: 1rem; }
             .action-bar { margin-top: 40px; padding-top: 20px; justify-content: space-around; width: 100%;}
+            .back-to-top { bottom: 20px; right: 20px; width: 40px; height: 40px; font-size: 1rem;}
         }
     </style>
 
@@ -117,8 +117,12 @@
 
     <div id="init-loader"><div class="loader-brand">DAVID EXPEDITION</div></div>
 
-    <nav>
-        <a href="guides.html" class="back-btn">← 返回攻略指南</a>
+    <nav class="breadcrumb-nav">
+        <a href="index.html" class="crumb-link">Home / 首页</a>
+        <span class="crumb-separator">/</span>
+        <a href="guides.html" class="crumb-link">Guides / 攻略指南</a>
+        <span class="crumb-separator">/</span>
+        <span class="crumb-current" id="r_breadcrumb_title">读取中...</span>
     </nav>
 
     <div id="loadingState">调取硬核数据中...</div>
@@ -137,12 +141,11 @@
         <div class="media-container" id="r_media"></div>
 
         <div class="guide-layout">
-            
             <aside class="toc-sidebar">
                 <div class="toc-title">INDEX / 攻略目录</div>
                 <ul class="toc-list" id="r_toc_list">
                     <li><a href="#section-intel" class="toc-link">Critical Intel / 干货情报</a></li>
-                    </ul>
+                </ul>
             </aside>
 
             <div class="guide-content">
@@ -165,10 +168,10 @@
                     </button>
                 </div>
             </div>
-
         </div>
-
     </main>
+
+    <button id="backToTop" class="back-to-top" title="回到顶部">↑</button>
 
     <footer class="site-footer">
         © 2026 DAVID EXPEDITION.
@@ -204,6 +207,19 @@
             setTimeout(() => { toast.classList.remove('show'); }, 3000);
         }
 
+        // 回到顶部逻辑
+        const backToTopBtn = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 400) {
+                backToTopBtn.classList.add('show');
+            } else {
+                backToTopBtn.classList.remove('show');
+            }
+        });
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
         document.addEventListener("DOMContentLoaded", function() {
             const loaderTimeout = setTimeout(() => { document.body.classList.add('loaded'); }, 2500);
             function removeLoader() { clearTimeout(loaderTimeout); setTimeout(() => { document.body.classList.add('loaded'); }, 300); }
@@ -230,14 +246,15 @@
                 return;
             }
 
-            // 1. 基础信息
+            // 面包屑渲染
+            document.getElementById('r_breadcrumb_title').innerText = guide.title;
+
             document.getElementById('r_title').innerHTML = guide.title.replace('：', '：<br>');
             const displayDate = (guide.trip_date && guide.trip_date.trim() !== '') ? guide.trip_date : guide.date;
             document.getElementById('r_date').innerText = displayDate.replace(/-/g, '.');
             document.getElementById('r_short').innerText = guide.short_desc;
             document.getElementById('r_intro').innerHTML = guide.intro_desc.replace(/\n/g, '<br><br>');
 
-            // 2. 媒体处理
             const mediaBox = document.getElementById('r_media');
             const finalCoverUrl = getFastCdnUrl(guide.cover);
             if (guide.video && guide.video.trim() !== "") {
@@ -251,7 +268,6 @@
                 mediaBox.innerHTML = `<img src="${finalCoverUrl}" alt="Cover">`;
             }
 
-            // 3. 干货区
             const intelBox = document.getElementById('r_intel');
             if(guide.intel && guide.intel.length > 0) {
                 guide.intel.forEach(item => {
@@ -259,15 +275,12 @@
                 });
             }
 
-            // 4. 日程区与动态目录(TOC)生成
             const itinBox = document.getElementById('r_itinerary');
             const tocList = document.getElementById('r_toc_list');
 
             if(guide.itinerary && guide.itinerary.length > 0) {
                 guide.itinerary.forEach((item, index) => {
                     const blockId = `day-${index + 1}`;
-                    
-                    // 生成正文结构
                     let tagsHtml = '';
                     if (item.tags && item.tags.length > 0) {
                         tagsHtml = `<div class="day-tags">${item.tags.map(t => `<span class="tag-pill">${t}</span>`).join('')}</div>`;
@@ -280,13 +293,10 @@
                             ${tagsHtml}
                         </div>
                     `;
-
-                    // 同步生成右侧目录菜单
                     tocList.innerHTML += `<li><a href="#${blockId}" class="toc-link">${item.day.split('//')[0].trim()}: ${item.title}</a></li>`;
                 });
             }
 
-            // 5. 目录滚动高亮监听器 (Intersection Observer)
             const tocLinks = document.querySelectorAll('.toc-link');
             const sections = document.querySelectorAll('.section-title, .day-block');
             
@@ -304,17 +314,13 @@
 
             sections.forEach(sec => observer.observe(sec));
 
-            // 平滑滚动监听
             tocLinks.forEach(link => {
                 link.addEventListener('click', function(e) {
                     e.preventDefault();
                     const targetId = this.getAttribute('href').substring(1);
                     const targetEl = document.getElementById(targetId);
                     if (targetEl) {
-                        window.scrollTo({
-                            top: targetEl.offsetTop - 60,
-                            behavior: 'smooth'
-                        });
+                        window.scrollTo({ top: targetEl.offsetTop - 60, behavior: 'smooth' });
                     }
                 });
             });
