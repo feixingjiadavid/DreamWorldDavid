@@ -195,7 +195,7 @@
             <a href="guides.html" class="active">攻略指南</a>
             <a href="toolkit.html">资料下载</a>
             <a href="radar.html">避坑雷达</a>
-            <a href="consult.html">智能路书</a>
+            <a href="hub.html">极境导航</a>
         </div>
         <button class="mobile-menu-btn" id="menuToggle">☰</button>
     </nav>
@@ -205,7 +205,7 @@
         <a href="guides.html" class="active">攻略指南</a>
         <a href="toolkit.html">资料下载</a>
         <a href="radar.html">避坑雷达</a>
-        <a href="consult.html">智能路书</a>
+        <a href="hub.html">极境导航</a>
     </div>
 
     <div class="breadcrumb-nav">
@@ -312,7 +312,7 @@
         });
 
         function dismissGlobalLoader() { document.body.classList.add('loaded'); }
-        function getFastCdnUrl(url) { if (!url) return ''; if (url.startsWith('images/')) return `https://cdn.jsdelivr.net/gh/feixingjiadavid/DreamWorldDavid/${url}`; return url; }
+        function getFastCdnUrl(url) { if (!url) return ''; return url.startsWith('images/') ? `https://cdn.jsdelivr.net/gh/feixingjiadavid/DreamWorldDavid/${url}` : url; }
 
         function loadIframeVideo(vid, coverUrl) {
             const box = document.getElementById('r_media');
@@ -406,9 +406,15 @@
             const fallbackLoader = setTimeout(dismissGlobalLoader, 8000);
             const guideId = new URLSearchParams(window.location.search).get('id');
             
-            if (!guideId || typeof dbData === 'undefined' || !dbData.guides) { dismissGlobalLoader(); clearTimeout(fallbackLoader); return; }
+            if (!guideId || typeof dbData === 'undefined' || !dbData.guides) { 
+                document.getElementById('errorContent').style.display = "block";
+                dismissGlobalLoader(); clearTimeout(fallbackLoader); return; 
+            }
             const guide = dbData.guides.find(g => g.id === guideId);
-            if (!guide) { dismissGlobalLoader(); clearTimeout(fallbackLoader); return; }
+            if (!guide) { 
+                document.getElementById('errorContent').style.display = "block";
+                dismissGlobalLoader(); clearTimeout(fallbackLoader); return; 
+            }
 
             currentArticleData = { title: guide.title, cover: getFastCdnUrl(guide.cover) };
 
