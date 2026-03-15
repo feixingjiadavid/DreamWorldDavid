@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>避坑雷达 | 戴维的梦想世界</title>
-    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Noto+Sans+SC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-    
     <style>
         :root { --bg-base: #050505; --text-primary: #FFFFFF; --gold: #D4AF37; --border: rgba(255,255,255,0.05); }
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -19,8 +17,16 @@
         .nav-links a { color: #888; text-decoration: none; position: relative; padding-bottom: 6px; transition: 0.3s; white-space: nowrap;}
         .nav-links a:hover, .nav-links a.active { color: var(--text-primary); }
         .nav-links a.active::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--text-primary); }
+        
         .mobile-menu-btn { display: none; background: transparent; border: none; color: #fff; font-size: 1.8rem; cursor: pointer; }
         
+        /* 核心修复：补充全屏菜单的隐藏样式 */
+        .mobile-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(5,5,5,0.98); backdrop-filter: blur(15px); z-index: 99; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 0.4s; }
+        .mobile-overlay.active { opacity: 1; visibility: visible; }
+        .mobile-overlay a { color: #fff; text-decoration: none; font-size: 2rem; font-weight: 700; letter-spacing: 4px; margin: 20px 0; opacity: 0; transform: translateY(20px); transition: 0.4s; }
+        .mobile-overlay.active a { opacity: 1; transform: translateY(0); }
+        .mobile-overlay a.active { color: var(--gold); }
+
         .breadcrumb-nav { padding: 30px 6vw; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); font-family: 'Inter', sans-serif; font-size: 0.8rem; letter-spacing: 1px;}
         .crumb-link { color: #888; text-decoration: none; transition: 0.3s;}
         .crumb-link:hover { color: var(--gold); }
@@ -33,7 +39,6 @@
         .title-area p { color: #888; font-size: 1.1rem; margin: 0; max-width: 600px; line-height: 1.8;}
         .title-tag { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: #ef4444; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 15px; display: block; font-weight: 700;}
 
-        /* 硬核警告板 UI */
         .radar-grid { display: grid; grid-template-columns: 1fr; gap: 30px;}
         
         .radar-card { background: #111; border-left: 4px solid #ef4444; border-radius: 8px; padding: 30px 40px; display: flex; align-items: flex-start; gap: 30px; transition: 0.3s; box-shadow: 0 10px 30px rgba(0,0,0,0.5);}
@@ -65,6 +70,7 @@
             nav { padding: 20px 5vw; border-bottom: none;}
             .nav-links { display: none; }
             .mobile-menu-btn { display: block; }
+            .nav-brand a { font-size: 1.1rem; }
             .container { padding: 30px 5vw; }
             .radar-card { flex-direction: column; gap: 20px; padding: 25px; border-left-width: 3px;}
             .rc-header { flex-direction: column; align-items: flex-start; gap: 10px;}
@@ -116,7 +122,7 @@
                         <span class="rc-meta">LEVEL: FATAL</span>
                     </div>
                     <div class="rc-desc">
-                        每年冬天都有游客在冰岛翻车。切记：<strong>1. 绝对不要在风速超过 15m/s 时强行开上 1 号环岛公路</strong>；2. 路上看起来像水反光的地方，大概率是<strong>黑冰 (Black Ice)</strong>，时速降至 30 匀速通过，绝不可急刹！
+                        每年冬天都有游客在冰岛翻车。切记：<strong>1. 绝对不要在风速超过 15m/s 时强行开上 1 号公路</strong>；2. 路上看起来像水反光的地方，大概率是<strong>黑冰 (Black Ice)</strong>，降速匀速通过，绝不可急刹！
                     </div>
                 </div>
             </div>
@@ -129,7 +135,7 @@
                         <span class="rc-meta">LEVEL: ALERT</span>
                     </div>
                     <div class="rc-desc">
-                        近期使馆对单身、自由职业的流水审查极其严格。<strong>千万不要在送签前临时存入大笔资金！</strong> 保持账户有稳定的 3-5 万余额即可。解释信 (Cover Letter) 的感情牌不要太多，重点列出你的归国约束力。
+                        近期使馆对单身、自由职业的流水审查极其严格。<strong>千万不要在送签前临时存入大笔资金！</strong> 保持账户有稳定的 3-5 万余额即可。解释信重点列出归国约束力。
                     </div>
                 </div>
             </div>
@@ -138,11 +144,11 @@
                 <div class="rc-icon">🛃</div>
                 <div class="rc-content">
                     <div class="rc-header">
-                        <h2 class="rc-title">挪威海关与租车保险陷阱</h2>
+                        <h2 class="rc-title">挪威海关与租车保险指南</h2>
                         <span class="rc-meta">LEVEL: CLEAR</span>
                     </div>
                     <div class="rc-desc">
-                        在特罗姆瑟或奥斯陆租车，租车公司推销的“碎石险/挡风玻璃险”<strong>非常有必要买</strong>。挪威山区落石极多。如果你有第三方年度旅行险（如 RentalCover），请确切确认其包含北极圈范围的拖车救援服务。
+                        在北欧租车，推销的“碎石险/挡风玻璃险”<strong>非常有必要买</strong>。挪威山区落石极多。如果你有第三方年度旅行险，请确切确认其包含北极圈范围的拖车救援服务。
                     </div>
                 </div>
             </div>
