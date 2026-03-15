@@ -12,7 +12,7 @@ const dbData = {
       "paragraphs": [
         "==世界==**雪极**"
       ],
-      "cta_text": "",
+      "cta_text": "推荐前往xxx",
       "cta_link": "guide-detail.html?id=guide-faroe"
     },
     {
