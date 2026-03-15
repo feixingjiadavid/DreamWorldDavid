@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>避坑雷达 | 戴维的梦想世界</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Noto+Sans+SC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root { --bg-base: #050505; --text-primary: #FFFFFF; --gold: #D4AF37; --border: rgba(255,255,255,0.05); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg-base); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; -webkit-font-smoothing: antialiased; display: flex; flex-direction: column; min-height: 100vh;}
+
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 30px 6vw; font-size: 0.95rem; font-weight: 500; letter-spacing: 1px; border-bottom: 1px solid var(--border); background: rgba(5,5,5,0.8); backdrop-filter: blur(20px); z-index: 100;}
+        .nav-brand a { color: var(--text-primary); text-decoration: none; font-weight: 700; font-size: 1.2rem; letter-spacing: 2px;}
+        .nav-brand a:hover { color: var(--gold); } 
+        .nav-links { display: flex; gap: 50px; align-items: center; }
+        .nav-links a { color: #888; text-decoration: none; position: relative; padding-bottom: 6px; transition: 0.3s; white-space: nowrap;}
+        .nav-links a:hover, .nav-links a.active { color: var(--text-primary); }
+        .nav-links a.active::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--text-primary); }
+        .mobile-menu-btn { display: none; background: transparent; border: none; color: #fff; font-size: 1.8rem; cursor: pointer; }
+        
+        .breadcrumb-nav { padding: 30px 6vw; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); font-family: 'Inter', sans-serif; font-size: 0.8rem; letter-spacing: 1px;}
+        .crumb-link { color: #888; text-decoration: none; transition: 0.3s;}
+        .crumb-link:hover { color: var(--gold); }
+        .crumb-separator { color: #444;}
+        .crumb-current { color: var(--text-primary);}
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 60px 6vw; flex: 1; width: 100%; }
+        .page-header { margin-bottom: 60px;}
+        .title-area h1 { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 900; letter-spacing: -1px; margin-bottom: 15px; margin-top: 0;}
+        .title-area p { color: #888; font-size: 1.1rem; margin: 0; max-width: 600px; line-height: 1.8;}
+        .title-tag { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: #ef4444; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 15px; display: block; font-weight: 700;}
+
+        /* 硬核警告板 UI */
+        .radar-grid { display: grid; grid-template-columns: 1fr; gap: 30px;}
+        
+        .radar-card { background: #111; border-left: 4px solid #ef4444; border-radius: 8px; padding: 30px 40px; display: flex; align-items: flex-start; gap: 30px; transition: 0.3s; box-shadow: 0 10px 30px rgba(0,0,0,0.5);}
+        .radar-card:hover { transform: translateX(10px); background: #151515;}
+        
+        .radar-card.yellow { border-left-color: #eab308; }
+        .radar-card.green { border-left-color: #22c55e; }
+
+        .rc-icon { width: 60px; height: 60px; flex-shrink: 0; display: flex; justify-content: center; align-items: center; border-radius: 50%; font-size: 1.5rem;}
+        .radar-card .rc-icon { background: rgba(239, 68, 68, 0.1); color: #ef4444;}
+        .radar-card.yellow .rc-icon { background: rgba(234, 179, 8, 0.1); color: #eab308;}
+        .radar-card.green .rc-icon { background: rgba(34, 197, 94, 0.1); color: #22c55e;}
+
+        .rc-content { flex: 1;}
+        .rc-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px dashed rgba(255,255,255,0.1); padding-bottom: 15px;}
+        .rc-title { font-size: 1.4rem; font-weight: 700; color: #fff; margin: 0;}
+        .rc-meta { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; letter-spacing: 2px; padding: 4px 10px; border-radius: 4px; font-weight: 700;}
+        
+        .radar-card .rc-meta { background: #ef4444; color: #000;}
+        .radar-card.yellow .rc-meta { background: #eab308; color: #000;}
+        .radar-card.green .rc-meta { background: #22c55e; color: #000;}
+
+        .rc-desc { color: #aaa; font-size: 1rem; line-height: 1.8;}
+        .rc-desc strong { color: #fff; font-weight: 500;}
+
+        .site-footer { border-top: 1px solid var(--border); padding: 40px 0; text-align: center; font-family: 'Inter'; font-size: 0.8rem; color: #888; letter-spacing: 2px; margin-top: auto;}
+
+        @media (max-width: 768px) {
+            nav { padding: 20px 5vw; border-bottom: none;}
+            .nav-links { display: none; }
+            .mobile-menu-btn { display: block; }
+            .container { padding: 30px 5vw; }
+            .radar-card { flex-direction: column; gap: 20px; padding: 25px; border-left-width: 3px;}
+            .rc-header { flex-direction: column; align-items: flex-start; gap: 10px;}
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-brand"><a href="index.html">戴维的梦想世界</a></div>
+        <div class="nav-links">
+            <a href="index.html">首页</a>
+            <a href="stories.html">旅行故事</a>
+            <a href="guides.html">攻略指南</a>
+            <a href="toolkit.html">资料下载</a>
+            <a href="radar.html" class="active">避坑雷达</a>
+            <a href="consult.html">智能路书</a>
+        </div>
+        <button class="mobile-menu-btn" id="menuToggle">☰</button>
+    </nav>
+    <div class="mobile-overlay" id="mobileOverlay">
+        <a href="index.html">首页</a>
+        <a href="stories.html">旅行故事</a>
+        <a href="guides.html">攻略指南</a>
+        <a href="toolkit.html">资料下载</a>
+        <a href="radar.html" class="active">避坑雷达</a>
+        <a href="consult.html">智能路书</a>
+    </div>
+
+    <div class="breadcrumb-nav">
+        <a href="index.html" class="crumb-link">首页</a><span class="crumb-separator">/</span>
+        <span class="crumb-current">避坑雷达</span>
+    </div>
+
+    <main class="container">
+        <header class="page-header">
+            <div class="title-area">
+                <span class="title-tag">SAFETY & PITFALLS</span>
+                <h1>避坑与生存预警</h1>
+                <p>真实且血淋淋的教训。出行前必看，帮你省下在极境中可能损失的几万块钱甚至生命安全。</p>
+            </div>
+        </header>
+
+        <div class="radar-grid">
+            <div class="radar-card">
+                <div class="rc-icon">⚠️</div>
+                <div class="rc-content">
+                    <div class="rc-header">
+                        <h2 class="rc-title">冰岛冬季自驾：夺命暗冰与狂风</h2>
+                        <span class="rc-meta">LEVEL: FATAL</span>
+                    </div>
+                    <div class="rc-desc">
+                        每年冬天都有游客在冰岛翻车。切记：<strong>1. 绝对不要在风速超过 15m/s 时强行开上 1 号环岛公路</strong>；2. 路上看起来像水反光的地方，大概率是<strong>黑冰 (Black Ice)</strong>，时速降至 30 匀速通过，绝不可急刹！
+                    </div>
+                </div>
+            </div>
+
+            <div class="radar-card yellow">
+                <div class="rc-icon">🛂</div>
+                <div class="rc-content">
+                    <div class="rc-header">
+                        <h2 class="rc-title">近期北欧申根签：流水严查期</h2>
+                        <span class="rc-meta">LEVEL: ALERT</span>
+                    </div>
+                    <div class="rc-desc">
+                        近期使馆对单身、自由职业的流水审查极其严格。<strong>千万不要在送签前临时存入大笔资金！</strong> 保持账户有稳定的 3-5 万余额即可。解释信 (Cover Letter) 的感情牌不要太多，重点列出你的归国约束力。
+                    </div>
+                </div>
+            </div>
+
+            <div class="radar-card green">
+                <div class="rc-icon">🛃</div>
+                <div class="rc-content">
+                    <div class="rc-header">
+                        <h2 class="rc-title">挪威海关与租车保险陷阱</h2>
+                        <span class="rc-meta">LEVEL: CLEAR</span>
+                    </div>
+                    <div class="rc-desc">
+                        在特罗姆瑟或奥斯陆租车，租车公司推销的“碎石险/挡风玻璃险”<strong>非常有必要买</strong>。挪威山区落石极多。如果你有第三方年度旅行险（如 RentalCover），请确切确认其包含北极圈范围的拖车救援服务。
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">© 2026 戴维的梦想世界.</footer>
+
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileOverlay = document.getElementById('mobileOverlay');
+        menuToggle.addEventListener('click', () => {
+            mobileOverlay.classList.toggle('active');
+            menuToggle.innerText = mobileOverlay.classList.contains('active') ? '✕' : '☰';
+        });
+    </script>
+</body>
+</html>
