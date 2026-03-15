@@ -38,10 +38,14 @@ const dbData = {
       "id": "guide-faroe",
       "title": "法罗群岛：11天勇闯世界尽头",
       "date": "2025-05-01",
+      "trip_date": "",
       "cover": "images/img_1773501737049.jpg",
       "video": "BV1e5jGzJEzw",
       "short_desc": "租车自驾防风建议 / 经典机位坐标盘点",
       "intro_desc": "11天拿下丹麦，有生之年一定要去一次！\n丹麦虽然遥远但是没有那么难去\n跟着攻略\n11天拿下丹麦自由行",
+      "gallery": [
+        "images/img_1773550066378.jpg"
+      ],
       "intel": [
         {
           "title": "01 / 签证 Visa",
@@ -236,5 +240,5 @@ const dbData = {
     "footer": ""
   },
   "trash": [],
-  "version": "2.6"
+  "version": "4.1"
 };
