@@ -3,8 +3,8 @@ const dbData = {
     {
       "id": "story-faroe",
       "title": "法罗群岛：在世界尽头拥抱风暴",
-      "date": "2026-03-14",
-      "trip_date": "2026-03-15",
+      "date": "2025-05-01",
+      "trip_date": "2025-05-01",
       "cover": "https://images.unsplash.com/photo-1529963183134-61a90db47eaf?q=80&w=1600&auto=format&fit=crop",
       "location": "法罗群岛",
       "bilibili_bvid": "BV1xx411c7mD",
@@ -236,5 +236,5 @@ const dbData = {
     "footer": ""
   },
   "trash": [],
-  "version": "2.4"
+  "version": "2.5"
 };
