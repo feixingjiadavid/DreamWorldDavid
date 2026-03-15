@@ -6,7 +6,7 @@ const dbData = {
       "date": "2026-03-14",
       "trip_date": "2026-03-15",
       "cover": "https://images.unsplash.com/photo-1529963183134-61a90db47eaf?q=80&w=1600&auto=format&fit=crop",
-      "location": "冰岛",
+      "location": "法罗群岛",
       "bilibili_bvid": "BV1xx411c7mD",
       "short_desc": "法罗群岛双季实录 / 感受被狂风撕裂的真实",
       "paragraphs": [
