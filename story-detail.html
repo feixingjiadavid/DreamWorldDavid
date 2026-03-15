@@ -224,7 +224,7 @@
             const displayDate = (story.trip_date && story.trip_date.trim() !== '') ? story.trip_date : story.date;
             document.getElementById('r_date').innerText = displayDate.replace(/-/g, '.');
             
-            // 核心修改：将找不到数据时的兜底文字从“坐标已隐藏”改成“未知”
+            // 显示真实的旅行地点
             document.getElementById('r_location').innerText = story.location || "未知";
 
             // 2. 媒体处理逻辑 (BV号或 MP4 优先)
