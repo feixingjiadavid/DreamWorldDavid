@@ -13,7 +13,6 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: var(--bg-base); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; -webkit-font-smoothing: antialiased; display: flex; flex-direction: column; min-height: 100vh;}
 
-        /* 统一导航栏 */
         nav { display: flex; justify-content: space-between; align-items: center; padding: 30px 6vw; font-size: 0.95rem; font-weight: 500; letter-spacing: 1px; border-bottom: 1px solid var(--border); background: rgba(5,5,5,0.8); backdrop-filter: blur(20px); z-index: 100;}
         .nav-brand a { color: var(--text-primary); text-decoration: none; font-weight: 700; font-size: 1.2rem; letter-spacing: 2px; transition: color 0.3s ease;}
         .nav-brand a:hover { color: var(--gold); } 
@@ -35,7 +34,6 @@
         .crumb-separator { color: #444; font-size: 0.8rem;}
         .crumb-current { color: var(--text-primary); text-transform: uppercase;}
 
-        /* 预热页专属样式 */
         .coming-soon-wrapper { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 60px 20px;}
         .cs-tag { color: var(--gold); font-family: 'JetBrains Mono', monospace; letter-spacing: 4px; font-size: 0.8rem; margin-bottom: 20px;}
         .cs-title { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 900; margin-bottom: 20px; line-height: 1.2; text-transform: uppercase; letter-spacing: -1px;}
@@ -64,24 +62,22 @@
             <a href="toolkit.html">干货库</a>
             <a href="gear.html" class="active">装备库</a>
             <a href="consult.html">私人定制</a>
-            <a href="contact.html">合作联系</a>
         </div>
         <button class="mobile-menu-btn" id="menuToggle">☰</button>
     </nav>
     
     <div class="mobile-overlay" id="mobileOverlay">
-        <a href="index.html">HOME / 首页</a>
-        <a href="stories.html">STORIES / 旅行故事</a>
-        <a href="guides.html">GUIDES / 攻略指南</a>
-        <a href="toolkit.html">TOOLKIT / 干货库</a>
-        <a href="gear.html" class="active">GEAR / 装备库</a>
-        <a href="consult.html">BESPOKE / 私人定制</a>
-        <a href="contact.html">CONTACT / 合作联系</a>
+        <a href="index.html">首页</a>
+        <a href="stories.html">旅行故事</a>
+        <a href="guides.html">攻略指南</a>
+        <a href="toolkit.html">干货库</a>
+        <a href="gear.html" class="active">装备库</a>
+        <a href="consult.html">私人定制</a>
     </div>
 
     <div class="breadcrumb-nav">
-        <a href="index.html" class="crumb-link">Home</a><span class="crumb-separator">/</span>
-        <span class="crumb-current">Gear Lab</span>
+        <a href="index.html" class="crumb-link">首页</a><span class="crumb-separator">/</span>
+        <span class="crumb-current">装备库</span>
     </div>
 
     <div class="coming-soon-wrapper">
