@@ -11,11 +11,14 @@
     <meta property="og:type" content="article">
     
     <title>攻略加载中... | DAVID EXPEDITION</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Noto+Sans+SC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
     <script>document.write('<script src="data.js?v=' + new Date().getTime() + '"><\/script>');</script>
     
     <style>
-        :root { --bg-base: #050505; --bg-panel: #111; --text-primary: #FFFFFF; --text-dimmed: #888888; --gold: #D4AF37; --radius: 8px; --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        :root { --bg-base: #050505; --bg-panel: #111; --text-primary: #FFFFFF; --text-dimmed: #888888; --gold: #D4AF37; --border: rgba(255,255,255,0.05); --radius: 8px; --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); --font-mono: 'JetBrains Mono', monospace;}
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: var(--bg-base); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; -webkit-font-smoothing: antialiased; line-height: 1.8; overflow-x: hidden;}
 
@@ -24,7 +27,7 @@
         @keyframes breath { 0% { opacity: 0.3; transform: scale(0.98); } 50% { opacity: 1; transform: scale(1); } 100% { opacity: 0.3; transform: scale(0.98); } }
         body.loaded #init-loader { opacity: 0; visibility: hidden; }
 
-        .breadcrumb-nav { padding: 30px 6vw; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); font-family: 'Inter', sans-serif; font-size: 0.8rem; letter-spacing: 1px; white-space: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;}
+        .breadcrumb-nav { padding: 30px 6vw; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); font-family: 'Inter', sans-serif; font-size: 0.8rem; letter-spacing: 1px; white-space: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;}
         .breadcrumb-nav::-webkit-scrollbar { display: none; }
         .crumb-link { color: var(--text-dimmed); text-decoration: none; transition: color 0.3s; text-transform: uppercase; flex-shrink: 0;}
         .crumb-link:hover { color: var(--gold); }
@@ -32,37 +35,50 @@
         .crumb-current { color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; overflow: hidden; text-overflow: ellipsis; max-width: 250px; flex-shrink: 0;}
 
         .container { max-width: 1400px; margin: 0 auto; padding: 40px 6vw 80px 6vw; }
-        .guide-header { margin-bottom: 50px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 40px;}
+        .guide-header { margin-bottom: 50px; border-bottom: 1px solid var(--border); padding-bottom: 40px;}
         .guide-tag { font-family: 'Inter'; font-size: 0.8rem; color: #38bdf8; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 20px; display: block; font-weight: 700;}
         .guide-title { font-size: clamp(2.5rem, 4vw, 4rem); font-weight: 900; line-height: 1.1; letter-spacing: -1px; margin-bottom: 20px; }
         .guide-meta { color: var(--text-dimmed); font-size: 0.95rem; display: flex; gap: 20px; font-weight: 300;}
 
+        @keyframes imgFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
         .media-container { width: 100%; border-radius: var(--radius); overflow: hidden; margin-bottom: 60px; background: var(--bg-panel); aspect-ratio: 21/9;}
-        .media-container iframe, .media-container img, .media-container video { width: 100%; height: 100%; object-fit: cover; display: block; border: none; }
+        .media-container iframe, .media-container img, .media-container video { width: 100%; height: 100%; object-fit: cover; display: block; border: none; animation: imgFadeIn 0.8s ease forwards;}
 
         .guide-layout { display: grid; grid-template-columns: 240px 1fr; gap: 60px; align-items: start; }
         .toc-sidebar { position: sticky; top: 40px; padding-right: 20px; }
         .toc-title { font-family: 'Inter'; font-size: 0.75rem; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px; font-weight: 700; border-bottom: 1px solid rgba(212,175,55,0.2); padding-bottom: 10px;}
-        .toc-list { list-style: none; padding: 0; margin: 0; border-left: 1px solid rgba(255,255,255,0.05);}
+        .toc-list { list-style: none; padding: 0; margin: 0; border-left: 1px solid var(--border);}
         .toc-link { color: var(--text-dimmed); text-decoration: none; font-size: 0.9rem; transition: var(--transition); display: block; padding: 8px 0 8px 15px; border-left: 2px solid transparent; margin-left: -1px; }
         .toc-link:hover { color: #fff; background: rgba(255,255,255,0.02); }
         .toc-link.active { color: var(--gold); border-left-color: var(--gold); font-weight: 500; background: rgba(212,175,55,0.05);}
 
         .guide-content { font-size: 1.05rem; color: #CCC; font-weight: 300; line-height: 1.8; }
-        .intro-text { font-size: 1.15rem; margin-bottom: 60px; color: #fff; line-height: 1.9;}
+        .intro-text { font-size: 1.15rem; margin-bottom: 50px; color: #fff; line-height: 1.9;}
 
-        /* Markdown 解析支持 */
+        .gallery-section { margin-bottom: 60px; }
+        .gallery-carousel { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 20px; scroll-snap-type: x mandatory; scrollbar-width: thin; scrollbar-color: var(--gold) #222; -webkit-overflow-scrolling: touch; }
+        .gallery-carousel::-webkit-scrollbar { height: 6px; }
+        .gallery-carousel::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 10px; }
+        .gallery-carousel::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 10px; }
+        .gallery-item { flex: 0 0 85%; max-width: 700px; aspect-ratio: 16/10; border-radius: var(--radius); scroll-snap-align: center; object-fit: cover; cursor: zoom-in; border: 1px solid var(--border); transition: transform 0.3s; animation: imgFadeIn 0.8s ease forwards;}
+        .gallery-item:hover { filter: brightness(1.1); }
+
         .guide-content strong { color: #fff; font-weight: 700; box-shadow: inset 0 -10px 0 rgba(212,175,55,0.3);}
         .guide-content a { color: var(--gold); text-decoration: none; border-bottom: 1px dashed var(--gold); transition: var(--transition);}
         .guide-content a:hover { color: #fff; border-bottom-color: #fff;}
-        .guide-content img { max-width: 100%; border-radius: 6px; cursor: zoom-in; margin: 15px 0; transition: filter 0.3s ease; display: block;}
+        .guide-content img { max-width: 100%; border-radius: 6px; cursor: zoom-in; margin: 15px 0; transition: filter 0.3s ease; display: block; animation: imgFadeIn 0.8s ease forwards;}
         .guide-content img:hover { filter: brightness(1.1); }
+        
+        /* 核心视觉升级：杂志级引用块 */
+        .pull-quote { border-left: 3px solid var(--gold); background: rgba(212, 175, 55, 0.05); padding: 15px 20px; margin: 25px 0; color: #E0E0E0; font-size: 1.1rem; font-style: italic; border-radius: 0 8px 8px 0; position: relative; }
+        .pull-quote::before { content: '“'; position: absolute; top: -10px; left: 10px; font-size: 3rem; color: rgba(212, 175, 55, 0.2); font-family: Georgia, serif; line-height: 1; }
 
         .section-title { font-family: 'Inter'; font-size: 0.85rem; color: var(--gold); letter-spacing: 4px; text-transform: uppercase; margin: 60px 0 30px 0; font-weight: 700; display: flex; align-items: center; gap: 15px;}
-        .section-title::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.05); }
+        .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
         
         .intel-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-bottom: 60px;}
-        .intel-card { background: var(--bg-panel); border: 1px solid rgba(255,255,255,0.05); padding: 25px; border-radius: var(--radius); }
+        .intel-card { background: var(--bg-panel); border: 1px solid var(--border); padding: 25px; border-radius: var(--radius); }
         .intel-title { font-size: 1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 10px; }
         .intel-desc { font-size: 0.9rem; color: var(--text-dimmed); margin: 0; }
 
@@ -74,13 +90,17 @@
         .day-tags { display: flex; gap: 10px; flex-wrap: wrap; }
         .tag-pill { background: rgba(255,255,255,0.05); color: #aaa; font-size: 0.8rem; padding: 4px 12px; border-radius: 20px; font-family: 'Inter'; }
 
-        .action-bar { display: flex; gap: 20px; align-items: center; margin-top: 80px; padding-top: 30px; border-top: 1px dashed rgba(255,255,255,0.1); }
+        .cta-block { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 35px; flex-wrap: wrap; gap: 20px; margin-top: 40px;}
+        .cta-text { color: var(--text-dimmed); font-size: 0.95rem; font-weight: 300;}
+        .cta-btn { padding: 12px 30px; background: transparent; color: var(--gold); border: 1px solid var(--gold); border-radius: 40px; text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: var(--transition); white-space: nowrap;}
+        .cta-btn:hover { background: rgba(212,175,55,0.1); transform: translateX(5px); }
+
+        .action-bar { display: flex; gap: 20px; align-items: center; margin-top: 50px; padding-top: 30px; border-top: 1px dashed rgba(255,255,255,0.1); }
         .action-btn { background: transparent; border: none; color: var(--text-dimmed); font-family: var(--font-zh); font-size: 0.85rem; letter-spacing: 2px; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: var(--transition); outline: none; padding: 0;}
         .action-btn:hover { color: var(--gold); transform: translateY(-2px); }
         .action-btn svg { width: 16px; height: 16px; fill: currentColor; }
         
-        /* 流量闭环推荐 */
-        .related-section { max-width: 1400px; margin: 0 auto; padding: 40px 6vw 80px 6vw; border-top: 1px solid rgba(255,255,255,0.05); }
+        .related-section { max-width: 1400px; margin: 0 auto; padding: 40px 6vw 80px 6vw; border-top: 1px solid var(--border); }
         .related-title { font-family: 'Inter'; font-size: 0.8rem; color: var(--text-dimmed); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 30px; text-align: center;}
         .related-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
         .related-card { position: relative; border-radius: var(--radius); overflow: hidden; aspect-ratio: 16/9; background: #111; cursor: pointer; display: block; border: 1px solid rgba(255,255,255,0.03); transition: var(--transition); }
@@ -92,6 +112,29 @@
         .r-card-tag { color: var(--gold); font-size: 0.7rem; letter-spacing: 2px; margin-bottom: 8px; display: block;}
         .r-card-title { color: #fff; font-size: 1.1rem; font-weight: 700; margin: 0; line-height: 1.3;}
 
+        .share-modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.92); backdrop-filter: blur(20px); z-index: 11000; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: var(--transition); }
+        .share-modal-overlay.active { opacity: 1; visibility: visible; }
+        .share-card { background: #0A0A0A; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; width: 88%; max-width: 360px; overflow: hidden; transform: translateY(30px) scale(0.95); transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 30px 60px rgba(0,0,0,0.8); position: relative;}
+        .share-modal-overlay.active .share-card { transform: translateY(0) scale(1); }
+        .close-share { position: absolute; top: 15px; right: 15px; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1); color: #fff; width: 32px; height: 32px; border-radius: 50%; font-size: 1rem; cursor: pointer; z-index: 10; display:flex; justify-content:center; align-items:center; backdrop-filter: blur(4px); transition: 0.3s;}
+        .close-share:hover { background: #fff; color: #000; }
+        .share-card-cover { width: 100%; height: 200px; position: relative; background: #222; overflow: hidden;}
+        .share-card-cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .share-card-cover::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 60%; background: linear-gradient(to top, #0A0A0A, transparent); z-index: 1;}
+        .share-card-content { padding: 0 25px 30px 25px; position: relative; z-index: 2; margin-top: -30px;}
+        .share-card-tag { font-family: var(--font-mono); font-size: 0.65rem; color: var(--gold); letter-spacing: 3px; margin-bottom: 12px; }
+        .share-card-title { font-size: 1.4rem; font-weight: 700; line-height: 1.35; margin-bottom: 30px; letter-spacing: -0.5px;}
+        .share-card-footer { display: flex; justify-content: space-between; align-items: flex-end; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 25px;}
+        .share-brand { font-family: 'Inter'; font-size: 0.75rem; font-weight: 900; letter-spacing: 3px; color: var(--text-dimmed); line-height: 1.5; text-transform: uppercase;}
+        .share-brand span { font-family: var(--font-zh); font-weight: 300; font-size: 0.65rem; letter-spacing: 1px; color: #555; display: block; margin-top: 5px; text-transform: none;}
+        .qr-wrapper { background: #fff; padding: 6px; border-radius: 6px; width: 64px; height: 64px; flex-shrink: 0;}
+        .share-actions { display: flex; flex-direction: column; align-items: center; margin-top: 30px; opacity: 0; transform: translateY(10px); transition: 0.5s; transition-delay: 0.2s; position: relative; z-index: 102;}
+        .share-modal-overlay.active .share-actions { opacity: 1; transform: translateY(0); }
+        .share-tip { font-size: 0.8rem; color: var(--text-dimmed); letter-spacing: 1px; margin-bottom: 15px;}
+        .share-copy-btn { padding: 14px 35px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; border-radius: 40px; cursor: pointer; font-size: 0.85rem; transition: 0.3s; font-family: 'Noto Sans SC'; letter-spacing: 1px;}
+        .share-copy-btn:hover { background: #fff; color: #000;}
+        #generatedShareImage { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; z-index: 100; cursor: pointer; border-radius: 16px; display: none;}
+
         #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: #111; border: 1px solid var(--gold); color: var(--gold); padding: 12px 25px; border-radius: 40px; font-size: 0.85rem; letter-spacing: 1px; opacity: 0; transition: var(--transition); z-index: 9999; box-shadow: 0 10px 30px rgba(0,0,0,0.8); pointer-events: none; }
         #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
         .back-to-top { position: fixed; bottom: 40px; right: 40px; width: 45px; height: 45px; border-radius: 50%; background: rgba(17,17,17,0.8); border: 1px solid rgba(212,175,55,0.3); color: var(--gold); font-size: 1.2rem; cursor: pointer; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: var(--transition); z-index: 99; backdrop-filter: blur(5px);}
@@ -101,17 +144,17 @@
         .lightbox-overlay.active { opacity: 1; visibility: visible; }
         .lightbox-img { max-width: 95vw; max-height: 95vh; object-fit: contain; transform: scale(0.9); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); border-radius: 4px; box-shadow: 0 20px 50px rgba(0,0,0,0.8);}
         .lightbox-overlay.active .lightbox-img { transform: scale(1); }
-
-        .site-footer { border-top: 1px solid rgba(255,255,255,0.05); padding: 40px 0; text-align: center; font-family: 'Inter'; font-size: 0.8rem; color: var(--text-dimmed); letter-spacing: 2px; }
+        .site-footer { border-top: 1px solid var(--border); padding: 40px 0; text-align: center; font-family: 'Inter'; font-size: 0.8rem; color: var(--text-dimmed); letter-spacing: 2px; }
         #loadingState { text-align: center; color: var(--gold); letter-spacing: 2px; margin-top: 100px; font-family: 'Inter'; display: none;}
 
+        @media (min-width: 768px) { .gallery-item { flex: 0 0 45%; } }
         @media (max-width: 1024px) {
             .intel-grid { grid-template-columns: 1fr; }
             .related-grid { grid-template-columns: 1fr 1fr; }
         }
         @media (max-width: 900px) {
             .guide-layout { grid-template-columns: 1fr; gap: 40px; }
-            .toc-sidebar { position: relative; top: 0; display: block; background: #111; padding: 25px 20px; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.05); margin-bottom: 10px;}
+            .toc-sidebar { position: relative; top: 0; display: block; background: #111; padding: 25px 20px; border-radius: var(--radius); border: 1px solid var(--border); margin-bottom: 10px;}
             .toc-title { border-bottom: none; padding-bottom: 0; margin-bottom: 15px; }
             .toc-list { border-left: none; display: flex; flex-direction: column; gap: 8px;}
             .toc-link { background: rgba(255,255,255,0.03); border-left: 2px solid transparent; border-radius: 4px; padding: 12px 15px; margin-left: 0;}
@@ -124,13 +167,17 @@
             .guide-title { font-size: 1.8rem; }
             .guide-meta { font-size: 0.85rem; flex-direction: column; gap: 5px; }
             .media-container { border-radius: 0; margin-left: -5vw; width: 100vw; aspect-ratio: 16/9; margin-bottom: 40px;}
+            .gallery-item { flex: 0 0 90%; }
             .day-block { padding-left: 20px; }
             .day-title { font-size: 1.3rem; }
             .intro-text { font-size: 1rem; }
+            .cta-block { flex-direction: column; align-items: flex-start; gap: 15px;}
+            .cta-btn { width: 100%; text-align: center; }
             .action-bar { margin-top: 40px; padding-top: 20px; justify-content: space-around; width: 100%;}
             .back-to-top { bottom: 25px; right: 25px; width: 44px; height: 44px; font-size: 1.1rem; box-shadow: 0 4px 15px rgba(0,0,0,0.5);}
             .related-section { padding: 30px 5vw 60px 5vw; }
             .related-grid { grid-template-columns: 1fr; gap: 20px; }
+            .r-card-title { font-size: 1.1rem; }
         }
     </style>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-LJQMME1NDE"></script>
@@ -152,30 +199,38 @@
             <span class="guide-tag">EXPEDITION GUIDE</span>
             <h1 class="guide-title" id="r_title"></h1>
             <div class="guide-meta">
-                <span>首次部署：<span id="r_date" style="color: #fff;"></span></span>
-                <span>核心简报：<span id="r_short" style="color: #fff;"></span></span>
+                <span>行程时间：<span id="r_date" style="color: #fff;"></span></span>
+                <span>内容摘要：<span id="r_short" style="color: #fff;"></span></span>
             </div>
         </header>
 
         <div class="media-container" id="r_media"></div>
 
         <div class="guide-layout">
-            <aside class="toc-sidebar">
+            <aside class="toc-sidebar" id="r_toc_sidebar">
                 <div class="toc-title">INDEX / 攻略目录</div>
                 <ul class="toc-list" id="r_toc_list">
-                    <li><a href="#section-intel" class="toc-link">Critical Intel / 干货情报</a></li>
-                </ul>
+                    </ul>
             </aside>
 
             <div class="guide-content">
                 <div class="intro-text" id="r_intro"></div>
-                <div class="section-title" id="section-intel">CRITICAL INTEL // 干货情报区</div>
-                <div class="intel-grid" id="r_intel"></div>
-                <div class="section-title" id="section-itinerary">ACTION PLAN // 逐日拔草路线</div>
-                <div id="r_itinerary"></div>
+                
+                <div id="r_gallery_section" style="display:none;" class="gallery-section">
+                     <div class="section-title" style="margin-top:0;">VISUAL ARCHIVE // 视觉档案</div>
+                     <div class="gallery-carousel" id="r_gallery"></div>
+                </div>
+
+                <div id="r_intel_wrapper"></div>
+                <div id="r_itinerary_wrapper"></div>
+
+                <div class="cta-block" id="ctaContainer" style="display: none;">
+                    <span class="cta-text" id="r_cta_text"></span>
+                    <a href="#" class="cta-btn" id="r_cta_link">去看看这趟旅程的故事 ↗</a>
+                </div>
 
                 <div class="action-bar">
-                    <button class="action-btn" onclick="sharePage()"><svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>分享</button>
+                    <button class="action-btn" onclick="openShareModal()"><svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>分享</button>
                     <button class="action-btn" onclick="bookmarkPage()"><svg viewBox="0 0 24 24"><path d="M17 3H7c-1.1 0-1.99.9-1.99 2L5 21l7-3 7 3V5c0-1.1-.9-2-2-2z"/></svg>收藏</button>
                 </div>
             </div>
@@ -187,21 +242,89 @@
         <div class="related-grid" id="r_related_grid"></div>
     </section>
 
+    <div class="share-modal-overlay" id="shareModal">
+        <div class="share-card" id="shareCardHTML">
+            <button class="close-share" onclick="closeShareModal()">✕</button>
+            <div class="share-card-cover">
+                <img src="" id="shareCoverImg" crossorigin="anonymous">
+            </div>
+            <div class="share-card-content">
+                <div class="share-card-tag">EXPEDITION GUIDE</div>
+                <h3 class="share-card-title" id="shareTitle">加载中...</h3>
+                <div class="share-card-footer">
+                    <div class="share-brand">DAVID EXPEDITION<span>探索世界隐秘的B面</span></div>
+                    <div class="qr-wrapper" id="qrcode-container"></div>
+                </div>
+            </div>
+            <img src="" id="generatedShareImage">
+        </div>
+        <div class="share-actions">
+            <p class="share-tip" id="shareTipText">提取视觉资产中...</p>
+            <button class="share-copy-btn" onclick="copyShareText()">📄 复制精美图文链接</button>
+        </div>
+    </div>
+
     <button id="backToTop" class="back-to-top" title="回到顶部">↑</button>
     <footer class="site-footer">© 2026 DAVID EXPEDITION.</footer>
     <div class="lightbox-overlay" id="globalLightbox"><img src="" class="lightbox-img" id="lightboxImg"></div>
     <div id="toast">提示信息</div>
 
     <script>
+        let currentArticleData = null;
+
         function getFastCdnUrl(url) { if (!url) return ''; if (url.startsWith('images/')) return `https://cdn.jsdelivr.net/gh/feixingjiadavid/DreamWorldDavid/${url}`; return url; }
-        function sharePage() { if(navigator.share){navigator.share({title:document.title,url:window.location.href}).catch(console.error);}else{navigator.clipboard.writeText(window.location.href);showToast("✓ 链接已复制！");} }
+        
+        async function openShareModal() {
+            if(!currentArticleData) return;
+            const modal = document.getElementById('shareModal');
+            const tip = document.getElementById('shareTipText');
+            const target = document.getElementById('shareCardHTML');
+            const generatedImg = document.getElementById('generatedShareImage');
+            const coverImg = document.getElementById('shareCoverImg');
+            
+            generatedImg.style.display = 'none'; generatedImg.src = '';
+            tip.innerText = "⏳ 正在拉取高清影像...";
+            document.getElementById('shareTitle').innerText = currentArticleData.title;
+            
+            const qrContainer = document.getElementById('qrcode-container');
+            qrContainer.innerHTML = ''; 
+            new QRCode(qrContainer, { text: window.location.href, width: 52, height: 52, colorDark : "#000", colorLight : "#fff", correctLevel : QRCode.CorrectLevel.M });
+            
+            modal.classList.add('active');
+
+            try {
+                await new Promise((resolve) => {
+                    coverImg.onload = resolve; coverImg.onerror = resolve; 
+                    const cleanUrl = currentArticleData.cover;
+                    coverImg.src = cleanUrl + (cleanUrl.includes('?') ? '&' : '?') + 'cors_bypass=' + Date.now();
+                });
+
+                tip.innerText = "⏳ 正在生成专属分享海报...";
+                await new Promise(r => setTimeout(r, 300));
+
+                const canvas = await html2canvas(target, { useCORS: true, allowTaint: false, scale: 2, backgroundColor: "#0A0A0A", logging: false });
+                const imgData = canvas.toDataURL("image/jpeg", 0.9);
+                tip.innerText = "👍 生成成功！请长按上方海报保存";
+                
+                generatedImg.src = imgData; generatedImg.style.display = 'block'; generatedImg.style.opacity = '0.01'; 
+            } catch (e) { console.error("Guide poster generation failed:", e); tip.innerText = "❌ 海报生成失败，请尝试直接手机截屏"; }
+        }
+        
+        function closeShareModal() { document.getElementById('shareModal').classList.remove('active'); }
+        function copyShareText() {
+            const text = `▬ DAVID EXPEDITION ▬\n\n《${document.title.split(' | ')[0]}》\n硬核干货攻略，点击阅读全文：\n${window.location.href}`;
+            navigator.clipboard.writeText(text); showToast('✓ 专属邀请文案已复制！'); closeShareModal();
+        }
+
         function bookmarkPage() { showToast(/macintosh|mac os x/i.test(navigator.userAgent.toLowerCase()) ? `⭐ 请按 ⌘+D 收藏` : `⭐ 请按 Ctrl+D 收藏`); }
         function showToast(msg) { const t = document.getElementById('toast'); t.innerText = msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'), 3000); }
         
-        // 极简 Markdown 解析引擎
+        // 核心突破：前台增强版 MD 解析器
         function parseMarkdown(text) {
             let html = text;
+            html = html.replace(/==(.*?)==/g, '<span style="color: var(--gold); font-weight: 700;">$1</span>'); // 解析高亮金字
             html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            html = html.replace(/(?:^|<br>)> (.*?)(?=<br>|$)/g, '<br><blockquote class="pull-quote">$1</blockquote>'); // 解析杂志级引用
             html = html.replace(/!\[(.*?)\]\((.*?)\)/g, '<img src="$2" alt="$1" loading="lazy">');
             html = html.replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank">$1</a>');
             return html;
@@ -213,7 +336,7 @@
 
         function bindLightbox() {
             const lb = document.getElementById('globalLightbox'); const lbImg = document.getElementById('lightboxImg');
-            document.querySelectorAll('.guide-content img').forEach(img => {
+            document.querySelectorAll('.guide-content img, .gallery-item').forEach(img => {
                 img.addEventListener('click', function() { lbImg.src = this.src; lb.classList.add('active'); });
             });
             lb.addEventListener('click', function() { this.classList.remove('active'); setTimeout(() => lbImg.src = '', 400); });
@@ -228,6 +351,8 @@
             
             const guide = dbData.guides.find(g => g.id === guideId);
             if (!guide) { document.getElementById('loadingState').innerText="未找到攻略"; return; }
+
+            currentArticleData = { title: guide.title, cover: getFastCdnUrl(guide.cover) };
 
             document.title = `${guide.title} | DAVID EXPEDITION`;
             document.getElementById('r_breadcrumb_title').innerText = guide.title;
@@ -244,18 +369,33 @@
                 mediaBox.innerHTML = vid.endsWith('.mp4') ? `<video controls poster="${coverUrl}"><source src="${vid}" type="video/mp4"></video>` : `<iframe src="//player.bilibili.com/player.html?bvid=${vid}&page=1&high_quality=1&danmaku=0" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>`;
             } else { mediaBox.innerHTML = `<img src="${coverUrl}">`; }
 
-            const intelBox = document.getElementById('r_intel');
-            if(guide.intel && guide.intel.length > 0) {
-                guide.intel.forEach(item => { intelBox.innerHTML += `<div class="intel-card"><div class="intel-title">${item.title}</div><p class="intel-desc">${parseMarkdown(getFastCdnUrl(item.content))}</p></div>`; });
+            if(guide.gallery && guide.gallery.length > 0) {
+                document.getElementById('r_gallery_section').style.display = 'block';
+                const galleryBox = document.getElementById('r_gallery');
+                guide.gallery.forEach(img => {
+                    galleryBox.innerHTML += `<img src="${getFastCdnUrl(img)}" class="gallery-item" loading="lazy">`;
+                });
             }
 
-            const itinBox = document.getElementById('r_itinerary');
             const tocList = document.getElementById('r_toc_list');
+            tocList.innerHTML = ''; 
+
+            const intelWrapper = document.getElementById('r_intel_wrapper');
+            if(guide.intel && guide.intel.length > 0) {
+                tocList.innerHTML += `<li><a href="#section-intel" class="toc-link">Critical Intel / 干货情报</a></li>`;
+                let intelHtml = `<div class="section-title" id="section-intel">CRITICAL INTEL // 干货情报区</div><div class="intel-grid">`;
+                guide.intel.forEach(item => { intelHtml += `<div class="intel-card"><div class="intel-title">${item.title}</div><p class="intel-desc">${parseMarkdown(getFastCdnUrl(item.content))}</p></div>`; });
+                intelHtml += `</div>`;
+                intelWrapper.innerHTML = intelHtml;
+            }
+
+            const itinWrapper = document.getElementById('r_itinerary_wrapper');
             if(guide.itinerary && guide.itinerary.length > 0) {
+                let itinHtml = `<div class="section-title" id="section-itinerary">ACTION PLAN // 逐日拔草路线</div>`;
                 guide.itinerary.forEach((item, index) => {
                     const blockId = `day-${index + 1}`;
                     const tagsHtml = (item.tags && item.tags.length > 0) ? `<div class="day-tags">${item.tags.map(t => `<span class="tag-pill">${t}</span>`).join('')}</div>` : '';
-                    itinBox.innerHTML += `
+                    itinHtml += `
                         <div class="day-block" id="${blockId}">
                             <span class="day-num">${item.day}</span><h3 class="day-title">${item.title}</h3>
                             <div class="day-desc">${parseMarkdown(getFastCdnUrl(item.desc.replace(/\n/g, '<br>')))}</div>
@@ -263,6 +403,18 @@
                         </div>`;
                     tocList.innerHTML += `<li><a href="#${blockId}" class="toc-link">${item.day.split('//')[0].trim()}: ${item.title}</a></li>`;
                 });
+                itinWrapper.innerHTML = itinHtml;
+            }
+
+            if (tocList.innerHTML === '') {
+                document.getElementById('r_toc_sidebar').style.display = 'none';
+                document.querySelector('.guide-layout').style.gridTemplateColumns = '1fr';
+            }
+
+            if (guide.cta_link && guide.cta_link.trim()) {
+                document.getElementById('ctaContainer').style.display = 'flex';
+                document.getElementById('r_cta_text').innerText = guide.cta_text || "推荐延伸阅读：";
+                document.getElementById('r_cta_link').href = guide.cta_link;
             }
 
             const tocLinks = document.querySelectorAll('.toc-link');
@@ -280,7 +432,6 @@
 
             tocLinks.forEach(link => { link.addEventListener('click', function(e) { e.preventDefault(); window.scrollTo({ top: document.getElementById(this.getAttribute('href').substring(1)).offsetTop - 60, behavior: 'smooth' }); }); });
 
-            // 渲染相关推荐 (排除自己，随机选3篇)
             const relatedGrid = document.getElementById('r_related_grid');
             let others = dbData.guides.filter(g => g.id !== guideId);
             if (others.length > 0) {
