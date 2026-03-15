@@ -14,6 +14,7 @@
         html { scroll-behavior: smooth; }
         body { background: var(--bg-base); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; -webkit-font-smoothing: antialiased; display: flex; flex-direction: column; min-height: 100vh;}
 
+        /* 瘦身后的 5 大核心导航 */
         nav { display: flex; justify-content: space-between; align-items: center; padding: 30px 6vw; font-size: 0.95rem; font-weight: 500; letter-spacing: 1px; border-bottom: 1px solid var(--border); background: rgba(5,5,5,0.8); backdrop-filter: blur(20px); z-index: 100; position: sticky; top: 0;}
         .nav-brand a { color: var(--text-primary); text-decoration: none; font-weight: 700; font-size: 1.2rem; letter-spacing: 2px;}
         .nav-brand a:hover { color: var(--gold); } 
@@ -41,7 +42,6 @@
         .page-header h1 { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 900; margin-bottom: 20px; line-height: 1.2; letter-spacing: -1px;}
         .page-header p { color: #888; max-width: 700px; line-height: 1.8; font-size: 1.05rem; margin: 0 auto;}
 
-        /* 核心布局：左侧导航 + 右侧卡片矩阵 */
         .hub-layout { display: grid; grid-template-columns: 250px 1fr; gap: 60px; align-items: start;}
         
         .hub-sidebar { position: sticky; top: 120px; display: flex; flex-direction: column; gap: 10px;}
@@ -66,6 +66,13 @@
         .lc-title { color: #fff; font-size: 1.15rem; font-weight: 700; margin: 0; transition: var(--transition); line-height: 1.3;}
         .link-card:hover .lc-title { color: #f59e0b; }
         .lc-desc { color: #888; font-size: 0.85rem; line-height: 1.5; margin: 0;}
+
+        /* 专属高亮引擎卡片样式 */
+        .link-card.engine-card { border-color: rgba(34, 197, 94, 0.3); background: rgba(34, 197, 94, 0.02);}
+        .link-card.engine-card:hover { border-color: #22c55e; background: #0A0A0A;}
+        .link-card.engine-card .lc-icon { color: #22c55e; border-color: rgba(34, 197, 94, 0.3);}
+        .link-card.engine-card:hover .lc-title { color: #22c55e;}
+        .link-card.engine-card:hover::after { color: #22c55e;}
 
         .site-footer { border-top: 1px solid var(--border); padding: 40px 0; text-align: center; font-family: 'Inter'; font-size: 0.8rem; color: #888; letter-spacing: 2px; margin-top: auto;}
 
@@ -96,7 +103,6 @@
             <a href="guides.html">攻略指南</a>
             <a href="toolkit.html">资料下载</a>
             <a href="radar.html">避坑雷达</a>
-            <a href="consult.html">智能路书</a>
             <a href="hub.html" class="active">极境导航</a>
         </div>
         <button class="mobile-menu-btn" id="menuToggle">☰</button>
@@ -108,7 +114,6 @@
         <a href="guides.html">攻略指南</a>
         <a href="toolkit.html">资料下载</a>
         <a href="radar.html">避坑雷达</a>
-        <a href="consult.html">智能路书</a>
         <a href="hub.html" class="active">极境导航</a>
     </div>
 
@@ -121,7 +126,7 @@
         <header class="page-header">
             <span class="title-tag">GLOBAL EXPEDITION PORTAL</span>
             <h1>全网极境导航库</h1>
-            <p>拒绝在信息海中迷失。这里收录了冰岛、挪威及所有极地国家的官方签证中心、气象雷达、本地租车与硬核徒步入口。</p>
+            <p>拒绝在信息海中迷失。这里收录了官方智能路书引擎，以及冰岛、挪威及所有极地国家的签证中心、气象雷达与硬核徒步入口。</p>
         </header>
 
         <div class="hub-layout">
@@ -140,9 +145,10 @@
             menuToggle.innerText = mobileOverlay.classList.contains('active') ? '✕' : '☰';
         });
 
-        // 默认的兜底导航库数据
+        // 默认数据，其中首个就是我们本站的超级智能路书引擎
         const defaultHubs = [
-            { category: '签证与使馆', title: '申根签预约 (VFS)', icon: '🛂', url: 'https://visa.vfsglobal.com/', desc: 'VFS Global 官方预约中心，规避虚假中介。' },
+            { category: '核心工具引擎', title: '智能路线自动演算', icon: '🛣️', url: 'consult.html', desc: '【本站核心】选择你的探险条件，算法将自动绘制地图轨迹并提供行程防坑点。', isEngine: true },
+            { category: '签证与使馆', title: '申根签预约 (VFS)', icon: '🛂', url: 'https://visa.vfsglobal.com/', desc: 'VFS Global 官方预约中心，规避黄牛与虚假中介。' },
             { category: '签证与使馆', title: '冰岛驻华大使馆', icon: '🇮🇸', url: 'https://www.government.is/', desc: '获取最新的冰岛出入境政策与官方声明。' },
             { category: '气象与路况', title: '冰岛气象雷达 (Vedur)', icon: '🌤️', url: 'https://en.vedur.is/', desc: '追极光必备：精准查询云层覆盖率与风暴预警。' },
             { category: '气象与路况', title: '官方实时路况 (Road.is)', icon: '🚙', url: 'https://umferdin.is/en', desc: '自驾保命神器，实时查看封路及黑冰警告。' },
@@ -157,7 +163,8 @@
             
             let hubs = defaultHubs;
             if (typeof dbData !== 'undefined' && dbData.hubs && dbData.hubs.length > 0) {
-                hubs = dbData.hubs.sort((a,b) => new Date(b.date) - new Date(a.date));
+                // 如果云端有数据，把智能路书强制置顶插入
+                hubs = [defaultHubs[0], ...dbData.hubs.sort((a,b) => new Date(b.date) - new Date(a.date))];
             }
 
             // 按 Category 分组
@@ -167,19 +174,18 @@
                 return acc;
             }, {});
 
-            // 渲染左侧栏和右侧内容
             let isFirst = true;
             for (const category in grouped) {
                 const catId = 'cat-' + category.replace(/\s+/g, '-');
                 
-                // 左侧导航
                 sidebar.innerHTML += `<a href="#${catId}" class="hub-nav-link ${isFirst ? 'active' : ''}">${category}</a>`;
                 
-                // 右侧区块
                 let cardsHtml = '';
                 grouped[category].forEach(link => {
+                    const cardClass = link.isEngine ? 'link-card engine-card' : 'link-card';
+                    const targetAttr = link.isEngine ? '' : 'target="_blank"';
                     cardsHtml += `
-                        <a href="${link.url}" target="_blank" class="link-card">
+                        <a href="${link.url}" ${targetAttr} class="${cardClass}">
                             <div class="lc-icon">${link.icon || '🔗'}</div>
                             <div class="lc-info">
                                 <h3 class="lc-title">${link.title}</h3>
@@ -198,7 +204,7 @@
                 isFirst = false;
             }
 
-            // 滚动监听高亮当前目录
+            // 滚动监听高亮
             const sections = document.querySelectorAll('.hub-section');
             const navLinks = document.querySelectorAll('.hub-nav-link');
             const observer = new IntersectionObserver((entries) => {
