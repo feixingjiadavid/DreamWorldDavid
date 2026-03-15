@@ -39,12 +39,12 @@
         .mobile-overlay.active a { opacity: 1; transform: translateY(0); }
         .mobile-overlay a.active { color: var(--gold); }
 
-        /* 补回：中文面包屑区 */
-        .breadcrumb-nav { padding: 30px 6vw; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); font-family: 'Inter', sans-serif; font-size: 0.8rem; letter-spacing: 1px;}
-        .crumb-link { color: var(--text-dimmed); text-decoration: none; transition: color 0.3s; text-transform: uppercase;}
+        .breadcrumb-nav { padding: 30px 6vw; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); font-family: 'Inter', sans-serif; font-size: 0.8rem; letter-spacing: 1px; white-space: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;}
+        .breadcrumb-nav::-webkit-scrollbar { display: none; }
+        .crumb-link { color: var(--text-dimmed); text-decoration: none; transition: color 0.3s;}
         .crumb-link:hover { color: var(--gold); }
-        .crumb-separator { color: #444; font-size: 0.8rem;}
-        .crumb-current { color: var(--text-primary); text-transform: uppercase;}
+        .crumb-separator { color: #444; font-size: 0.8rem; flex-shrink: 0;}
+        .crumb-current { color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; overflow: hidden; text-overflow: ellipsis; max-width: 250px; flex-shrink: 0;}
 
         .container { max-width: 1400px; margin: 0 auto; padding: 60px 6vw; flex: 1; width: 100%; }
         
@@ -109,7 +109,7 @@
             <a href="stories.html">旅行故事</a>
             <a href="guides.html">攻略指南</a>
             <a href="toolkit.html" class="active">干货库</a>
-            <a href="gear.html">装备库</a>
+            <a href="gear.html">探险装备</a>
             <a href="consult.html">私人定制</a>
         </div>
         <button class="mobile-menu-btn" id="menuToggle">☰</button>
@@ -120,7 +120,7 @@
         <a href="stories.html">旅行故事</a>
         <a href="guides.html">攻略指南</a>
         <a href="toolkit.html" class="active">干货库</a>
-        <a href="gear.html">装备库</a>
+        <a href="gear.html">探险装备</a>
         <a href="consult.html">私人定制</a>
     </div>
 
@@ -174,16 +174,19 @@
         }
 
         document.addEventListener("DOMContentLoaded", function() {
-            const fallbackLoader = setTimeout(dismissGlobalLoader, 8000);
             const grid = document.getElementById('toolkitGrid');
+            let assets = [];
             
+            // 核心：强力注入测试占位数据（Mockup），让你立刻看到真实效果！
             if (typeof dbData === 'undefined' || !dbData.toolkits || dbData.toolkits.length === 0) {
-                grid.innerHTML = '<div class="empty-state">📦 资料库筹备中，即将投送补给...</div>';
-                grid.style.display = 'block';
-                dismissGlobalLoader(); clearTimeout(fallbackLoader); return;
+                assets = [
+                    { type: 'PDF', cover: 'https://images.unsplash.com/photo-1476610182048-b716b8518aae?q=80&w=600', title: '冰岛环岛自驾防坑指南', desc: '包含冰岛 F路驾驶规则、隐藏测速点分布地图，及冬季暗冰应对策略。', size: '4.2 MB', link: '#' },
+                    { type: 'Excel', cover: 'https://images.unsplash.com/photo-1520106212299-d99c443e4568?q=80&w=600', title: '北欧15日精确行程与预算表', desc: '细化到小时的路线规划表格源码，内含各大超市物价对照与日落时间测算公式。', size: '1.1 MB', link: '#' },
+                    { type: 'ZIP', cover: 'https://images.unsplash.com/photo-1510798831971-661eb04b3739?q=80&w=600', title: '申根签证极简过签模板包', desc: '高出签率的北欧行程单原件、多国解释信（Cover Letter）双语模板。', size: '2.8 MB', link: '#' }
+                ];
+            } else {
+                assets = dbData.toolkits.sort((a, b) => new Date(b.date) - new Date(a.date));
             }
-
-            let assets = dbData.toolkits.sort((a, b) => new Date(b.date) - new Date(a.date));
             
             assets.forEach(item => {
                 const coverHtml = item.cover ? `<div class="rc-cover"><img src="${getFastCdnUrl(item.cover)}" loading="lazy"></div>` : `<div class="rc-cover" style="background: #1a1a1a; display:flex; align-items:center; justify-content:center;"><span style="color:#333; font-family:Inter; letter-spacing:4px; font-weight:900; font-size:1.5rem;">ASSET</span></div>`;
@@ -198,7 +201,7 @@
                             <div class="rc-footer">
                                 <div class="rc-meta">${item.size}</div>
                                 <a href="${getFastCdnUrl(item.link)}" target="_blank" download class="btn-download">
-                                    <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg> 获取源文件
+                                    <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg> 获取文件
                                 </a>
                             </div>
                         </div>
@@ -207,8 +210,8 @@
                 grid.insertAdjacentHTML('beforeend', cardHTML);
             });
 
-            dismissGlobalLoader();
-            clearTimeout(fallbackLoader);
+            // 延迟一点取消白屏，确保效果平滑
+            setTimeout(dismissGlobalLoader, 300);
         });
     </script>
 </body>
