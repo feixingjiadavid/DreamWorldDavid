@@ -3,87 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#050505">
-    <title>私人定制 | 戴维的梦想世界</title>
+    <title>AI 路线引擎 | 戴维的梦想世界</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Noto+Sans+SC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
-        :root { --bg-base: #050505; --text-primary: #FFFFFF; --text-dimmed: #888888; --gold: #D4AF37; --border: rgba(255,255,255,0.05); --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);}
+        :root { --bg-base: #050505; --text-primary: #FFFFFF; --gold: #D4AF37; --border: rgba(255,255,255,0.05); }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: var(--bg-base); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; -webkit-font-smoothing: antialiased; display: flex; flex-direction: column; min-height: 100vh;}
 
         nav { display: flex; justify-content: space-between; align-items: center; padding: 30px 6vw; font-size: 0.95rem; font-weight: 500; letter-spacing: 1px; border-bottom: 1px solid var(--border); background: rgba(5,5,5,0.8); backdrop-filter: blur(20px); z-index: 100;}
-        .nav-brand a { color: var(--text-primary); text-decoration: none; font-weight: 700; font-size: 1.2rem; letter-spacing: 2px; transition: color 0.3s ease;}
+        .nav-brand a { color: var(--text-primary); text-decoration: none; font-weight: 700; font-size: 1.2rem; letter-spacing: 2px;}
         .nav-brand a:hover { color: var(--gold); } 
         .nav-links { display: flex; gap: 50px; align-items: center; }
-        .nav-links a { color: var(--text-dimmed); text-decoration: none; position: relative; padding-bottom: 6px; transition: color 0.3s ease; letter-spacing: 1px; white-space: nowrap;}
+        .nav-links a { color: #888; text-decoration: none; position: relative; padding-bottom: 6px; transition: 0.3s; white-space: nowrap;}
         .nav-links a:hover, .nav-links a.active { color: var(--text-primary); }
-        .nav-links a.active::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--text-primary); }
+        .mobile-menu-btn { display: none; background: transparent; border: none; color: #fff; font-size: 1.8rem; cursor: pointer; }
         
-        .mobile-menu-btn { display: none; background: transparent; border: none; color: #fff; font-size: 1.8rem; cursor: pointer; z-index: 101; position: relative; width: 40px; height: 40px; }
-        .mobile-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(5,5,5,0.98); backdrop-filter: blur(15px); z-index: 99; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: var(--transition); }
-        .mobile-overlay.active { opacity: 1; visibility: visible; }
-        .mobile-overlay a { color: #fff; text-decoration: none; font-size: 2rem; font-weight: 700; letter-spacing: 4px; margin: 20px 0; opacity: 0; transform: translateY(20px); transition: var(--transition); }
-        .mobile-overlay.active a { opacity: 1; transform: translateY(0); }
-        .mobile-overlay a.active { color: var(--gold); }
-
         .breadcrumb-nav { padding: 30px 6vw; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); font-family: 'Inter', sans-serif; font-size: 0.8rem; letter-spacing: 1px;}
-        .crumb-link { color: var(--text-dimmed); text-decoration: none; transition: color 0.3s; text-transform: uppercase;}
+        .crumb-link { color: #888; text-decoration: none; transition: 0.3s;}
         .crumb-link:hover { color: var(--gold); }
-        .crumb-separator { color: #444; font-size: 0.8rem;}
-        .crumb-current { color: var(--text-primary); text-transform: uppercase;}
+        .crumb-separator { color: #444;}
+        .crumb-current { color: var(--text-primary);}
 
-        .container { max-width: 900px; margin: 0 auto; padding: 60px 6vw; flex: 1; width: 100%; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 60px 6vw; flex: 1; width: 100%; display: flex; flex-direction: column; align-items: center;}
         
-        .cs-tag { color: #38bdf8; font-family: 'JetBrains Mono', monospace; letter-spacing: 4px; font-size: 0.8rem; margin-bottom: 20px; display: block;}
-        .cs-title { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 900; margin-bottom: 20px; line-height: 1.2; text-transform: uppercase; letter-spacing: -1px; }
-        .cs-desc { color: #888; max-width: 600px; line-height: 1.8; font-size: 1.1rem; margin-bottom: 50px;}
+        .cs-tag { color: #38bdf8; font-family: 'JetBrains Mono', monospace; letter-spacing: 4px; font-size: 0.8rem; margin-bottom: 20px; display: block; text-align: center;}
+        .cs-title { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900; margin-bottom: 20px; line-height: 1.2; text-align: center; }
+        .cs-desc { color: #888; max-width: 600px; line-height: 1.8; font-size: 1.05rem; text-align: center; margin-bottom: 50px;}
 
-        /* 原生高定表单样式 */
-        .custom-form { background: #0A0A0A; border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 50px; box-shadow: 0 20px 50px rgba(0,0,0,0.5);}
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 30px;}
-        .form-group { display: flex; flex-direction: column; gap: 10px;}
-        .form-group.full { grid-column: span 2;}
+        /* 高级选配引擎面板 */
+        .engine-panel { background: #0A0A0A; border: 1px solid rgba(56, 189, 248, 0.2); border-radius: 12px; padding: 40px; width: 100%; box-shadow: 0 20px 50px rgba(0,0,0,0.5);}
+        .engine-row { margin-bottom: 35px;}
+        .engine-label { display: block; font-family: 'Inter'; font-size: 0.85rem; color: #38bdf8; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 15px; font-weight: 700;}
         
-        label { font-size: 0.85rem; color: #aaa; letter-spacing: 1px; font-weight: 500;}
-        .required::after { content: ' *'; color: #38bdf8;}
+        .options-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px;}
+        .opt-card { position: relative; display: block; cursor: pointer;}
+        .opt-card input { position: absolute; opacity: 0; cursor: pointer;}
+        .opt-body { border: 1px solid #222; background: #111; padding: 15px; border-radius: 8px; transition: 0.3s; text-align: center; color: #888; font-weight: 500;}
+        .opt-card:hover .opt-body { background: #1a1a1a; color: #ccc;}
+        .opt-card input:checked ~ .opt-body { border-color: #38bdf8; background: rgba(56, 189, 248, 0.1); color: #fff;}
+
+        .btn-generate { background: #38bdf8; color: #000; border: none; padding: 18px; font-size: 1.1rem; font-weight: 700; letter-spacing: 2px; border-radius: 8px; cursor: pointer; transition: 0.3s; width: 100%; outline: none; display: flex; justify-content: center; align-items: center; gap: 10px;}
+        .btn-generate:hover { background: #fff;}
+        .btn-generate:disabled { background: #333; color: #888; cursor: not-allowed;}
+
+        /* 加载动画 */
+        .loader-wrapper { display: none; flex-direction: column; align-items: center; padding: 60px 0;}
+        .radar-spinner { width: 60px; height: 60px; border-top: 3px solid #38bdf8; border-right: 3px solid transparent; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px;}
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .loader-text { font-family: 'JetBrains Mono', monospace; color: #38bdf8; font-size: 0.9rem; letter-spacing: 2px;}
+
+        /* 生成的路书展示区 */
+        .result-panel { display: none; width: 100%; margin-top: 40px; animation: fadeIn 0.5s ease;}
+        @keyframes fadeIn { from{opacity:0; transform:translateY(20px);} to{opacity:1; transform:translateY(0);} }
+        .itinerary-paper { background: #111; border: 1px solid #333; border-radius: 12px; padding: 40px; }
+        .ip-header { border-bottom: 1px dashed #333; padding-bottom: 20px; margin-bottom: 30px;}
+        .ip-title { font-size: 2rem; font-weight: 900; margin-bottom: 10px; color: #fff;}
+        .ip-meta { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: #38bdf8;}
         
-        input[type="text"], input[type="email"], textarea { background: #111; border: 1px solid #222; color: #fff; padding: 16px; border-radius: 6px; outline: none; font-family: inherit; font-size: 1rem; transition: 0.3s;}
-        input:focus, textarea:focus { border-color: #38bdf8; background: #000;}
-        textarea { min-height: 120px; resize: vertical;}
+        .day-node { border-left: 2px solid #222; padding-left: 25px; position: relative; margin-bottom: 35px;}
+        .day-node::before { content: ''; position: absolute; left: -7px; top: 0; width: 12px; height: 12px; background: #050505; border: 2px solid #38bdf8; border-radius: 50%;}
+        .day-num { font-family: 'Inter'; font-size: 0.75rem; color: #888; font-weight: 700; letter-spacing: 2px; margin-bottom: 8px; display: block;}
+        .day-headline { font-size: 1.3rem; font-weight: 700; color: #fff; margin-bottom: 10px;}
+        .day-detail { color: #aaa; font-size: 0.95rem; line-height: 1.6;}
 
-        /* 定制化高级单选框 (卡片式) */
-        .radio-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;}
-        .radio-card { position: relative; display: block; cursor: pointer;}
-        .radio-card input { position: absolute; opacity: 0; cursor: pointer; height: 0; width: 0;}
-        .card-body { border: 1px solid #222; background: #111; padding: 15px 20px; border-radius: 6px; transition: 0.3s; text-align: center; color: #888; font-weight: 500;}
-        .radio-card:hover .card-body { background: #1a1a1a; color: #ccc;}
-        .radio-card input:checked ~ .card-body { border-color: #38bdf8; background: rgba(56, 189, 248, 0.1); color: #38bdf8;}
+        .disclaimer { font-size: 0.8rem; color: #666; text-align: center; margin-top: 30px;}
 
-        .btn-submit { background: #fff; color: #000; border: none; padding: 18px 40px; font-size: 1rem; font-weight: 700; letter-spacing: 2px; border-radius: 6px; cursor: pointer; transition: 0.3s; margin-top: 20px; width: 100%; outline: none;}
-        .btn-submit:hover { background: #38bdf8; transform: translateY(-3px);}
-        .btn-submit:disabled { background: #333; color: #888; cursor: not-allowed; transform: none;}
-
-        /* 发送状态层 */
-        .status-msg { margin-top: 20px; padding: 15px; border-radius: 6px; text-align: center; font-size: 0.9rem; display: none; font-weight: 500;}
-        .status-success { background: rgba(82, 196, 26, 0.1); color: #52c41a; border: 1px solid rgba(82, 196, 26, 0.3); display: block;}
-        .status-error { background: rgba(255, 77, 79, 0.1); color: #ff4d4f; border: 1px solid rgba(255, 77, 79, 0.3); display: block;}
-
-        .site-footer { border-top: 1px solid var(--border); padding: 40px 0; text-align: center; font-family: 'Inter'; font-size: 0.8rem; color: var(--text-dimmed); letter-spacing: 2px; margin-top: auto;}
-
-        @media (max-width: 768px) {
-            nav { padding: 20px 5vw; border-bottom: none; background: var(--bg-base);}
-            .nav-links { display: none; }
-            .mobile-menu-btn { display: block; }
-            .nav-brand a { font-size: 1.1rem; }
-            .breadcrumb-nav { padding: 20px 5vw; font-size: 0.75rem;}
-            .container { padding: 30px 5vw 60px 5vw; }
-            .cs-title { font-size: 2.2rem; }
-            .custom-form { padding: 30px 20px; }
-            .form-row { grid-template-columns: 1fr; gap: 20px;}
-            .radio-group { grid-template-columns: 1fr 1fr; }
-        }
+        .site-footer { border-top: 1px solid var(--border); padding: 40px 0; text-align: center; font-family: 'Inter'; font-size: 0.8rem; color: #888; letter-spacing: 2px; margin-top: auto;}
     </style>
 </head>
 <body>
@@ -97,131 +84,135 @@
             <a href="gear.html">装备库</a>
             <a href="consult.html" class="active">私人定制</a>
         </div>
-        <button class="mobile-menu-btn" id="menuToggle">☰</button>
     </nav>
-    
-    <div class="mobile-overlay" id="mobileOverlay">
-        <a href="index.html">首页</a>
-        <a href="stories.html">旅行故事</a>
-        <a href="guides.html">攻略指南</a>
-        <a href="toolkit.html">干货库</a>
-        <a href="gear.html">装备库</a>
-        <a href="consult.html" class="active">私人定制</a>
-    </div>
 
     <div class="breadcrumb-nav">
         <a href="index.html" class="crumb-link">首页</a><span class="crumb-separator">/</span>
-        <span class="crumb-current">私人定制</span>
+        <span class="crumb-current">路线引擎</span>
     </div>
 
     <main class="container">
-        <span class="cs-tag">BESPOKE ROUTES // 路线定制</span>
-        <h1 class="cs-title">拒绝走马观花<br>构建你的极境</h1>
-        <p class="cs-desc">填写您的探险偏好。我将基于实地勘测的非公开数据库，为您提供避开人群的深旅行路线框架与高定排雷建议。</p>
+        <span class="cs-tag">AI ITINERARY ENGINE</span>
+        <h1 class="cs-title">极境路线自动演算</h1>
+        <p class="cs-desc">选择您的探险约束条件。引擎将基于我实地勘测的非公开数据库，瞬间为您生成一份躲避人群的深度路书骨架。</p>
         
-        <form class="custom-form" id="bespokeForm">
-            <div class="form-row">
-                <div class="form-group">
-                    <label class="required">如何称呼您 (Name)</label>
-                    <input type="text" name="Name" required placeholder="阁下的称呼...">
-                </div>
-                <div class="form-group">
-                    <label class="required">微信号 (WeChat)</label>
-                    <input type="text" name="WeChat" required placeholder="用于接收方案...">
+        <div class="engine-panel" id="controlPanel">
+            <div class="engine-row">
+                <span class="engine-label">1. 目标极境 (DESTINATION)</span>
+                <div class="options-grid">
+                    <label class="opt-card"><input type="radio" name="dest" value="冰岛" checked><div class="opt-body">🇮🇸 冰岛环岛</div></label>
+                    <label class="opt-card"><input type="radio" name="dest" value="挪威"><div class="opt-body">🇳🇴 挪威峡湾</div></label>
+                    <label class="opt-card"><input type="radio" name="dest" value="法罗群岛"><div class="opt-body">🇫🇴 法罗群岛</div></label>
                 </div>
             </div>
-
-            <div class="form-group full" style="margin-bottom: 30px;">
-                <label class="required">向往的极境 (Destination)</label>
-                <div class="radio-group">
-                    <label class="radio-card"><input type="radio" name="Destination" value="冰岛" required><div class="card-body">🇮🇸 冰岛环岛</div></label>
-                    <label class="radio-card"><input type="radio" name="Destination" value="挪威"><div class="card-body">🇳🇴 挪威峡湾</div></label>
-                    <label class="radio-card"><input type="radio" name="Destination" value="法罗群岛"><div class="card-body">🇫🇴 法罗群岛</div></label>
-                    <label class="radio-card"><input type="radio" name="Destination" value="申根国深度游"><div class="card-body">🇪🇺 欧洲申根国</div></label>
+            
+            <div class="engine-row">
+                <span class="engine-label">2. 可用天数 (DURATION)</span>
+                <div class="options-grid">
+                    <label class="opt-card"><input type="radio" name="days" value="5" checked><div class="opt-body">5 天 (紧凑)</div></label>
+                    <label class="opt-card"><input type="radio" name="days" value="7"><div class="opt-body">7 天 (经典)</div></label>
+                    <label class="opt-card"><input type="radio" name="days" value="10"><div class="opt-body">10 天+ (深度)</div></label>
                 </div>
             </div>
 
-            <div class="form-group full" style="margin-bottom: 30px;">
-                <label class="required">预计可用天数 (Duration)</label>
-                <div class="radio-group">
-                    <label class="radio-card"><input type="radio" name="Duration" value="5天以内" required><div class="card-body">5天内</div></label>
-                    <label class="radio-card"><input type="radio" name="Duration" value="7天左右"><div class="card-body">7天左右</div></label>
-                    <label class="radio-card"><input type="radio" name="Duration" value="10天左右"><div class="card-body">10天左右</div></label>
-                    <label class="radio-card"><input type="radio" name="Duration" value="14天以上"><div class="card-body">14天+</div></label>
+            <div class="engine-row">
+                <span class="engine-label">3. 探索风格 (STYLE)</span>
+                <div class="options-grid">
+                    <label class="opt-card"><input type="radio" name="style" value="风光摄影" checked><div class="opt-body">📷 风光摄影</div></label>
+                    <label class="opt-card"><input type="radio" name="style" value="硬核越野"><div class="opt-body">🚙 硬核越野 (F路)</div></label>
                 </div>
             </div>
 
-            <div class="form-group full" style="margin-bottom: 30px;">
-                <label class="required">旅行风格偏好 (Style)</label>
-                <div class="radio-group">
-                    <label class="radio-card"><input type="radio" name="Style" value="硬核自驾" required><div class="card-body">🚙 硬核自驾</div></label>
-                    <label class="radio-card"><input type="radio" name="Style" value="风光摄影"><div class="card-body">📷 风光摄影</div></label>
-                    <label class="radio-card"><input type="radio" name="Style" value="小众深度"><div class="card-body">🗺️ 小众深度</div></label>
-                    <label class="radio-card"><input type="radio" name="Style" value="松弛度假"><div class="card-body">☕ 松弛度假</div></label>
+            <button class="btn-generate" id="generateBtn">🚀 生成专属路书</button>
+        </div>
+
+        <div class="loader-wrapper" id="loaderBox">
+            <div class="radar-spinner"></div>
+            <div class="loader-text" id="loaderText">CALCULATING ROUTES...</div>
+        </div>
+
+        <div class="result-panel" id="resultBox">
+            <div class="itinerary-paper" id="itineraryContent">
                 </div>
-            </div>
-
-            <div class="form-group full">
-                <label>更多特定需求 (Optional Requirements)</label>
-                <textarea name="Details" placeholder="例如：是否需要指导无人机航拍机位？几月出发？是否有特定想去的地标..."></textarea>
-            </div>
-
-            <button type="submit" class="btn-submit" id="submitBtn">提交探险需求</button>
-            <div class="status-msg" id="formStatus"></div>
-        </form>
+            <p class="disclaimer">注：此为智能算法生成的框架版路书。出行前请务必核对当季天气与封路情况。</p>
+        </div>
     </main>
 
     <footer class="site-footer">© 2026 戴维的梦想世界.</footer>
 
     <script>
-        const menuToggle = document.getElementById('menuToggle');
-        const mobileOverlay = document.getElementById('mobileOverlay');
-        let isMenuOpen = false;
-        menuToggle.addEventListener('click', () => {
-            isMenuOpen = !isMenuOpen;
-            if(isMenuOpen) { mobileOverlay.classList.add('active'); menuToggle.innerText = '✕'; document.body.style.overflow = 'hidden';
-            } else { mobileOverlay.classList.remove('active'); menuToggle.innerText = '☰'; document.body.style.overflow = 'auto'; }
-        });
+        const generateBtn = document.getElementById('generateBtn');
+        const controlPanel = document.getElementById('controlPanel');
+        const loaderBox = document.getElementById('loaderBox');
+        const resultBox = document.getElementById('resultBox');
+        const itineraryContent = document.getElementById('itineraryContent');
 
-        // 核心表单交互引擎 (无刷新异步提交)
-        const form = document.getElementById('bespokeForm');
-        const submitBtn = document.getElementById('submitBtn');
-        const statusMsg = document.getElementById('formStatus');
+        // 简易智库：预置几套惊艳的方案模板
+        const dataVault = {
+            "冰岛_5_风光摄影": [
+                {d: "DAY 1", t: "抵达雷克雅未克 & 蓝湖补给", desc: "抵达 KEF 机场，提车。下午前往蓝湖洗去疲惫，傍晚抵达市区采购物资。"},
+                {d: "DAY 2", t: "黄金圈避开人群路线", desc: "清晨直奔辛格维利尔国家公园，中午前往间歇泉。重点：在古佛斯瀑布利用慢门拍摄水流。"},
+                {d: "DAY 3", t: "南岸瀑布群与黑沙滩", desc: "塞里雅兰瀑布 -> 斯科加瀑布。傍晚在黑沙滩拍摄玄武岩石柱，严禁背对大海（防疯狗浪）。"},
+                {d: "DAY 4", t: "维克镇狂风与冰川徒步", desc: "早晨参加索尔黑马冰川徒步，下午前往飞机残骸。体力消耗极大，需准备高热量食物。"},
+                {d: "DAY 5", t: "极光收尾 & 离岛", desc: "返回首都，视极光指数前往 Grotta 灯塔守候。随后前往机场还车。"}
+            ],
+            "挪威_7_硬核越野": [
+                {d: "DAY 1-2", t: "奥斯陆空降 & 提车北上", desc: "抵达奥斯陆，提取四驱 SUV。驱车穿过蜿蜒的森林公路，适应挪威的驾驶节奏。"},
+                {d: "DAY 3", t: "奇迹石硬核攀登", desc: "早晨 6 点起步，避开人群。单程 5 公里，多为裸露岩石，必须穿着专业级 V 底徒步鞋。"},
+                {d: "DAY 4", t: "布道石悬崖俯瞰", desc: "转移至吕瑟峡湾，进行 4 小时往返的布道石徒步。在此可操作无人机，但需时刻注意峡湾峡管效应造成的妖风。"},
+                {d: "DAY 5", t: "国家景观公路轮渡", desc: "驾驶体验日。沿途经过多个峡湾轮渡，体会北欧极致的桥隧基建。"},
+                {d: "DAY 6", t: "恶魔之舌前哨站", desc: "抵达奥达镇补给。视天气决定是否预定次日的恶魔之舌硬核向导。"},
+                {d: "DAY 7", t: "壮丽返程", desc: "沿哈当厄尔峡湾返回，交付车辆。"}
+            ]
+        };
 
-        // 完美接入你的真实 Endpoint 
-        const API_ENDPOINT = "https://formspree.io/f/xgonlznl"; 
+        // 默认兜底万能模板
+        const defaultRoute = [
+            {d: "DAY 1", t: "未知的空降地", desc: "提取车辆，熟悉当地交通规则，完成超市补给（重点购买饮用水和速食高热量食物）。"},
+            {d: "DAY 2", t: "深入腹地", desc: "离开城市，沿途随停随拍。这里是摄影师的试炼场，请随时准备好 ND 镜。"},
+            {d: "DAY 3-N", t: "极境探索", desc: "系统依据您的要求，建议您将大部分时间留给不可抗力的天气。不赶路，就是最好的路书。"},
+            {d: "FINAL DAY", t: "文明的回归", desc: "整理 1TB 的素材，带着敬畏之心返回机场。"}
+        ];
 
-        form.addEventListener('submit', async function(e) {
-            e.preventDefault();
+        generateBtn.addEventListener('click', () => {
+            const dest = document.querySelector('input[name="dest"]:checked').value;
+            const days = document.querySelector('input[name="days"]:checked').value;
+            const style = document.querySelector('input[name="style"]:checked').value;
             
-            submitBtn.disabled = true;
-            submitBtn.innerText = "⏳ 正在投递至主理人信箱...";
-            statusMsg.className = "status-msg"; // 重置样式
+            controlPanel.style.display = 'none';
+            loaderBox.style.display = 'flex';
 
-            const formData = new FormData(form);
+            // 模拟 AI 计算动画效果
+            setTimeout(() => { document.getElementById('loaderText').innerText = "MATCHING SECRET LOCATIONS..."; }, 800);
+            setTimeout(() => { document.getElementById('loaderText').innerText = "GENERATING TIMELINE..."; }, 1600);
 
-            try {
-                const response = await fetch(API_ENDPOINT, {
-                    method: 'POST',
-                    body: formData,
-                    headers: { 'Accept': 'application/json' }
+            setTimeout(() => {
+                loaderBox.style.display = 'none';
+                
+                const dbKey = `${dest}_${days}_${style}`;
+                const routePlan = dataVault[dbKey] || defaultRoute;
+                
+                let html = `
+                    <div class="ip-header">
+                        <div class="ip-meta">SYS.GEN // ${dest} • ${days} DAYS • ${style}</div>
+                        <h2 class="ip-title">您的极境路书演算完毕</h2>
+                    </div>
+                `;
+
+                routePlan.forEach(day => {
+                    html += `
+                        <div class="day-node">
+                            <span class="day-num">${day.d}</span>
+                            <div class="day-headline">${day.t}</div>
+                            <div class="day-detail">${day.desc}</div>
+                        </div>
+                    `;
                 });
 
-                if (response.ok) {
-                    form.reset();
-                    statusMsg.innerText = "✅ 需求已成功送达。我将在极地无信号区外的 24 小时内与您联络。";
-                    statusMsg.classList.add('status-success');
-                    submitBtn.innerText = "提交成功";
-                } else {
-                    throw new Error("Network response was not ok.");
-                }
-            } catch (error) {
-                console.error(error);
-                statusMsg.innerText = "⚠️ 网络出现波动。目前请直接通过小红书私信联系。";
-                statusMsg.classList.add('status-error');
-                submitBtn.disabled = false;
-                submitBtn.innerText = "重新提交";
-            }
+                itineraryContent.innerHTML = html;
+                resultBox.style.display = 'block';
+
+            }, 2500);
         });
     </script>
 </body>
