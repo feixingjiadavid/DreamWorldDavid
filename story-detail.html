@@ -24,7 +24,7 @@
         body { background: var(--bg-base); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; -webkit-font-smoothing: antialiased; line-height: 1.8; overflow-x: hidden;}
 
         #init-loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--bg-base); z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.8s ease, visibility 0.8s ease; }
-        .loader-brand { font-family: 'Inter', sans-serif; font-size: 1.2rem; font-weight: 700; letter-spacing: 6px; color: var(--gold); animation: breath 2s infinite ease-in-out;}
+        .loader-brand { font-family: 'Inter', sans-serif; font-size: 1.2rem; font-weight: 700; letter-spacing: 6px; color: var(--gold); animation: breath 2s infinite ease-in-out; text-transform: uppercase;}
         @keyframes breath { 0% { opacity: 0.3; transform: scale(0.98); } 50% { opacity: 1; transform: scale(1); } 100% { opacity: 0.3; transform: scale(0.98); } }
         body.loaded #init-loader { opacity: 0; visibility: hidden; }
 
@@ -68,7 +68,7 @@
         .related-section { max-width: 1200px; margin: 0 auto; padding: 40px 6vw 80px 6vw; border-top: 1px solid var(--border); }
         .related-title { font-family: 'Inter'; font-size: 0.8rem; color: var(--text-dimmed); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 30px; text-align: center;}
         .related-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; }
-        .related-card { position: relative; border-radius: var(--radius); overflow: hidden; aspect-ratio: 16/9; background: #11; cursor: pointer; display: block; border: 1px solid rgba(255,255,255,0.03); transition: var(--transition); }
+        .related-card { position: relative; border-radius: var(--radius); overflow: hidden; aspect-ratio: 16/9; background: #111; cursor: pointer; display: block; border: 1px solid rgba(255,255,255,0.03); transition: var(--transition); }
         .related-card:hover { transform: translateY(-5px); border-color: rgba(212,175,55,0.3); box-shadow: 0 15px 30px rgba(0,0,0,0.5); }
         .r-card-img { width: 100%; height: 100%; object-fit: cover; opacity: 0.5; transition: 1s ease; }
         .related-card:hover .r-card-img { opacity: 0.8; transform: scale(1.05); }
@@ -105,7 +105,7 @@
         .share-copy-btn { padding: 14px 35px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; border-radius: 40px; cursor: pointer; font-size: 0.85rem; transition: 0.3s; font-family: 'Noto Sans SC'; letter-spacing: 1px;}
         .share-copy-btn:hover { background: #fff; color: #000;}
 
-        /* --- 刻录生成保存在上方的 IMG 元素 --- */
+        /* --- 生成并叠加的图片 --- */
         #generatedShareImage { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; z-index: 100; cursor: pointer;}
 
         #toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: #111; border: 1px solid var(--gold); color: var(--gold); padding: 12px 25px; border-radius: 40px; font-size: 0.85rem; letter-spacing: 1px; opacity: 0; transition: var(--transition); z-index: 9999; box-shadow: 0 10px 30px rgba(0,0,0,0.8); pointer-events: none; }
@@ -165,7 +165,7 @@
                 <span class="story-tag">EXPEDITION LOG</span>
                 <h1 class="story-title" id="r_title"></h1>
                 <div class="story-meta">
-                    记录于 <span id="r_date" style="color: #fff; margin: 0 5px;"></span> // 地点：<span id="r_location" style="color: #fff; margin-left: 5px;">未知</span>
+                    记录时间：<span id="r_date" style="color: #fff; margin: 0 5px;"></span> // 地点：<span id="r_location" style="color: #fff; margin-left: 5px;">未知</span>
                 </div>
             </aside>
             <article class="story-article">
@@ -202,7 +202,7 @@
             <img src="" id="generatedShareImage">
         </div>
         <div class="share-actions">
-            <p class="share-tip" id="shareTipText">海报刻录中...</p>
+            <p class="share-tip" id="shareTipText">海报生成中...</p>
             <button class="share-copy-btn" onclick="copyShareText()">📄 复制精美图文链接</button>
         </div>
     </div>
@@ -213,14 +213,12 @@
     <div id="toast">提示信息</div>
 
     <script>
-        let currentArticleData = null; // 全局存储当前文章数据
+        let currentArticleData = null;
 
         function getFastCdnUrl(url) { if (!url) return ''; if (url.startsWith('images/')) return `https://cdn.jsdelivr.net/gh/feixingjiadavid/DreamWorldDavid/${url}`; return url; }
         
-        // 自定义高级分享与全自动化海报刻录逻辑
         async function openShareModal() {
             if(!currentArticleData) return;
-            // 1. 填充原始 HTML 结构
             document.getElementById('shareCover').style.backgroundImage = `url('${currentArticleData.cover}')`;
             document.getElementById('shareTitle').innerText = currentArticleData.title;
             
@@ -229,36 +227,28 @@
             qrContainer.innerHTML = ''; 
             new QRCode(qrContainer, { text: window.location.href, width: 52, height: 52, colorDark : "#000", colorLight : "#fff", correctLevel : QRCode.CorrectLevel.M });
             
-            // 2. 显示 Modal (用户能看到基础 HTML 结构)
             modal.classList.add('active');
             
-            // 3. 全自动“刻录”引擎
             const target = document.getElementById('shareCardHTML');
             const tip = document.getElementById('shareTipText');
-            tip.innerText = "⏳ 正在为你刻录极境名片...";
+            tip.innerText = "⏳ 正在生成专属分享海报...";
 
-            // 稍微等待一个渲染帧（确保 QR 码和背景图渲染完毕）
             await new Promise(r => setTimeout(r, 200));
 
             try {
-                // 启动 HTML -> Canvas
                 const canvas = await html2canvas(target, {
-                    useCORS: true, // Handle JsDelivr assets
+                    useCORS: true,
                     allowTaint: false,
-                    scale: 2, // Higher quality for Retina screens
-                    backgroundColor: "#0A0A0A" // Modal matching bg
+                    scale: 2,
+                    backgroundColor: "#0A0A0A"
                 });
 
-                // Canvas -> JPG
                 const imgData = canvas.toDataURL("image/jpeg", 0.9);
+                tip.innerText = "👍 生成成功！请长按上方海报保存";
                 
-                // 覆盖指令文案
-                tip.innerText = "👍 刻录完成！请长按上方卡片保存至手机";
-
-                // 将生成图片加载到透明覆盖 IMG 元素上
                 const generatedImg = document.getElementById('generatedShareImage');
                 generatedImg.src = imgData;
-                generatedImg.style.opacity = '0'; // 保持完全透明，仅依靠它抓取长按事件覆盖 HTML
+                generatedImg.style.opacity = '0'; 
 
             } catch (e) {
                 console.error("Poster generation failed:", e);
@@ -268,8 +258,7 @@
         
         function closeShareModal() { 
             document.getElementById('shareModal').classList.remove('active'); 
-            // 重置文案
-            document.getElementById('shareTipText').innerText = "海报刻录中..."; 
+            document.getElementById('shareTipText').innerText = "海报生成中..."; 
         }
         
         function copyShareText() {
@@ -312,7 +301,6 @@
             const story = dbData.stories.find(s => s.id === storyId);
             if (!story) { document.getElementById('loadingState').innerText="未找到故事"; return; }
 
-            // 存储全局供海报调用
             currentArticleData = { title: story.title, cover: getFastCdnUrl(story.cover) };
 
             document.title = `${story.title} | DAVID EXPEDITION`;
