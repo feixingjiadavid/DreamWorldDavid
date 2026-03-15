@@ -3,38 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>资料下载 | 戴维的梦想世界</title>
+    <title>数字资料中心 | 戴维的梦想世界</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Noto+Sans+SC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <script>document.write('<script src="data.js?v=' + new Date().getTime() + '"><\/script>');</script>
     <style>
-        :root { --bg-base: #050505; --text-primary: #FFFFFF; --text-dimmed: #888888; --gold: #D4AF37; --border: rgba(255,255,255,0.05); --radius: 8px; --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); --font-mono: 'JetBrains Mono', monospace;}
+        :root { --bg-base: #050505; --text-primary: #FFFFFF; --gold: #D4AF37; --border: rgba(255,255,255,0.05); }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: var(--bg-base); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; -webkit-font-smoothing: antialiased; line-height: 1.8; overflow-x: hidden; min-height: 100vh; display: flex; flex-direction: column;}
-        
-        #init-loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--bg-base); z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.5s ease, visibility 0.5s ease; }
-        .loader-brand { font-family: 'Noto Sans SC', sans-serif; font-size: 1.2rem; font-weight: 700; letter-spacing: 4px; color: var(--gold); animation: breath 1.5s infinite ease-in-out;}
-        @keyframes breath { 0%,100% { opacity: 0.3; transform: scale(0.98); } 50% { opacity: 1; transform: scale(1); } }
-        body.loaded #init-loader { opacity: 0; visibility: hidden; }
+        body { background: var(--bg-base); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; -webkit-font-smoothing: antialiased; display: flex; flex-direction: column; min-height: 100vh;}
 
-        nav { display: flex; justify-content: space-between; align-items: center; padding: 30px 6vw; font-size: 0.95rem; font-weight: 500; letter-spacing: 1px; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: rgba(5,5,5,0.8); backdrop-filter: blur(20px); z-index: 100;}
-        .nav-brand a { color: var(--text-primary); text-decoration: none; font-weight: 700; font-size: 1.2rem; letter-spacing: 2px; transition: color 0.3s ease;}
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 30px 6vw; font-size: 0.95rem; font-weight: 500; letter-spacing: 1px; border-bottom: 1px solid var(--border); background: rgba(5,5,5,0.8); backdrop-filter: blur(20px); z-index: 100;}
+        .nav-brand a { color: var(--text-primary); text-decoration: none; font-weight: 700; font-size: 1.2rem; letter-spacing: 2px;}
         .nav-brand a:hover { color: var(--gold); } 
         .nav-links { display: flex; gap: 50px; align-items: center; }
-        .nav-links a { color: var(--text-dimmed); text-decoration: none; position: relative; padding-bottom: 6px; transition: color 0.3s ease; white-space: nowrap;}
+        .nav-links a { color: #888; text-decoration: none; position: relative; padding-bottom: 6px; transition: 0.3s; white-space: nowrap;}
         .nav-links a:hover, .nav-links a.active { color: var(--text-primary); }
         .nav-links a.active::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--text-primary); }
+        .mobile-menu-btn { display: none; background: transparent; border: none; color: #fff; font-size: 1.8rem; cursor: pointer; }
         
-        .mobile-menu-btn { display: none; background: transparent; border: none; color: #fff; font-size: 1.8rem; cursor: pointer;}
-        
-        /* 核心修复：补充全屏菜单的隐藏样式 */
         .mobile-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(5,5,5,0.98); backdrop-filter: blur(15px); z-index: 99; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: 0.4s; }
         .mobile-overlay.active { opacity: 1; visibility: visible; }
         .mobile-overlay a { color: #fff; text-decoration: none; font-size: 2rem; font-weight: 700; letter-spacing: 4px; margin: 20px 0; opacity: 0; transform: translateY(20px); transition: 0.4s; }
         .mobile-overlay.active a { opacity: 1; transform: translateY(0); }
         .mobile-overlay a.active { color: var(--gold); }
-        
+
         .breadcrumb-nav { padding: 30px 6vw; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); font-family: 'Inter', sans-serif; font-size: 0.8rem; letter-spacing: 1px;}
-        .crumb-link { color: var(--text-dimmed); text-decoration: none; transition: color 0.3s;}
+        .crumb-link { color: #888; text-decoration: none; transition: 0.3s;}
         .crumb-link:hover { color: var(--gold); }
         .crumb-separator { color: #444;}
         .crumb-current { color: var(--text-primary);}
@@ -42,45 +35,37 @@
         .container { max-width: 1400px; margin: 0 auto; padding: 60px 6vw; flex: 1; width: 100%; }
         .page-header { margin-bottom: 60px;}
         .title-area h1 { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 900; letter-spacing: -1px; margin-bottom: 15px; margin-top: 0;}
-        .title-area p { color: var(--text-dimmed); font-size: 1.1rem; margin: 0; max-width: 600px;}
-        .title-tag { font-family: 'Inter'; font-size: 0.8rem; color: #38bdf8; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 15px; display: block; font-weight: 700;}
+        .title-area p { color: #888; font-size: 1.1rem; margin: 0; max-width: 700px; line-height: 1.8;}
+        .title-tag { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: #38bdf8; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 15px; display: block; font-weight: 700;}
 
-        .toolkit-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 30px; }
-        .resource-card { background: #0A0A0A; border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; overflow: hidden; transition: var(--transition); display: flex; flex-direction: column; position: relative;}
-        .resource-card:hover { transform: translateY(-5px); border-color: #38bdf8; box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
+        .toolkit-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 40px;}
         
-        .rc-cover { width: 100%; height: 200px; background: #111; position: relative; overflow: hidden;}
-        .rc-cover img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: 0.5s; filter: grayscale(20%);}
-        .resource-card:hover .rc-cover img { opacity: 1; transform: scale(1.05); filter: grayscale(0%);}
-        .rc-cover::after { content:''; position: absolute; bottom:0; left:0; width:100%; height:50%; background: linear-gradient(to top, #0A0A0A, transparent); }
-
-        .rc-badge { position: absolute; top: 15px; left: 15px; padding: 6px 12px; border-radius: 4px; font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700; z-index: 2; backdrop-filter: blur(4px);}
-        .badge-pdf { background: rgba(239, 68, 68, 0.2); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3);}
-        .badge-excel { background: rgba(34, 197, 94, 0.2); color: #22c55e; border: 1px solid rgba(34, 197, 94, 0.3);}
-        .badge-zip { background: rgba(234, 179, 8, 0.2); color: #eab308; border: 1px solid rgba(234, 179, 8, 0.3);}
-
-        .rc-content { padding: 25px; display: flex; flex-direction: column; flex: 1;}
-        .rc-title { font-size: 1.3rem; font-weight: 700; line-height: 1.4; margin-bottom: 10px; color: #fff;}
-        .rc-desc { font-size: 0.95rem; color: var(--text-dimmed); margin-bottom: 25px; flex: 1;}
+        .tk-card { background: #111; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); transition: 0.4s; display: flex; flex-direction: column; text-decoration: none; box-shadow: 0 10px 30px rgba(0,0,0,0.3);}
+        .tk-card:hover { transform: translateY(-8px); border-color: rgba(56, 189, 248, 0.4); box-shadow: 0 20px 50px rgba(0,0,0,0.6);}
         
-        .rc-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 20px;}
-        .rc-meta { font-family: var(--font-mono); font-size: 0.8rem; color: #666; }
+        .tk-cover { width: 100%; height: 200px; position: relative; overflow: hidden;}
+        .tk-cover img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: 1s;}
+        .tk-card:hover .tk-cover img { opacity: 1; transform: scale(1.05);}
+        .tk-type-badge { position: absolute; top: 20px; left: 20px; background: rgba(56, 189, 248, 0.2); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); padding: 4px 12px; border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 700; z-index: 2; backdrop-filter: blur(4px);}
         
-        .btn-download { display: inline-flex; align-items: center; gap: 8px; background: rgba(56, 189, 248, 0.1); color: #38bdf8; padding: 10px 20px; border-radius: 30px; text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: 0.3s; border: 1px solid rgba(56, 189, 248, 0.2);}
-        .btn-download:hover { background: #38bdf8; color: #000; }
-        .btn-download svg { width: 16px; height: 16px; fill: currentColor; }
+        .tk-content { padding: 30px; display: flex; flex-direction: column; flex: 1;}
+        .tk-title { font-size: 1.4rem; font-weight: 700; color: #fff; margin: 0 0 15px 0;}
+        .tk-desc { color: #888; font-size: 0.95rem; line-height: 1.6; margin-bottom: 25px; flex: 1;}
+        
+        .tk-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 20px;}
+        .tk-size { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: #555;}
+        .tk-btn { background: transparent; color: #38bdf8; border: 1px solid #38bdf8; padding: 8px 20px; border-radius: 40px; font-size: 0.85rem; font-weight: 500; transition: 0.3s; display: flex; align-items: center; gap: 6px;}
+        .tk-card:hover .tk-btn { background: rgba(56, 189, 248, 0.1);}
+        
+        .site-footer { border-top: 1px solid var(--border); padding: 40px 0; text-align: center; font-family: 'Inter'; font-size: 0.8rem; color: #888; letter-spacing: 2px; margin-top: auto;}
 
-        .site-footer { border-top: 1px solid var(--border); padding: 40px 0; text-align: center; font-family: 'Inter'; font-size: 0.8rem; color: var(--text-dimmed); letter-spacing: 2px; margin-top: auto;}
-
-        @media (max-width: 900px) { .toolkit-grid { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); } }
         @media (max-width: 768px) {
             nav { padding: 20px 5vw; border-bottom: none;}
             .nav-links { display: none; }
             .mobile-menu-btn { display: block; }
-            .nav-brand a { font-size: 1.1rem; letter-spacing: 2px; }
-            .breadcrumb-nav { padding: 20px 5vw; font-size: 0.75rem;}
-            .container { padding: 30px 5vw 60px 5vw; }
-            .toolkit-grid { grid-template-columns: 1fr; gap: 20px;}
+            .nav-brand a { font-size: 1.1rem; }
+            .container { padding: 30px 5vw; }
+            .toolkit-grid { grid-template-columns: 1fr; gap: 25px;}
         }
     </style>
 </head>
@@ -93,23 +78,22 @@
             <a href="guides.html">攻略指南</a>
             <a href="toolkit.html" class="active">资料下载</a>
             <a href="radar.html">避坑雷达</a>
-            <a href="consult.html">智能路书</a>
+            <a href="hub.html">极境导航</a>
         </div>
         <button class="mobile-menu-btn" id="menuToggle">☰</button>
     </nav>
-    
     <div class="mobile-overlay" id="mobileOverlay">
         <a href="index.html">首页</a>
         <a href="stories.html">旅行故事</a>
         <a href="guides.html">攻略指南</a>
         <a href="toolkit.html" class="active">资料下载</a>
         <a href="radar.html">避坑雷达</a>
-        <a href="consult.html">智能路书</a>
+        <a href="hub.html">极境导航</a>
     </div>
 
     <div class="breadcrumb-nav">
         <a href="index.html" class="crumb-link">首页</a><span class="crumb-separator">/</span>
-        <span class="crumb-current">资料下载</span>
+        <span class="crumb-current">数字资料中心</span>
     </div>
 
     <main class="container">
@@ -127,8 +111,6 @@
     <footer class="site-footer">© 2026 戴维的梦想世界.</footer>
 
     <script>
-        setTimeout(() => { document.body.classList.add('loaded'); }, 300);
-        
         const menuToggle = document.getElementById('menuToggle');
         const mobileOverlay = document.getElementById('mobileOverlay');
         menuToggle.addEventListener('click', () => {
@@ -138,45 +120,32 @@
 
         function getFastCdnUrl(url) { if (!url) return ''; return url.startsWith('images/') ? `https://cdn.jsdelivr.net/gh/feixingjiadavid/DreamWorldDavid/${url}` : url; }
 
-        function getBadgeClass(type) {
-            const t = type.toLowerCase();
-            if(t.includes('pdf')) return 'badge-pdf';
-            if(t.includes('excel')) return 'badge-excel';
-            if(t.includes('zip')) return 'badge-zip';
-            return 'badge-default';
-        }
-
         document.addEventListener("DOMContentLoaded", function() {
             const grid = document.getElementById('toolkitGrid');
-            let assets = [];
-            
             if (typeof dbData === 'undefined' || !dbData.toolkits || dbData.toolkits.length === 0) {
-                assets = [
-                    { type: 'ZIP', cover: 'https://images.unsplash.com/photo-1476610182048-b716b8518aae?q=80&w=600', title: '申根签过签资料模板包', desc: '内含高出签率的多国行程单原件、多国解释信（Cover Letter）双语模板。', size: '2.8 MB', link: '#' },
-                    { type: 'Excel', cover: 'https://images.unsplash.com/photo-1520106212299-d99c443e4568?q=80&w=600', title: '冰岛10日精准行程与预算表', desc: '细化到小时的路线规划表格源码，内含各大超市物价对照与日落时间测算公式。', size: '1.1 MB', link: '#' },
-                    { type: 'PDF', cover: 'https://images.unsplash.com/photo-1510798831971-661eb04b3739?q=80&w=600', title: '北欧冬季极地行李检查清单', desc: '从三层穿衣法到数码相机防寒套，这是实战检验过的保命级打包清单。', size: '4.2 MB', link: '#' }
-                ];
-            } else {
-                assets = dbData.toolkits.sort((a, b) => new Date(b.date) - new Date(a.date));
+                grid.innerHTML = '<div style="color:#555; font-family:Inter; grid-column: 1/-1; text-align:center; padding: 50px 0;">资源库正在构建中...</div>';
+                return;
             }
-            
-            assets.forEach(item => {
-                const coverHtml = item.cover ? `<div class="rc-cover"><img src="${getFastCdnUrl(item.cover)}" loading="lazy"></div>` : '';
+
+            const toolkits = dbData.toolkits.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            toolkits.forEach(item => {
+                const coverHtml = item.cover ? `<img src="${getFastCdnUrl(item.cover)}" alt="cover">` : `<div style="width:100%;height:100%;background:#222;"></div>`;
                 const cardHTML = `
-                    <div class="resource-card">
-                        <div class="rc-badge ${getBadgeClass(item.type)}">${item.type}</div>
-                        ${coverHtml}
-                        <div class="rc-content">
-                            <h2 class="rc-title">${item.title}</h2>
-                            <p class="rc-desc">${item.desc}</p>
-                            <div class="rc-footer">
-                                <div class="rc-meta">${item.size}</div>
-                                <a href="${getFastCdnUrl(item.link)}" target="_blank" download class="btn-download">
-                                    <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg> 获取文件
-                                </a>
+                    <a href="${item.link}" target="_blank" class="tk-card">
+                        <div class="tk-cover">
+                            <span class="tk-type-badge">${item.type}</span>
+                            ${coverHtml}
+                        </div>
+                        <div class="tk-content">
+                            <h2 class="tk-title">${item.title}</h2>
+                            <p class="tk-desc">${item.desc}</p>
+                            <div class="tk-footer">
+                                <span class="tk-size">${item.size}</span>
+                                <span class="tk-btn">📥 获取文件</span>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 `;
                 grid.insertAdjacentHTML('beforeend', cardHTML);
             });
