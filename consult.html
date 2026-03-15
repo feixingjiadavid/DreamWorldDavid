@@ -8,12 +8,15 @@
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Noto+Sans+SC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>document.write('<script src="data.js?v=' + new Date().getTime() + '"><\/script>');</script>
+    
     <style>
         :root { --bg-base: #050505; --text-primary: #FFFFFF; --gold: #D4AF37; --border: rgba(255,255,255,0.05); }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: var(--bg-base); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; -webkit-font-smoothing: antialiased; display: flex; flex-direction: column; min-height: 100vh;}
 
-        /* 统一导航 */
         nav { display: flex; justify-content: space-between; align-items: center; padding: 30px 6vw; font-size: 0.95rem; font-weight: 500; letter-spacing: 1px; border-bottom: 1px solid var(--border); background: rgba(5,5,5,0.8); backdrop-filter: blur(20px); z-index: 100;}
         .nav-brand a { color: var(--text-primary); text-decoration: none; font-weight: 700; font-size: 1.2rem; letter-spacing: 2px;}
         .nav-brand a:hover { color: var(--gold); } 
@@ -41,7 +44,6 @@
         .cs-title { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900; margin-bottom: 20px; line-height: 1.2; text-align: center; }
         .cs-desc { color: #888; max-width: 600px; line-height: 1.8; font-size: 1.05rem; text-align: center; margin-bottom: 50px;}
 
-        /* 高级引擎面板 */
         .engine-panel { background: #0A0A0A; border: 1px solid rgba(56, 189, 248, 0.2); border-radius: 12px; padding: 40px; width: 100%; box-shadow: 0 20px 50px rgba(0,0,0,0.5);}
         .engine-row { margin-bottom: 35px;}
         .engine-label { display: flex; align-items: center; gap: 10px; font-family: 'Inter'; font-size: 0.85rem; color: #38bdf8; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 15px; font-weight: 700;}
@@ -54,7 +56,6 @@
         .opt-card:hover .opt-body { background: #1a1a1a; color: #ccc;}
         .opt-card input:checked ~ .opt-body { border-color: #38bdf8; background: rgba(56, 189, 248, 0.1); color: #fff;}
 
-        /* 用户信息收集区 */
         .direct-form { display: none; width: 100%; border-top: 1px dashed rgba(255,255,255,0.1); margin-top: 30px; padding-top: 30px;}
         .form-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 20px;}
         .direct-form input { width: 100%; background: #111; border: 1px solid #333; color: #fff; padding: 15px; border-radius: 8px; font-family: 'Noto Sans SC'; font-size: 0.95rem; outline: none; transition: 0.3s;}
@@ -62,36 +63,33 @@
 
         .btn-generate { background: #38bdf8; color: #000; border: none; padding: 18px; font-size: 1.1rem; font-weight: 700; letter-spacing: 2px; border-radius: 8px; cursor: pointer; transition: 0.3s; width: 100%; outline: none; margin-top: 30px;}
         .btn-generate:hover { background: #fff;}
-        .btn-generate:disabled { background: #333; color: #888; cursor: not-allowed;}
 
-        /* 加载动画 */
         .loader-wrapper { display: none; flex-direction: column; align-items: center; padding: 80px 0;}
         .radar-spinner { width: 60px; height: 60px; border-top: 3px solid #38bdf8; border-right: 3px solid transparent; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px;}
         @keyframes spin { 100% { transform: rotate(360deg); } }
         .loader-text { font-family: 'JetBrains Mono', monospace; color: #38bdf8; font-size: 0.9rem; letter-spacing: 2px;}
         .loader-subtext { color: #555; font-size: 0.8rem; margin-top: 10px; font-family: 'Inter';}
 
-        /* 极致硬核的路书展示区 */
         .result-panel { display: none; width: 100%; margin-top: 40px; animation: fadeIn 0.8s ease;}
         @keyframes fadeIn { from{opacity:0; transform:translateY(30px);} to{opacity:1; transform:translateY(0);} }
         
         .itinerary-paper { background: #0A0A0A; border: 1px solid #222; border-radius: 16px; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.8);}
         
-        /* 动态生成的头图与数据大盘 */
-        .route-map-header { width: 100%; height: 350px; background: #111; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; padding: 40px;}
-        .map-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0.5; transition: 1s ease;}
-        .map-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,10,10,1) 0%, rgba(10,10,10,0.3) 60%, transparent 100%);}
-        .map-content { position: relative; z-index: 2;}
-        .ip-meta { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: #38bdf8; margin-bottom: 12px; letter-spacing: 2px;}
-        .ip-title { font-size: 2.8rem; font-weight: 900; margin: 0 0 20px 0; color: #fff; letter-spacing: -1px;}
+        /* 地图图层容器 */
+        .route-map-header { width: 100%; height: 400px; background: #111; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: flex-end; padding: 40px;}
+        #dynamic-map { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1;}
+        /* 覆盖层：让地图变暗，文字依然清晰可见 */
+        .map-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,10,10,1) 0%, rgba(10,10,10,0.4) 50%, rgba(10,10,10,0.1) 100%); z-index: 2; pointer-events: none;}
+        .map-content { position: relative; z-index: 3; pointer-events: none;}
         
-        /* 核心数据仪表盘 */
+        .ip-meta { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: #38bdf8; margin-bottom: 12px; letter-spacing: 2px; text-shadow: 0 2px 4px #000;}
+        .ip-title { font-size: 2.8rem; font-weight: 900; margin: 0 0 20px 0; color: #fff; letter-spacing: -1px; text-shadow: 0 2px 10px #000;}
+        
         .dashboard { display: flex; gap: 30px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;}
-        .dash-item { display: flex; flex-direction: column;}
-        .dash-label { font-size: 0.7rem; color: #888; letter-spacing: 1px; margin-bottom: 5px; text-transform: uppercase;}
+        .dash-item { display: flex; flex-direction: column; text-shadow: 0 2px 4px #000;}
+        .dash-label { font-size: 0.7rem; color: #ccc; letter-spacing: 1px; margin-bottom: 5px; text-transform: uppercase;}
         .dash-val { font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; color: #fff; font-weight: 700;}
 
-        /* 时间轴节点 */
         .route-nodes { padding: 40px;}
         .day-node { border-left: 2px solid #222; padding-left: 35px; position: relative; margin-bottom: 45px;}
         .day-node:last-child { border-left-color: transparent; margin-bottom: 0;}
@@ -106,7 +104,6 @@
         .day-detail { color: #aaa; font-size: 1rem; line-height: 1.8; font-weight: 300; text-align: justify; margin-bottom: 15px;}
         .day-detail strong { color: #fff; font-weight: 500; border-bottom: 1px dashed var(--gold);}
         
-        /* 专家硬核 Tips */
         .expert-tip { background: #111; border-left: 2px solid var(--gold); padding: 15px 20px; font-size: 0.9rem; color: #ccc; display: flex; flex-direction: column; gap: 5px; border-radius: 0 8px 8px 0;}
         .expert-tip span { font-family: 'Inter'; font-size: 0.7rem; color: var(--gold); letter-spacing: 2px;}
 
@@ -116,6 +113,12 @@
 
         .site-footer { border-top: 1px solid var(--border); padding: 40px 0; text-align: center; font-family: 'Inter'; font-size: 0.8rem; color: #888; letter-spacing: 2px; margin-top: auto;}
 
+        /* 地图 Marker 定制样式 */
+        .custom-map-marker { background: var(--gold); color: #000; border-radius: 50%; width: 24px; height: 24px; display: flex; justify-content: center; align-items: center; font-family: 'JetBrains Mono', monospace; font-weight: 900; font-size: 12px; border: 2px solid #000; box-shadow: 0 0 10px rgba(0,0,0,0.8);}
+        .leaflet-popup-content-wrapper { background: #111; color: #fff; border-radius: 4px; border: 1px solid #333; }
+        .leaflet-popup-tip { background: #111; }
+        .leaflet-popup-content b { color: var(--gold); font-family: 'Inter'; font-size: 0.75rem; letter-spacing: 1px;}
+
         @media (max-width: 768px) {
             nav { padding: 20px 5vw; border-bottom: none;}
             .nav-links { display: none; }
@@ -124,13 +127,13 @@
             .cs-title { font-size: 2.2rem; }
             .engine-panel { padding: 25px 20px; }
             .form-inputs { grid-template-columns: 1fr; gap: 10px;}
-            .route-map-header { padding: 30px 20px; height: auto;}
+            .route-map-header { padding: 30px 20px; height: 300px;}
             .ip-title { font-size: 2rem; }
             .dashboard { flex-wrap: wrap; gap: 20px; }
             .route-nodes { padding: 30px 20px; }
             .day-node { padding-left: 25px; }
             .day-headline { font-size: 1.3rem; }
-            .action-footer { padding: 20px; }
+            .action-footer { padding: 0 20px 30px 20px; }
         }
     </style>
 </head>
@@ -164,7 +167,7 @@
     <main class="container">
         <span class="cs-tag">AI ITINERARY ENGINE</span>
         <h1 class="cs-title">极境路线智能演算</h1>
-        <p class="cs-desc">请选择您的探险条件。算法将直接调取主理人实地勘测的私有坐标库，为您生成一份包含核心机位与防坑指南的硬核路书骨架。</p>
+        <p class="cs-desc">请选择您的探险条件。算法将直接调取主理人实地勘测的私有数据库，为您生成包含动态轨迹与防坑指南的硬核路书骨架。</p>
         
         <div class="engine-panel" id="controlPanel">
             <form id="bespokeForm" method="POST">
@@ -212,7 +215,7 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn-generate" id="generateBtn">启动系统演算 ➔</button>
+                <button type="submit" class="btn-generate" id="generateBtn">启动轨迹绘算 ➔</button>
             </form>
         </div>
 
@@ -223,8 +226,10 @@
         </div>
 
         <div class="result-panel" id="resultBox">
-            <div class="itinerary-paper" id="itineraryContent">
-                </div>
+            <div class="itinerary-paper">
+                <div class="route-map-header" id="mapHeader"></div>
+                <div class="route-nodes" id="itineraryContent"></div>
+            </div>
             <div class="action-footer">
                 <button class="btn-expert" onclick="window.location.reload()">↺ 重新调整参数</button>
             </div>
@@ -241,60 +246,65 @@
             menuToggle.innerText = mobileOverlay.classList.contains('active') ? '✕' : '☰';
         });
 
-        /* =========================================
-           核心极境专家知识库 (Expert Database)
-           不同目的地将精准投喂不同的专业内容
-           ========================================= */
+        // 默认兜底硬核数据 (含真实坐标)
         const expertVault = {
-            "冰岛": {
-                img: "https://images.unsplash.com/photo-1476610182048-b716b8518aae?q=80&w=1200",
-                dist: "约 1,850 KM", diff: "极高 (防暗冰/狂风)",
+            "冰岛_5天内_风光摄影": {
+                title: "冰岛南岸极地追光路线", dist: "约 950 KM", diff: "极高 (防暗冰/狂风)",
                 days: [
-                    {d: "DAY 01", t: "降落冰火之岛 & 蓝湖暗调摄影", tags: ["📍 KEF机场 -> 蓝湖", "🚗 50KM"], desc: "提取四驱越野车。建议利用<strong>黄昏蓝调时刻</strong>拍摄地热蒸汽与黑色熔岩的视觉张力。晚间完成市区物资储备。", tip: "超市认准粉红小猪(Bónus)，购买足量的饮用水和能量棒。"},
-                    {d: "DAY 02", t: "黄金圈极致慢门 & 间歇泉抓拍", tags: ["📍 辛格维利尔 -> 古佛斯瀑布", "📷 滤镜: ND1000"], desc: "清晨避开大巴团直奔国家公园。在瀑布前架设三脚架，使用 ND 滤镜进行长曝光。下午在间歇泉使用 1/1000s 高速快门凝固喷发瞬间。"},
-                    {d: "DAY 03", t: "南岸暗黑美学：塞里雅兰与黑沙滩", tags: ["📍 维克镇", "⚠️ 严防疯狗浪"], desc: "穿防水服进入塞里雅兰瀑布背后拍摄剪影。傍晚抵达维克镇黑沙滩，利用长焦压缩海浪与玄武岩石柱。", tip: "绝对、绝对不要背对黑沙滩的大海拍照，每年都有血的教训。"},
-                    {d: "DAY 04", t: "冰川徒步与钻石沙滩极光守候", tags: ["🥾 冰川探险", "🌌 KP指数预测"], desc: "早晨参加索尔黑马冰川徒步。下午前往杰古沙龙冰河湖，在钻石冰块旁架设相机，准备广角镜头守候极光爆发。"}
+                    {d: "DAY 01", t: "降落冰火之岛 & 蓝湖暗调摄影", coords: "63.98,-22.62", tags: ["📍 KEF机场", "🚗 50KM"], desc: "提取四驱越野车。建议利用**黄昏蓝调时刻**拍摄地热蒸汽与黑色熔岩的视觉张力。晚间完成市区物资储备。", tip: "超市认准粉红小猪(Bónus)，购买足量的饮用水和能量棒。"},
+                    {d: "DAY 02", t: "黄金圈极致慢门 & 间歇泉抓拍", coords: "64.32,-20.12", tags: ["📍 古佛斯瀑布", "📷 ND1000"], desc: "清晨避开大巴团直奔国家公园。在瀑布前架设三脚架，使用 ND 滤镜进行长曝光。下午在间歇泉使用 1/1000s 高速快门凝固喷发瞬间。"},
+                    {d: "DAY 03", t: "南岸暗黑美学：塞里雅兰与黑沙滩", coords: "63.41,-19.00", tags: ["📍 维克镇", "⚠️ 疯狗浪"], desc: "穿防水服进入塞里雅兰瀑布背后拍摄剪影。傍晚抵达维克镇黑沙滩，利用长焦压缩海浪与玄武岩石柱。", tip: "绝对、绝对不要背对黑沙滩的大海拍照，每年都有血的教训。"},
+                    {d: "DAY 04", t: "冰川徒步与钻石沙滩极光守候", coords: "64.04,-16.17", tags: ["🥾 冰川探险", "🌌 极光爆发"], desc: "早晨参加索尔黑马冰川徒步。下午前往杰古沙龙冰河湖，在钻石冰块旁架设相机，准备广角镜头守候极光爆发。"}
                 ]
             },
-            "挪威": {
-                img: "https://images.unsplash.com/photo-1510798831971-661eb04b3739?q=80&w=1200",
-                dist: "约 900 KM", diff: "中高 (悬崖/峡湾山路)",
+            "挪威_7天_硬核越野": {
+                title: "挪威峡湾硬派攀登路线", dist: "约 1,200 KM", diff: "中高 (悬崖/峡湾山路)",
                 days: [
-                    {d: "DAY 01", t: "奥斯陆空降 & 深入极地森林", tags: ["📍 奥斯陆", "🌲 森林公路"], desc: "抵达奥斯陆，提取硬派 SUV。驱车穿过蜿蜒的雪松森林，适应北欧狭窄且没有护栏的驾驶节奏。夜宿峡湾特色木屋。"},
-                    {d: "DAY 02", t: "奇迹石硬核攀登线", tags: ["🥾 单程 5KM", "⛰️ 裸露岩层"], desc: "早晨 6 点起步。多为裸露的花岗岩，坡度极陡。下午到达奇迹石，拍摄悬浮于深渊之上的视觉震撼大片。", tip: "必须穿着专业级 Vibram 黄金大底徒步鞋，普通运动鞋等同于玩命。"},
-                    {d: "DAY 03", t: "布道石悬崖航拍", tags: ["📍 吕瑟峡湾", "🚁 无人机警报"], desc: "进行 4 小时往返的布道石徒步。在此可起飞无人机俯瞰吕瑟峡湾，获取上帝视角。", tip: "峡湾峡管效应极易产生瞬间阵风，请在系统提示无风窗口期起飞，并切至运动模式。"},
-                    {d: "DAY 04", t: "国家景观公路轮渡巡游", tags: ["⛴️ 峡湾轮渡", "☕ 松弛节奏"], desc: "驾驶沿峡湾公路行驶，体验北欧极致的桥隧基建与汽车轮渡，随走随停，享受公路旅行的真谛。"}
+                    {d: "DAY 01", t: "奥斯陆空降 & 深入极地森林", coords: "59.91,10.75", tags: ["📍 奥斯陆", "🌲 森林公路"], desc: "提取硬派四驱 SUV。驱车穿过蜿蜒的雪松森林，适应北欧狭窄且没有护栏的驾驶节奏。夜宿峡湾特色木屋。"},
+                    {d: "DAY 02", t: "奇迹石硬核攀登线", coords: "59.03,6.57", tags: ["🥾 单程 5KM", "⛰️ 裸露岩层"], desc: "早晨 6 点起步。多为裸露的花岗岩，坡度极陡。下午到达奇迹石，拍摄悬浮于深渊之上的视觉震撼大片。", tip: "必须穿着专业级 Vibram 黄金大底徒步鞋，普通运动鞋等同于玩命。"},
+                    {d: "DAY 03", t: "布道石悬崖航拍", coords: "58.98,6.18", tags: ["📍 吕瑟峡湾", "🚁 无人机警报"], desc: "进行 4 小时往返的布道石徒步。在此可起飞无人机俯瞰吕瑟峡湾，获取上帝视角。", tip: "峡湾峡管效应极易产生瞬间阵风，请切至运动模式抗风。"},
+                    {d: "DAY 04", t: "恶魔之舌极限穿行", coords: "60.13,6.74", tags: ["⛺ 高山露营", "📍 Trolltunga"], desc: "挑战长达 22 公里的“恶魔之舌”徒步。带足水和高热量食物，准备在峡湾之巅感受大自然的压迫感。"}
                 ]
             },
-            "法罗群岛": {
-                img: "https://images.unsplash.com/photo-1522031309322-68b321a30896?q=80&w=1200",
-                dist: "约 400 KM", diff: "极高 (海底隧道/极度妖风)",
+            "法罗群岛_5天内_风光摄影": {
+                title: "法罗群岛孤境巡礼", dist: "约 400 KM", diff: "极高 (海底隧道/极度妖风)",
                 days: [
-                    {d: "DAY 01", t: "降落世界尽头 & 海底隧道初体验", tags: ["📍 Vagar 机场", "🌊 悬浮湖"], desc: "提取车辆，穿越壮观的海底隧道网。下午直奔 Sørvágsvatn (悬浮湖)，利用光学错觉拍摄湖水悬浮在大洋之上的旷世奇景。"},
-                    {d: "DAY 02", t: "卡尔斯岛悬崖灯塔（007取景地）", tags: ["⛴️ 离岛轮渡", "📷 绝命机位"], desc: "搭乘轮渡前往卡尔斯岛，徒步至 Kallur 灯塔。站在狭窄的悬崖脊背上，使用广角镜头收纳整个被狂风撕裂的北大西洋海岸线。"},
-                    {d: "DAY 03", t: "加萨达鲁瀑布与海上巨石", tags: ["📍 Gásadalur", "🐦 海鹦栖息地"], desc: "前往曾与世隔绝的加萨达鲁瀑布，拍摄水流直接砸向大洋的画面。如果季节对，还可以使用长焦捕捉悬崖边的海鹦(Puffin)。", tip: "此地风力极大，三脚架必须挂载重物，且摄影师需蹲低重心。"}
+                    {d: "DAY 01", t: "降落世界尽头 & 悬浮湖错觉", coords: "62.06,-7.27", tags: ["📍 Vagar 机场", "🌊 悬浮湖"], desc: "提取车辆，穿越壮观的海底隧道。下午直奔 Sørvágsvatn，利用光学错觉拍摄湖水悬浮在大洋之上的旷世奇景。"},
+                    {d: "DAY 02", t: "卡尔斯岛悬崖灯塔（007取景地）", coords: "62.36,-6.81", tags: ["⛴️ 离岛轮渡", "📷 绝命机位"], desc: "搭乘轮渡前往卡尔斯岛，徒步至 Kallur 灯塔。站在狭窄的悬崖脊背上，使用广角镜头收纳整个被狂风撕裂的北大西洋海岸线。"},
+                    {d: "DAY 03", t: "加萨达鲁瀑布与海上巨石", coords: "62.10,-7.43", tags: ["📍 Gásadalur", "🐦 海鹦栖息地"], desc: "前往曾与世隔绝的加萨达鲁瀑布，拍摄水流直接砸向大洋的画面。", tip: "此地风力极大，三脚架必须挂载重物，且摄影师需蹲低重心。"}
                 ]
             }
         };
 
+        const defaultRoute = {
+            title: "极境未知穿越路线", dist: "未知", diff: "视路况而定",
+            days: [
+                {d: "DAY 01", t: "抵达未知坐标", coords: "0,0", tags: ["🚗 适应驾驶", "🛒 极地补给"], desc: "熟悉当地严苛的交通规则。完成超市生存级补给（饮用水、高热量能量棒）。"},
+                {d: "DAY 02", t: "深入腹地", coords: "2,2", tags: ["📷 随时备战", "🗺️ 离线导航"], desc: "驶离城市，沿途随停随拍。这里是试炼场，请随时在副驾备好装有 ND 镜的相机。"},
+                {d: "DAY 03", t: "敬畏自然", coords: "5,5", tags: ["⚠️ 弹性行程", "🌪️ 天气预警"], desc: "将 30% 的时间留给不可抗力的恶劣天气。在极境，不赶路，就是最安全的越野。"}
+            ]
+        };
+
+        function parseMarkdown(text) {
+            if(!text) return '';
+            let html = text.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>');
+            html = html.replace(/==(.*?)==/g, '<span style="color:var(--gold); font-weight:700;">$1</span>'); 
+            html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            html = html.replace(/!\[(.*?)\]\((.*?)\)/g, '<img src="$2" alt="$1">'); 
+            return html;
+        }
+
         const form = document.getElementById('bespokeForm');
         const contactFields = document.getElementById('contactFields');
-        const generateBtn = document.getElementById('generateBtn');
         const loaderBox = document.getElementById('loaderBox');
         const resultBox = document.getElementById('resultBox');
-        
-        // Formspree 提交地址 (已接入你的)
-        const API_ENDPOINT = "https://formspree.io/f/xgonlznl"; 
+        let dynamicMap = null; // 全局地图对象
 
-        // 只要用户动了选项，就展开底部联系框
-        form.addEventListener('change', () => { 
-            contactFields.style.display = 'block'; 
-        });
+        form.addEventListener('change', () => { contactFields.style.display = 'block'; });
 
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            // 抓取四大维度的值
             const dest = document.querySelector('input[name="Destination"]:checked').value;
             const days = document.querySelector('input[name="Duration"]:checked').value;
             const style = document.querySelector('input[name="Style"]:checked').value;
@@ -303,66 +313,112 @@
             document.getElementById('controlPanel').style.display = 'none';
             loaderBox.style.display = 'flex';
 
-            // 1. 并行调用 API 静默发送数据 (不等待响应，确保前端丝滑)
+            // 静默发邮件
             const formData = new FormData(form);
-            fetch(API_ENDPOINT, { method: 'POST', body: formData, headers: { 'Accept': 'application/json' } })
-            .catch(err => console.error("API Error"));
+            fetch("https://formspree.io/f/xgonlznl", { method: 'POST', body: formData, headers: { 'Accept': 'application/json' } }).catch(()=>{});
 
-            // 2. 黑客级演算过程动画
-            setTimeout(() => { document.getElementById('loaderText').innerText = "ANALYZING TOPOGRAPHIC DATA..."; document.getElementById('loaderSub').innerText = `解析 ${dest} 气象与路况`;}, 800);
-            setTimeout(() => { document.getElementById('loaderText').innerText = "GENERATING EXPERT TIMELINE..."; document.getElementById('loaderSub').innerText = "匹配独家摄影机位...";}, 1600);
+            setTimeout(() => { document.getElementById('loaderText').innerText = "PLOTTING TRAJECTORY ON RADAR..."; document.getElementById('loaderSub').innerText = `解析 ${dest} 空间坐标系`;}, 800);
+            setTimeout(() => { document.getElementById('loaderText').innerText = "GENERATING EXPERT TIMELINE..."; document.getElementById('loaderSub').innerText = "匹配独家数据库...";}, 1600);
 
-            // 3. 最终呈现绝美路书
             setTimeout(() => {
                 loaderBox.style.display = 'none';
                 
-                // 从数据库拉取准确目的地数据
-                const routeData = expertVault[dest] || expertVault["冰岛"];
-                const titleStr = `${dest} ${days} · ${style}专属路线`;
+                // 1. 从真实数据库/保底库拉取路书
+                let routeData = defaultRoute;
+                const dbKey = `${dest}_${days}_${style}`;
                 
-                let html = `
-                    <div class="route-map-header">
-                        <img src="${routeData.img}" class="map-bg">
-                        <div class="map-overlay"></div>
-                        <div class="map-content">
-                            <div class="ip-meta">SYS.GEN // ${dest} • ${days} • ${budget}预算</div>
-                            <h2 class="ip-title">${titleStr}</h2>
-                            <div class="dashboard">
-                                <div class="dash-item"><span class="dash-label">预估里程</span><span class="dash-val">${routeData.dist}</span></div>
-                                <div class="dash-item"><span class="dash-label">探险难度</span><span class="dash-val" style="color: #ef4444;">${routeData.diff}</span></div>
-                                <div class="dash-item"><span class="dash-label">核心属性</span><span class="dash-val">${style}</span></div>
-                            </div>
+                // 优先读后台配好的数据，如果没有，用保底硬核数据
+                if (typeof dbData !== 'undefined' && dbData.routes && dbData.routes.length > 0) {
+                    const matched = dbData.routes.find(r => r.dest === dest && r.days === days && r.style === style);
+                    if (matched) routeData = matched;
+                    else if (expertVault[dbKey]) routeData = expertVault[dbKey];
+                } else if (expertVault[dbKey]) {
+                    routeData = expertVault[dbKey];
+                }
+
+                const titleStr = routeData.title || `${dest} ${days} · ${style}路线`;
+                
+                // 2. 渲染地图区块与数据盘
+                document.getElementById('mapHeader').innerHTML = `
+                    <div id="dynamic-map"></div>
+                    <div class="map-overlay"></div>
+                    <div class="map-content">
+                        <div class="ip-meta">SYS.GEN // ${dest} • ${days} • ${budget}预算</div>
+                        <h2 class="ip-title">${titleStr}</h2>
+                        <div class="dashboard">
+                            <div class="dash-item"><span class="dash-label">预估里程</span><span class="dash-val">${routeData.dist || '系统演算中'}</span></div>
+                            <div class="dash-item"><span class="dash-label">探险难度</span><span class="dash-val" style="color: #ef4444;">${routeData.diff || '未知'}</span></div>
+                            <div class="dash-item"><span class="dash-label">核心属性</span><span class="dash-val">${style}</span></div>
                         </div>
                     </div>
-                    <div class="route-nodes">
                 `;
 
-                // 遍历渲染每日路线，加入硬核 Tips 模块
-                routeData.days.forEach(day => {
-                    const tagsHtml = day.tags.map(tag => `<span>${tag}</span>`).join('');
-                    const tipHtml = day.tip ? `<div class="expert-tip"><span>主理人实战避坑</span>${day.tip}</div>` : '';
+                // 3. 渲染行程节点
+                let htmlNodes = '';
+                const mapCoords = []; // 用于收集画线的坐标
+
+                routeData.days.forEach((day, idx) => {
+                    const tagsHtml = day.tags ? day.tags.map(tag => `<span>${tag}</span>`).join('') : '';
+                    const tipHtml = day.tip ? `<div class="expert-tip"><span>主理人实战避坑</span>${parseMarkdown(day.tip)}</div>` : '';
                     
-                    html += `
+                    // 收集坐标点
+                    if (day.coords) {
+                        const [lat, lng] = day.coords.split(',').map(Number);
+                        if (lat && lng) mapCoords.push({ lat, lng, day: day.d, title: day.t, index: idx + 1 });
+                    }
+
+                    htmlNodes += `
                         <div class="day-node">
-                            <span class="day-num">${day.d}</span>
-                            <div class="day-headline">${day.t}</div>
+                            <span class="day-num">${day.d || day.day}</span>
+                            <div class="day-headline">${day.t || day.title}</div>
                             <div class="day-tags">${tagsHtml}</div>
-                            <div class="day-detail">${day.desc}</div>
+                            <div class="day-detail">${parseMarkdown(day.desc)}</div>
                             ${tipHtml}
                         </div>
                     `;
                 });
 
-                html += `
-                    </div>
-                    <div style="background:#111; padding: 25px 40px; border-top:1px dashed #333; text-align:center;">
-                        <h3 style="color:#fff; margin-bottom:10px; font-size:1.2rem;">✅ 您的专属定制需求已送达</h3>
-                        <p style="color:#888; font-size:0.9rem; line-height:1.6; margin:0;">以上为引擎生成的框架版预览。<br>我已收到您的表单，将会在极地无信号区外的 24 小时内，与您通过微信联络深度定制细节与报价。</p>
+                htmlNodes += `
+                    <div style="background:#111; padding: 25px 40px; border-top:1px dashed #333; text-align:center; border-radius: 8px;">
+                        <h3 style="color:#fff; margin-bottom:10px; font-size:1.2rem;">✅ 您的定制需求已随邮件送达</h3>
+                        <p style="color:#888; font-size:0.9rem; line-height:1.6; margin:0;">以上为引擎匹配的动态轨迹预览。<br>我已收到您的表单，将会在极地无信号区外的 24 小时内，与您联络深度定制。</p>
                     </div>
                 `;
 
-                document.getElementById('itineraryContent').innerHTML = html;
+                document.getElementById('itineraryContent').innerHTML = htmlNodes;
                 resultBox.style.display = 'block';
+
+                // ==========================================
+                // 4. 极客级操作：初始化 Leaflet 动态地图
+                // ==========================================
+                if(dynamicMap) { dynamicMap.remove(); } // 清除旧图
+                
+                // 初始化地图，使用 CartoDB 的黑客级暗色皮肤 (零成本，免API Key)
+                dynamicMap = L.map('dynamic-map', {zoomControl: false, scrollWheelZoom: false}).setView([0,0], 2);
+                L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                    attribution: '© OpenStreetMap'
+                }).addTo(dynamicMap);
+
+                if (mapCoords.length > 0) {
+                    const latlngs = [];
+                    
+                    mapCoords.forEach(pt => {
+                        latlngs.push([pt.lat, pt.lng]);
+                        // 自定义带有发光效果的纯金色数字 Marker
+                        const iconHtml = `<div class="custom-map-marker">${pt.index}</div>`;
+                        const customIcon = L.divIcon({ html: iconHtml, className: '', iconSize: [24,24] });
+                        
+                        L.marker([pt.lat, pt.lng], {icon: customIcon})
+                         .bindPopup(`<b>${pt.day}</b><br>${pt.title}`)
+                         .addTo(dynamicMap);
+                    });
+
+                    // 绘制赛博朋克蓝的虚线轨迹
+                    L.polyline(latlngs, {color: '#38bdf8', weight: 4, dashArray: '8, 8', opacity: 0.8, lineCap: 'round'}).addTo(dynamicMap);
+                    
+                    // 地图自动平移缩放，将整条路线完美展示在视野中 (留出安全边距)
+                    dynamicMap.fitBounds(L.polyline(latlngs).getBounds(), {padding: [50, 50], animate: true, duration: 1.5});
+                }
 
             }, 2500);
         });
