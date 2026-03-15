@@ -183,11 +183,12 @@
             } else { mobileOverlay.classList.remove('active'); menuToggle.innerText = '☰'; document.body.style.overflow = 'auto'; }
         });
 
+        // 核心表单交互引擎 (无刷新异步提交)
         const form = document.getElementById('bespokeForm');
         const submitBtn = document.getElementById('submitBtn');
         const statusMsg = document.getElementById('formStatus');
 
-        // 核心：已无缝替换为你提供的 Formspree 真实端点
+        // 完美接入你的真实 Endpoint 
         const API_ENDPOINT = "https://formspree.io/f/xgonlznl"; 
 
         form.addEventListener('submit', async function(e) {
@@ -195,7 +196,7 @@
             
             submitBtn.disabled = true;
             submitBtn.innerText = "⏳ 正在投递至主理人信箱...";
-            statusMsg.className = "status-msg"; 
+            statusMsg.className = "status-msg"; // 重置样式
 
             const formData = new FormData(form);
 
@@ -216,7 +217,7 @@
                 }
             } catch (error) {
                 console.error(error);
-                statusMsg.innerText = "⚠️ 接口尚未配置就绪，或网络出现波动。目前请直接通过小红书私信联系。";
+                statusMsg.innerText = "⚠️ 网络出现波动。目前请直接通过小红书私信联系。";
                 statusMsg.classList.add('status-error');
                 submitBtn.disabled = false;
                 submitBtn.innerText = "重新提交";
