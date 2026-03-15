@@ -10,7 +10,7 @@
     <meta property="og:image" content="https://images.unsplash.com/photo-1476610182048-b716b8518aae?q=80&w=1200&auto=format&fit=crop">
     <meta property="og:type" content="article">
     
-    <title>攻略指南 | DAVID EXPEDITION</title>
+    <title>攻略加载中... | DAVID EXPEDITION</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Noto+Sans+SC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -194,8 +194,8 @@
             <span class="guide-tag">EXPEDITION GUIDE</span>
             <h1 class="guide-title" id="r_title"></h1>
             <div class="guide-meta">
-                <span>首次部署：<span id="r_date" style="color: #fff;"></span></span>
-                <span>核心简报：<span id="r_short" style="color: #fff;"></span></span>
+                <span>行程时间：<span id="r_date" style="color: #fff;"></span></span>
+                <span>内容摘要：<span id="r_short" style="color: #fff;"></span></span>
             </div>
         </header>
 
@@ -250,7 +250,7 @@
             <img src="" id="generatedShareImage">
         </div>
         <div class="share-actions">
-            <p class="share-tip" id="shareTipText">海报刻录中...</p>
+            <p class="share-tip" id="shareTipText">海报生成中...</p>
             <button class="share-copy-btn" onclick="copyShareText()">📄 复制精美图文链接</button>
         </div>
     </div>
@@ -261,14 +261,12 @@
     <div id="toast">提示信息</div>
 
     <script>
-        let currentArticleData = null; // 全局存储文章数据
+        let currentArticleData = null;
 
         function getFastCdnUrl(url) { if (!url) return ''; if (url.startsWith('images/')) return `https://cdn.jsdelivr.net/gh/feixingjiadavid/DreamWorldDavid/${url}`; return url; }
         
-        // 自定义高级分享与全自动化海报刻录逻辑
         async function openShareModal() {
             if(!currentArticleData) return;
-            // 1. 填充原始 HTML 结构
             document.getElementById('shareCover').style.backgroundImage = `url('${currentArticleData.cover}')`;
             document.getElementById('shareTitle').innerText = currentArticleData.title;
 
@@ -277,50 +275,38 @@
             qrContainer.innerHTML = ''; 
             new QRCode(qrContainer, { text: window.location.href, width: 52, height: 52, colorDark : "#000", colorLight : "#fff", correctLevel : QRCode.CorrectLevel.M });
             
-            // 2. 显示 Modal
             modal.classList.add('active');
             
-            // 3. 全自动“刻录”引擎
             const target = document.getElementById('shareCardHTML');
             const tip = document.getElementById('shareTipText');
-            tip.innerText = "⏳ 正在为你刻录极境攻略名片...";
+            tip.innerText = "⏳ 正在生成专属分享海报...";
 
-            // 稍微等待一个渲染帧
             await new Promise(r => setTimeout(r, 200));
 
             try {
-                // 启动 HTML -> Canvas
                 const canvas = await html2canvas(target, {
-                    useCORS: true, // Handle assets
+                    useCORS: true,
                     allowTaint: false,
-                    scale: 2, // Quality
+                    scale: 2,
                     backgroundColor: "#0A0A0A"
                 });
 
-                // Canvas -> JPG
                 const imgData = canvas.toDataURL("image/jpeg", 0.9);
-                
-                // 覆盖指令文案
-                tip.innerText = "👍 刻录完成！请长按上方海报保存至手机";
+                tip.innerText = "👍 生成成功！请长按上方海报保存";
 
-                // 将生成图片加载到透明覆盖 IMG 元素上
                 const generatedImg = document.getElementById('generatedShareImage');
                 generatedImg.src = imgData;
-                generatedImg.style.opacity = '0'; // 完全透明覆盖，让用户长按图片本身
-                
-                // 攻略页追加干货提示
-                others = `▬ DAVID EXPEDITION ▬\n\n《${document.title.split(' | ')[0]}》\n硬核攻略，扫海报上的码看干货 ↘`;
+                generatedImg.style.opacity = '0'; 
 
             } catch (e) {
                 console.error("Guide poster generation failed:", e);
-                tip.innerText = "❌ 海报生成失败，请手机截屏分享";
+                tip.innerText = "❌ 海报生成失败，请尝试手机截屏分享";
             }
         }
         
         function closeShareModal() { 
             document.getElementById('shareModal').classList.remove('active'); 
-            // 重置文案
-            document.getElementById('shareTipText').innerText = "海报刻录中..."; 
+            document.getElementById('shareTipText').innerText = "海报生成中..."; 
         }
         
         function copyShareText() {
@@ -363,7 +349,6 @@
             const guide = dbData.guides.find(g => g.id === guideId);
             if (!guide) { document.getElementById('loadingState').innerText="未找到攻略"; return; }
 
-            // 存储供海报调用
             currentArticleData = { title: guide.title, cover: getFastCdnUrl(guide.cover) };
 
             document.title = `${guide.title} | DAVID EXPEDITION`;
