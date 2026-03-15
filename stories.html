@@ -18,32 +18,30 @@
     <style>
         :root {
             --bg-base: #050505; --text-primary: #FFFFFF; --text-dimmed: #888888;
-            --gold: #D4AF37; --border: rgba(255,255,255,0.05); --radius: 8px; --transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            --gold: #D4AF37; --radius: 8px; --transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            --border: rgba(255,255,255,0.05);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: var(--bg-base); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; -webkit-font-smoothing: antialiased; overflow-x: hidden;}
 
-        /* 核心重构：全站统一菜单 */
-        nav { padding: 30px 6vw; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: rgba(5,5,5,0.8); backdrop-filter: blur(20px); z-index: 100; font-size: 0.95rem; font-weight: 500;}
+        /* 全站统一高定暗黑菜单 */
+        nav { padding: 30px 6vw; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: rgba(5,5,5,0.8); backdrop-filter: blur(20px); z-index: 100; font-size: 0.95rem; font-weight: 500; letter-spacing: 1px;}
         .nav-brand a { color: var(--text-primary); text-decoration: none; font-weight: 700; font-size: 1.2rem; letter-spacing: 2px; transition: color 0.3s ease; position: relative; z-index: 101;}
         .nav-brand a:hover { color: var(--gold); } 
-        
         .nav-links { display: flex; gap: 50px; align-items: center; }
         .nav-links a { color: var(--text-dimmed); text-decoration: none; position: relative; padding-bottom: 6px; transition: color 0.3s ease; letter-spacing: 1px; white-space: nowrap;}
         .nav-links a:hover, .nav-links a.active { color: var(--text-primary); }
         .nav-links a.active::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--text-primary); }
-        
         .mobile-menu-btn { display: none; background: transparent; border: none; color: #fff; font-size: 1.8rem; cursor: pointer; z-index: 101; position: relative; width: 40px; height: 40px; }
-        
         .mobile-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(5,5,5,0.98); backdrop-filter: blur(15px); z-index: 99; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: var(--transition); }
         .mobile-overlay.active { opacity: 1; visibility: visible; }
         .mobile-overlay a { color: #fff; text-decoration: none; font-size: 2rem; font-weight: 700; letter-spacing: 4px; margin: 20px 0; opacity: 0; transform: translateY(20px); transition: var(--transition); }
         .mobile-overlay.active a { opacity: 1; transform: translateY(0); }
         .mobile-overlay a.active { color: var(--gold); }
 
-        /* 核心注入：面包屑路径 */
+        /* 面包屑导航 (纯正中文) */
         .breadcrumb-nav { padding: 30px 6vw; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); font-family: 'Inter', sans-serif; font-size: 0.8rem; letter-spacing: 1px;}
-        .crumb-link { color: var(--text-dimmed); text-decoration: none; transition: color 0.3s; text-transform: uppercase;}
+        .crumb-link { color: var(--text-dimmed); text-decoration: none; transition: color 0.3s;}
         .crumb-link:hover { color: var(--gold); }
         .crumb-separator { color: #444; font-size: 0.8rem;}
         .crumb-current { color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif;}
@@ -84,7 +82,7 @@
         }
 
         @media (max-width: 768px) {
-            nav { padding: 20px 5vw; position: relative; backdrop-filter: none; background: var(--bg-base); }
+            nav { padding: 20px 5vw; border-bottom: none; background: var(--bg-base);}
             .nav-links { display: none; }
             .mobile-menu-btn { display: block; }
             .nav-brand a { font-size: 1.1rem; letter-spacing: 2px; }
@@ -130,17 +128,17 @@
     </nav>
     
     <div class="mobile-overlay" id="mobileOverlay">
-        <a href="index.html">HOME / 首页</a>
-        <a href="stories.html" class="active">STORIES / 旅行故事</a>
-        <a href="guides.html">GUIDES / 攻略指南</a>
-        <a href="toolkit.html">TOOLKIT / 干货库</a>
-        <a href="gear.html">GEAR / 装备库</a>
-        <a href="consult.html">BESPOKE / 私人定制</a>
+        <a href="index.html">首页</a>
+        <a href="stories.html" class="active">旅行故事</a>
+        <a href="guides.html">攻略指南</a>
+        <a href="toolkit.html">干货库</a>
+        <a href="gear.html">装备库</a>
+        <a href="consult.html">私人定制</a>
     </div>
 
     <div class="breadcrumb-nav">
-        <a href="index.html" class="crumb-link">Home</a><span class="crumb-separator">/</span>
-        <span class="crumb-current">Stories</span>
+        <a href="index.html" class="crumb-link">首页</a><span class="crumb-separator">/</span>
+        <span class="crumb-current">旅行故事</span>
     </div>
 
     <main class="container">
@@ -162,23 +160,23 @@
     </main>
 
     <script>
-        // 移动端菜单逻辑
         const menuToggle = document.getElementById('menuToggle');
         const mobileOverlay = document.getElementById('mobileOverlay');
         let isMenuOpen = false;
-
-        menuToggle.addEventListener('click', () => {
-            isMenuOpen = !isMenuOpen;
-            if(isMenuOpen) {
-                mobileOverlay.classList.add('active');
-                menuToggle.innerText = '✕';
-                document.body.style.overflow = 'hidden';
-            } else {
-                mobileOverlay.classList.remove('active');
-                menuToggle.innerText = '☰';
-                document.body.style.overflow = 'auto';
-            }
-        });
+        if(menuToggle && mobileOverlay) {
+            menuToggle.addEventListener('click', () => {
+                isMenuOpen = !isMenuOpen;
+                if(isMenuOpen) {
+                    mobileOverlay.classList.add('active');
+                    menuToggle.innerText = '✕';
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    mobileOverlay.classList.remove('active');
+                    menuToggle.innerText = '☰';
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        }
 
         function getFastCdnUrl(url) {
             if (!url) return '';
