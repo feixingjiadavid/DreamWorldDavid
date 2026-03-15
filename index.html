@@ -7,6 +7,7 @@
     
     <meta property="og:title" content="戴维的梦想世界 | DAVID EXPEDITION">
     <meta property="og:description" content="记录这个世界隐秘的B面。硬核干货储备：从签证策略到无人区驾驶指南。">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1476610182048-b716b8518aae?q=80&w=1200&auto=format&fit=crop">
     <meta property="og:type" content="website">
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&family=JetBrains+Mono:wght@100;300;400&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
@@ -22,7 +23,7 @@
         html { scroll-behavior: smooth; }
         body { background-color: var(--bg-base); color: var(--text-primary); font-family: var(--font-zh); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
         
-        #init-loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--bg-base); z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.8s ease, visibility 0.8s ease; }
+        #init-loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--bg-base); z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.4s ease, visibility 0.4s ease; }
         .loader-brand { font-family: var(--font-zh); font-size: 1.2rem; font-weight: 700; letter-spacing: 4px; color: var(--gold); animation: breath 2s infinite ease-in-out;}
         @keyframes breath { 0% { opacity: 0.3; transform: scale(0.98); } 50% { opacity: 1; transform: scale(1); } 100% { opacity: 0.3; transform: scale(0.98); } }
         body.loaded #init-loader { opacity: 0; visibility: hidden; }
@@ -33,7 +34,6 @@
         .nav-brand a { color: var(--text-primary); text-decoration: none; font-weight: 700; font-size: 1.2rem; letter-spacing: 2px; transition: color 0.3s ease; position: relative; z-index: 101;}
         .nav-brand a:hover { color: var(--gold); } 
         
-        /* 导航已更新为“极境坐标” */
         .nav-links { display: flex; gap: 40px; align-items: center; font-family: var(--font-zh); font-size: 0.95rem;}
         .nav-links a { color: var(--text-dimmed); text-decoration: none; position: relative; padding-bottom: 6px; transition: color 0.3s ease; letter-spacing: 1px; white-space: nowrap;}
         .nav-links a:hover, .nav-links a.active { color: var(--text-primary); }
@@ -107,6 +107,7 @@
         .qr-row { display: flex; gap: 20px; align-items: flex-end; flex-wrap: nowrap;} 
         .qr-item { display: flex; flex-direction: column; align-items: center; gap: 12px;}
         .qr-label { font-size: 0.75rem; color: #666; letter-spacing: 2px; text-transform: uppercase; font-weight: 700;}
+        /* 巨大化二维码，保证横排显示 */
         .qr-box { width: 160px; height: 160px; background: #111; border-radius: 12px; padding: 12px; border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: center; align-items: center;}
         .qr-box img { width: 100%; height: 100%; object-fit: contain; border-radius: 6px;}
 
@@ -190,12 +191,12 @@
         </nav>
 
         <div class="mobile-overlay" id="mobileOverlay">
-            <a href="index.html" class="active">HOME / 首页</a>
-            <a href="stories.html">STORIES / 旅行故事</a>
-            <a href="guides.html">GUIDES / 攻略指南</a>
-            <a href="toolkit.html">TOOLKIT / 干货库</a>
-            <a href="spots.html">SPOTS / 极境坐标</a>
-            <a href="consult.html">BESPOKE / 私人定制</a>
+            <a href="index.html" class="active">首页</a>
+            <a href="stories.html">旅行故事</a>
+            <a href="guides.html">攻略指南</a>
+            <a href="toolkit.html">干货库</a>
+            <a href="spots.html">极境坐标</a>
+            <a href="consult.html">私人定制</a>
         </div>
 
         <a href="stories.html" class="teaser-strip">
@@ -311,15 +312,21 @@
                 if(g.heroTitle && g.heroTitle.trim() !== '') document.getElementById('heroTitle').innerText = g.heroTitle;
                 if(g.heroBanner && g.heroBanner.trim() !== '') document.getElementById('heroBannerImg').src = getFastCdnUrl(g.heroBanner); 
                 if(g.footer && g.footer.trim() !== '') document.getElementById('renderFooter').innerText = g.footer;
-                if(g.tags && g.tags.trim() !== '') document.getElementById('renderTags').innerText = `// ${g.tags.split(',').map(t => t.trim()).join(' / ')}`;
+                
+                // 核心修复：解决双斜杠叠加问题
+                if(g.tags && g.tags.trim() !== '') {
+                    let t = g.tags.trim();
+                    if(!t.startsWith('//')) t = '// ' + t;
+                    document.getElementById('renderTags').innerText = t;
+                }
+
                 if(g.signatureName && g.signatureName.trim() !== '') document.getElementById('renderName').innerText = g.signatureName;
                 if(g.heroDeclare && g.heroDeclare.trim() !== '') document.getElementById('renderDeclare').innerHTML = parseHighlighting(g.heroDeclare);
                 if(g.bio && g.bio.trim() !== '') document.getElementById('renderBio').innerText = g.bio;
 
                 if(g.email) { const eEl = document.getElementById('renderEmail'); eEl.innerText = g.email; eEl.href = `mailto:${g.email}`; }
                 
-                // 核心逻辑修正：尝试读取后台真实二维码
-                if(g.qrXhs) { document.getElementById('qrXhs').src = getFastCdnUrl(g.qrXhs); }
+                if(g.qrXhs) { document.getElementById('qrXhs').src = getFastCdnUrl(g.qrXhs); } 
                 if(g.qrBili) { document.getElementById('qrBili').src = getFastCdnUrl(g.qrBili); }
                 if(g.qrDouyin) { document.getElementById('qrDouyin').src = getFastCdnUrl(g.qrDouyin); }
             }
@@ -343,7 +350,6 @@
                     targetArray.forEach(item => {
                         const hasVideo = (item.bilibili_bvid && item.bilibili_bvid.trim() !== '') || (item.video && item.video.trim() !== '');
                         const playIconHtml = hasVideo ? `<div class="play-icon"></div>` : '';
-                        const tagClass = item.bilibili_bvid ? 'tag-story' : 'tag-guide';
                         const targetUrl = item.paragraphs ? 'story-detail.html' : 'guide-detail.html';
                         
                         grid.innerHTML += `
@@ -352,7 +358,7 @@
                                 <div class="card-overlay"></div>
                                 ${playIconHtml}
                                 <div class="card-content">
-                                    <span class="card-tag ${tagClass}">${defaultTagText}</span>
+                                    <span class="card-tag" style="font-family:'Inter'; color:#38bdf8;">${defaultTagText}</span>
                                     <h2 class="card-title">${item.title}</h2>
                                 </div>
                             </a>`;
