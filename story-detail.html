@@ -29,11 +29,11 @@
 
         .container { max-width: 1200px; margin: 0 auto; padding: 40px 6vw 120px 6vw; }
 
-        /* 媒体区 (置顶展示全宽视频或图片) */
+        /* 媒体区 */
         .media-container { width: 100%; border-radius: var(--radius); overflow: hidden; margin-bottom: 60px; background: #111; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 30px 60px rgba(0,0,0,0.5); aspect-ratio: 16/9;}
         .media-container iframe, .media-container img, .media-container video { width: 100%; height: 100%; object-fit: cover; display: block; border: none; }
 
-        /* 完美还原你的双栏网格系统 */
+        /* 双栏网格系统 */
         .story-grid-layout { display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; align-items: start; }
 
         /* 左侧信息栏 */
@@ -42,7 +42,7 @@
         .story-title { font-size: clamp(2.2rem, 4vw, 3.5rem); font-weight: 900; line-height: 1.2; letter-spacing: -1px; margin-bottom: 25px; }
         .story-meta { color: var(--text-dimmed); font-size: 0.9rem; display: flex; align-items: center; gap: 5px; font-weight: 300; flex-wrap: wrap;}
 
-        /* 右侧正文区（带极简分割线） */
+        /* 右侧正文区 */
         .story-article { border-left: 1px solid rgba(255,255,255,0.05); padding-left: 60px; }
         .story-content { font-size: 1.05rem; color: #CCCCCC; font-weight: 300; text-align: justify; line-height: 1.8; margin-bottom: 60px;}
         .story-content p { margin-bottom: 30px; }
@@ -66,9 +66,7 @@
         .site-footer { border-top: 1px solid rgba(255,255,255,0.05); padding: 40px 0; text-align: center; font-family: 'Inter'; font-size: 0.8rem; color: var(--text-dimmed); letter-spacing: 2px; }
         #loadingState { text-align: center; color: var(--gold); letter-spacing: 2px; margin-top: 100px; font-family: 'Inter'; display: none; }
 
-        /* =========================================
-           移动端高级适配 (保护 PC 端)
-           ========================================= */
+        /* 移动端高级适配 */
         @media (max-width: 900px) {
             .story-grid-layout { grid-template-columns: 1fr; gap: 40px; }
             .story-article { border-left: none; padding-left: 0; }
@@ -81,7 +79,6 @@
             
             .container { padding: 20px 5vw 80px 5vw; }
             
-            /* 手机端视频无边框撑满屏幕 (沉浸式体验) */
             .media-container { border-radius: 0; margin-left: -5vw; width: 100vw; margin-bottom: 30px; border-left: none; border-right: none;}
             
             .story-tag { font-size: 0.75rem; margin-bottom: 15px; }
@@ -119,7 +116,7 @@
                 <span class="story-tag">EXPEDITION LOG</span>
                 <h1 class="story-title" id="r_title"></h1>
                 <div class="story-meta">
-                    记录于 <span id="r_date" style="color: #fff; margin: 0 5px;"></span> // 坐标：<span id="r_location" style="color: #fff; margin-left: 5px;">未知</span>
+                    记录于 <span id="r_date" style="color: #fff; margin: 0 5px;"></span> // 地点：<span id="r_location" style="color: #fff; margin-left: 5px;">未知</span>
                 </div>
             </aside>
 
@@ -227,8 +224,8 @@
             const displayDate = (story.trip_date && story.trip_date.trim() !== '') ? story.trip_date : story.date;
             document.getElementById('r_date').innerText = displayDate.replace(/-/g, '.');
             
-            // 核心接管：显示真实的旅行地点（替代废弃的经纬度）
-            document.getElementById('r_location').innerText = story.location || "坐标已隐藏";
+            // 核心修改：将找不到数据时的兜底文字从“坐标已隐藏”改成“未知”
+            document.getElementById('r_location').innerText = story.location || "未知";
 
             // 2. 媒体处理逻辑 (BV号或 MP4 优先)
             const mediaBox = document.getElementById('r_media');
