@@ -18,17 +18,19 @@ const dbData = {
     },
     {
       "id": "story-turkey",
-      "date": "2026-01-15",
-      "location": "38°38′N",
       "title": "土耳其：穿越异星地表",
+      "date": "2026-01-15",
+      "trip_date": "2025-10-05",
       "cover": "https://images.unsplash.com/photo-1527838832700-5059252407fa?q=80&w=1600&auto=format&fit=crop",
+      "location": "卡帕多奇亚",
       "bilibili_bvid": "BV1xx411c7mD",
       "short_desc": "土耳其卡帕多奇亚 / 热气球与废墟的狂想纪实",
       "paragraphs": [
         "这里就像是被上帝遗忘在地球上的异星表面。无数个清晨，我看着漫天的热气球升起，仿佛某种古老的仪式。",
         "没有走马观花的打卡，我驾驶着越野车深入了那些连名字都没有的废墟谷地，记录下了这份极致的荒凉与浪漫。"
       ],
-      "guide_link_id": "guide-turkey"
+      "cta_text": "",
+      "cta_link": ""
     }
   ],
   "guides": [
@@ -234,5 +236,5 @@ const dbData = {
     "footer": ""
   },
   "trash": [],
-  "version": "2.2"
+  "version": "2.4"
 };
