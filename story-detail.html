@@ -188,7 +188,7 @@
             <a href="guides.html">攻略指南</a>
             <a href="toolkit.html">资料下载</a>
             <a href="radar.html">避坑雷达</a>
-            <a href="consult.html">智能路书</a>
+            <a href="hub.html">极境导航</a>
         </div>
         <button class="mobile-menu-btn" id="menuToggle">☰</button>
     </nav>
@@ -198,7 +198,7 @@
         <a href="guides.html">攻略指南</a>
         <a href="toolkit.html">资料下载</a>
         <a href="radar.html">避坑雷达</a>
-        <a href="consult.html">智能路书</a>
+        <a href="hub.html">极境导航</a>
     </div>
 
     <div class="breadcrumb-nav">
@@ -281,13 +281,24 @@
 
         const menuToggle = document.getElementById('menuToggle');
         const mobileOverlay = document.getElementById('mobileOverlay');
-        menuToggle.addEventListener('click', () => {
-            mobileOverlay.classList.toggle('active');
-            menuToggle.innerText = mobileOverlay.classList.contains('active') ? '✕' : '☰';
-        });
+        let isMenuOpen = false;
+        if(menuToggle && mobileOverlay) {
+            menuToggle.addEventListener('click', () => {
+                isMenuOpen = !isMenuOpen;
+                if(isMenuOpen) {
+                    mobileOverlay.classList.add('active');
+                    menuToggle.innerText = '✕';
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    mobileOverlay.classList.remove('active');
+                    menuToggle.innerText = '☰';
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        }
 
         function dismissGlobalLoader() { document.body.classList.add('loaded'); }
-        function getFastCdnUrl(url) { if (!url) return ''; if (url.startsWith('images/')) return `https://cdn.jsdelivr.net/gh/feixingjiadavid/DreamWorldDavid/${url}`; return url; }
+        function getFastCdnUrl(url) { if (!url) return ''; return url.startsWith('images/') ? `https://cdn.jsdelivr.net/gh/feixingjiadavid/DreamWorldDavid/${url}` : url; }
         
         function loadIframeVideo(vid, coverUrl) {
             const box = document.getElementById('r_media');
