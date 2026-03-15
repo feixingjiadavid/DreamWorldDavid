@@ -3,27 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="referrer" content="no-referrer">
-    <meta name="theme-color" content="#050505">
-    
-    <meta property="og:title" content="极境军火库 | 戴维的梦想世界">
-    <meta property="og:description" content="独家旅行干货、行程表格与路线源文件免费下载。">
-    <meta property="og:type" content="website">
-    
     <title>专属干货库 | 戴维的梦想世界</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Noto+Sans+SC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-    
     <script>document.write('<script src="data.js?v=' + new Date().getTime() + '"><\/script>');</script>
     
     <style>
         :root { --bg-base: #050505; --text-primary: #FFFFFF; --text-dimmed: #888888; --gold: #D4AF37; --border: rgba(255,255,255,0.05); --radius: 8px; --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); --font-mono: 'JetBrains Mono', monospace;}
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: var(--bg-base); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; -webkit-font-smoothing: antialiased; line-height: 1.8; overflow-x: hidden; min-height: 100vh; display: flex; flex-direction: column;}
-
-        #init-loader { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: var(--bg-base); z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.5s ease, visibility 0.5s ease; }
-        .loader-brand { font-family: 'Noto Sans SC', sans-serif; font-size: 1.2rem; font-weight: 700; letter-spacing: 4px; color: var(--gold); animation: breath 2s infinite ease-in-out; text-transform: uppercase;}
-        @keyframes breath { 0% { opacity: 0.3; transform: scale(0.98); } 50% { opacity: 1; transform: scale(1); } 100% { opacity: 0.3; transform: scale(0.98); } }
-        body.loaded #init-loader { opacity: 0; visibility: hidden; }
 
         nav { display: flex; justify-content: space-between; align-items: center; padding: 30px 6vw; font-size: 0.95rem; font-weight: 500; letter-spacing: 1px; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: rgba(5,5,5,0.8); backdrop-filter: blur(20px); z-index: 100;}
         .nav-brand a { color: var(--text-primary); text-decoration: none; font-weight: 700; font-size: 1.2rem; letter-spacing: 2px; transition: color 0.3s ease; position: relative; z-index: 101;}
@@ -33,21 +20,20 @@
         .nav-links a:hover, .nav-links a.active { color: var(--text-primary); }
         .nav-links a.active::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background-color: var(--text-primary); }
         .mobile-menu-btn { display: none; background: transparent; border: none; color: #fff; font-size: 1.8rem; cursor: pointer; z-index: 101; position: relative; width: 40px; height: 40px; }
+        
         .mobile-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(5,5,5,0.98); backdrop-filter: blur(15px); z-index: 99; display: flex; flex-direction: column; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: var(--transition); }
         .mobile-overlay.active { opacity: 1; visibility: visible; }
         .mobile-overlay a { color: #fff; text-decoration: none; font-size: 2rem; font-weight: 700; letter-spacing: 4px; margin: 20px 0; opacity: 0; transform: translateY(20px); transition: var(--transition); }
         .mobile-overlay.active a { opacity: 1; transform: translateY(0); }
         .mobile-overlay a.active { color: var(--gold); }
 
-        .breadcrumb-nav { padding: 30px 6vw; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); font-family: 'Inter', sans-serif; font-size: 0.8rem; letter-spacing: 1px; white-space: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;}
-        .breadcrumb-nav::-webkit-scrollbar { display: none; }
+        .breadcrumb-nav { padding: 30px 6vw; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); font-family: 'Inter', sans-serif; font-size: 0.8rem; letter-spacing: 1px;}
         .crumb-link { color: var(--text-dimmed); text-decoration: none; transition: color 0.3s;}
         .crumb-link:hover { color: var(--gold); }
-        .crumb-separator { color: #444; font-size: 0.8rem; flex-shrink: 0;}
-        .crumb-current { color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; overflow: hidden; text-overflow: ellipsis; max-width: 250px; flex-shrink: 0;}
+        .crumb-separator { color: #444;}
+        .crumb-current { color: var(--text-primary);}
 
         .container { max-width: 1400px; margin: 0 auto; padding: 60px 6vw; flex: 1; width: 100%; }
-        
         .page-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 60px; gap: 40px; flex-wrap: wrap;}
         .title-area h1 { font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 900; letter-spacing: -1px; margin-bottom: 15px; margin-top: 0; text-transform: uppercase;}
         .title-area p { color: var(--text-dimmed); font-size: 1.1rem; margin: 0; max-width: 600px;}
@@ -56,7 +42,6 @@
         .toolkit-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 30px; }
         .resource-card { background: #0A0A0A; border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; overflow: hidden; transition: var(--transition); display: flex; flex-direction: column; position: relative;}
         .resource-card:hover { transform: translateY(-5px); border-color: rgba(168, 85, 247, 0.4); box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
-        
         .rc-cover { width: 100%; height: 200px; background: #111; position: relative; overflow: hidden;}
         .rc-cover img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: 0.5s; }
         .resource-card:hover .rc-cover img { opacity: 1; transform: scale(1.05);}
@@ -72,35 +57,28 @@
         .rc-content { padding: 25px; display: flex; flex-direction: column; flex: 1;}
         .rc-title { font-size: 1.3rem; font-weight: 700; line-height: 1.4; margin-bottom: 10px; color: #fff;}
         .rc-desc { font-size: 0.95rem; color: var(--text-dimmed); margin-bottom: 25px; flex: 1;}
-        
         .rc-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 20px;}
         .rc-meta { font-family: var(--font-mono); font-size: 0.8rem; color: #666; }
-        
         .btn-download { display: inline-flex; align-items: center; gap: 8px; background: rgba(168, 85, 247, 0.1); color: #a855f7; padding: 10px 20px; border-radius: 30px; text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: 0.3s; border: 1px solid rgba(168, 85, 247, 0.2);}
         .btn-download:hover { background: #a855f7; color: #fff; }
         .btn-download svg { width: 16px; height: 16px; fill: currentColor; }
 
-        .empty-state { text-align: center; padding: 100px 0; color: var(--text-dimmed); font-family: var(--font-mono); letter-spacing: 2px;}
         .site-footer { border-top: 1px solid var(--border); padding: 40px 0; text-align: center; font-family: 'Inter'; font-size: 0.8rem; color: var(--text-dimmed); letter-spacing: 2px; margin-top: auto;}
 
         @media (max-width: 900px) { .toolkit-grid { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); } }
         @media (max-width: 768px) {
-            nav { padding: 20px 5vw; border-bottom: none; background: var(--bg-base);}
+            nav { padding: 20px 5vw; border-bottom: none;}
             .nav-links { display: none; }
             .mobile-menu-btn { display: block; }
             .nav-brand a { font-size: 1.1rem; letter-spacing: 2px; }
             .breadcrumb-nav { padding: 20px 5vw; font-size: 0.75rem;}
             .container { padding: 30px 5vw 60px 5vw; }
             .page-header { margin-bottom: 40px; }
-            .title-area p { font-size: 0.95rem; }
             .toolkit-grid { grid-template-columns: 1fr; gap: 20px;}
-            .rc-title { font-size: 1.2rem; }
         }
     </style>
 </head>
 <body>
-
-    <div id="init-loader"><div class="loader-brand">戴维的梦想世界</div></div>
     
     <nav>
         <div class="nav-brand"><a href="index.html">戴维的梦想世界</a></div>
@@ -109,7 +87,7 @@
             <a href="stories.html">旅行故事</a>
             <a href="guides.html">攻略指南</a>
             <a href="toolkit.html" class="active">干货库</a>
-            <a href="gear.html">探险装备</a>
+            <a href="spots.html">极境坐标</a>
             <a href="consult.html">私人定制</a>
         </div>
         <button class="mobile-menu-btn" id="menuToggle">☰</button>
@@ -120,7 +98,7 @@
         <a href="stories.html">旅行故事</a>
         <a href="guides.html">攻略指南</a>
         <a href="toolkit.html" class="active">干货库</a>
-        <a href="gear.html">探险装备</a>
+        <a href="spots.html">极境坐标</a>
         <a href="consult.html">私人定制</a>
     </div>
 
@@ -138,13 +116,10 @@
             </div>
         </header>
 
-        <div class="toolkit-grid" id="toolkitGrid">
-            </div>
+        <div class="toolkit-grid" id="toolkitGrid"></div>
     </main>
 
-    <footer class="site-footer">
-        © 2026 戴维的梦想世界.
-    </footer>
+    <footer class="site-footer">© 2026 戴维的梦想世界.</footer>
 
     <script>
         const menuToggle = document.getElementById('menuToggle');
@@ -156,13 +131,7 @@
             } else { mobileOverlay.classList.remove('active'); menuToggle.innerText = '☰'; document.body.style.overflow = 'auto'; }
         });
 
-        function dismissGlobalLoader() { document.body.classList.add('loaded'); }
-        
-        function getFastCdnUrl(url) { 
-            if (!url) return ''; 
-            if (url.startsWith('images/') || url.startsWith('files/')) return `https://cdn.jsdelivr.net/gh/feixingjiadavid/DreamWorldDavid/${url}`; 
-            return url; 
-        }
+        function getFastCdnUrl(url) { if (!url) return ''; if (url.startsWith('images/') || url.startsWith('files/')) return `https://cdn.jsdelivr.net/gh/feixingjiadavid/DreamWorldDavid/${url}`; return url; }
 
         function getBadgeClass(type) {
             const t = type.toLowerCase();
@@ -177,7 +146,6 @@
             const grid = document.getElementById('toolkitGrid');
             let assets = [];
             
-            // 核心：强力注入测试占位数据（Mockup），让你立刻看到真实效果！
             if (typeof dbData === 'undefined' || !dbData.toolkits || dbData.toolkits.length === 0) {
                 assets = [
                     { type: 'PDF', cover: 'https://images.unsplash.com/photo-1476610182048-b716b8518aae?q=80&w=600', title: '冰岛环岛自驾防坑指南', desc: '包含冰岛 F路驾驶规则、隐藏测速点分布地图，及冬季暗冰应对策略。', size: '4.2 MB', link: '#' },
@@ -189,8 +157,7 @@
             }
             
             assets.forEach(item => {
-                const coverHtml = item.cover ? `<div class="rc-cover"><img src="${getFastCdnUrl(item.cover)}" loading="lazy"></div>` : `<div class="rc-cover" style="background: #1a1a1a; display:flex; align-items:center; justify-content:center;"><span style="color:#333; font-family:Inter; letter-spacing:4px; font-weight:900; font-size:1.5rem;">ASSET</span></div>`;
-                
+                const coverHtml = item.cover ? `<div class="rc-cover"><img src="${getFastCdnUrl(item.cover)}" loading="lazy"></div>` : '';
                 const cardHTML = `
                     <div class="resource-card">
                         <div class="rc-badge ${getBadgeClass(item.type)}">${item.type}</div>
@@ -209,9 +176,6 @@
                 `;
                 grid.insertAdjacentHTML('beforeend', cardHTML);
             });
-
-            // 延迟一点取消白屏，确保效果平滑
-            setTimeout(dismissGlobalLoader, 300);
         });
     </script>
 </body>
