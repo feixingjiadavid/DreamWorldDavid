@@ -21,12 +21,13 @@
         @keyframes breath { 0% { opacity: 0.3; transform: scale(0.98); } 50% { opacity: 1; transform: scale(1); } 100% { opacity: 0.3; transform: scale(0.98); } }
         body.loaded #init-loader { opacity: 0; visibility: hidden; }
 
-        /* 升级版面包屑导航 */
-        .breadcrumb-nav { padding: 30px 6vw; display: flex; align-items: center; flex-wrap: wrap; gap: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); font-family: 'Inter', sans-serif; font-size: 0.8rem; letter-spacing: 1px;}
-        .crumb-link { color: var(--text-dimmed); text-decoration: none; transition: color 0.3s; text-transform: uppercase;}
+        /* 面包屑导航 (横向滚动优化) */
+        .breadcrumb-nav { padding: 30px 6vw; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); font-family: 'Inter', sans-serif; font-size: 0.8rem; letter-spacing: 1px; white-space: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;}
+        .breadcrumb-nav::-webkit-scrollbar { display: none; }
+        .crumb-link { color: var(--text-dimmed); text-decoration: none; transition: color 0.3s; text-transform: uppercase; flex-shrink: 0;}
         .crumb-link:hover { color: var(--gold); }
-        .crumb-separator { color: #444; font-size: 0.8rem; }
-        .crumb-current { color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 250px;}
+        .crumb-separator { color: #444; font-size: 0.8rem; flex-shrink: 0;}
+        .crumb-current { color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; overflow: hidden; text-overflow: ellipsis; max-width: 250px; flex-shrink: 0;}
 
         .container { max-width: 1400px; margin: 0 auto; padding: 40px 6vw 120px 6vw; }
 
@@ -40,6 +41,7 @@
 
         .guide-layout { display: grid; grid-template-columns: 240px 1fr; gap: 60px; align-items: start; }
 
+        /* PC端侧边悬浮目录 */
         .toc-sidebar { position: sticky; top: 40px; padding-right: 20px; }
         .toc-title { font-family: 'Inter'; font-size: 0.75rem; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px; font-weight: 700; border-bottom: 1px solid rgba(212,175,55,0.2); padding-bottom: 10px;}
         .toc-list { list-style: none; padding: 0; margin: 0; border-left: 1px solid rgba(255,255,255,0.05);}
@@ -83,16 +85,22 @@
         .site-footer { border-top: 1px solid rgba(255,255,255,0.05); padding: 40px 0; text-align: center; font-family: 'Inter'; font-size: 0.8rem; color: var(--text-dimmed); letter-spacing: 2px; }
         #loadingState { text-align: center; color: var(--gold); letter-spacing: 2px; margin-top: 100px; font-family: 'Inter'; display: none;}
 
+        /* 移动端专属适配 */
         @media (max-width: 1024px) {
             .intel-grid { grid-template-columns: 1fr; }
         }
         @media (max-width: 900px) {
+            /* 手机端不再隐藏目录，改为顶部卡片样式 */
             .guide-layout { grid-template-columns: 1fr; gap: 40px; }
-            .toc-sidebar { display: none; }
+            .toc-sidebar { position: relative; top: 0; display: block; background: #111; padding: 25px 20px; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.05); margin-bottom: 10px;}
+            .toc-title { border-bottom: none; padding-bottom: 0; margin-bottom: 15px; }
+            .toc-list { border-left: none; display: flex; flex-direction: column; gap: 8px;}
+            .toc-link { background: rgba(255,255,255,0.03); border-left: 2px solid transparent; border-radius: 4px; padding: 12px 15px; margin-left: 0;}
+            .toc-link.active { background: rgba(212,175,55,0.1); border-left-color: var(--gold); }
         }
         @media (max-width: 768px) {
-            .breadcrumb-nav { padding: 20px 5vw; }
-            .crumb-current { max-width: 150px; }
+            .breadcrumb-nav { padding: 20px 5vw; font-size: 0.75rem;}
+            .crumb-current { max-width: none; } /* 允许手机上横划看完标题 */
             .container { padding: 20px 5vw 80px 5vw; }
             .guide-title { font-size: 1.8rem; }
             .guide-meta { font-size: 0.85rem; flex-direction: column; gap: 5px; }
@@ -101,7 +109,9 @@
             .day-title { font-size: 1.3rem; }
             .intro-text { font-size: 1rem; }
             .action-bar { margin-top: 40px; padding-top: 20px; justify-content: space-around; width: 100%;}
-            .back-to-top { bottom: 20px; right: 20px; width: 40px; height: 40px; font-size: 1rem;}
+            
+            /* 拇指友好的回到顶部位置 */
+            .back-to-top { bottom: 25px; right: 25px; width: 44px; height: 44px; font-size: 1.1rem; box-shadow: 0 4px 15px rgba(0,0,0,0.5);}
         }
     </style>
 
@@ -141,6 +151,7 @@
         <div class="media-container" id="r_media"></div>
 
         <div class="guide-layout">
+            
             <aside class="toc-sidebar">
                 <div class="toc-title">INDEX / 攻略目录</div>
                 <ul class="toc-list" id="r_toc_list">
