@@ -2,8 +2,12 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="referrer" content="no-referrer">
+    <meta property="og:title" content="戴维的梦想世界 | 探索记录">
+    <meta property="og:description" content="记录这个世界隐秘的B面。用真实的镜头带回极境的故事。">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1476610182048-b716b8518aae?q=80&w=1200&auto=format&fit=crop">
+    <meta property="og:type" content="article">
     
     <title>故事加载中... | DAVID EXPEDITION</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
@@ -45,6 +49,10 @@
         .story-article { border-left: 1px solid rgba(255,255,255,0.05); padding-left: 60px; }
         .story-content { font-size: 1.05rem; color: #CCCCCC; font-weight: 300; text-align: justify; line-height: 1.8; margin-bottom: 60px;}
         .story-content p { margin-bottom: 30px; }
+        
+        /* 智能图片样式：正文图片自动支持放大手势 */
+        .story-content img { max-width: 100%; border-radius: 6px; cursor: zoom-in; margin: 15px 0; transition: filter 0.3s ease; }
+        .story-content img:hover { filter: brightness(1.1); }
 
         .cta-block { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 35px; flex-wrap: wrap; gap: 20px;}
         .cta-text { color: var(--text-dimmed); font-size: 0.95rem; font-weight: 300;}
@@ -63,6 +71,12 @@
         .back-to-top.show { opacity: 1; visibility: visible; transform: translateY(0); }
         .back-to-top:hover { background: var(--gold); color: #000; border-color: var(--gold); }
 
+        /* 全屏图片灯箱 (Lightbox) 核心样式 */
+        .lightbox-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.95); z-index: 10000; display: flex; justify-content: center; align-items: center; opacity: 0; visibility: hidden; transition: var(--transition); cursor: zoom-out; backdrop-filter: blur(10px); }
+        .lightbox-overlay.active { opacity: 1; visibility: visible; }
+        .lightbox-img { max-width: 95vw; max-height: 95vh; object-fit: contain; transform: scale(0.9); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); border-radius: 4px; box-shadow: 0 20px 50px rgba(0,0,0,0.8);}
+        .lightbox-overlay.active .lightbox-img { transform: scale(1); }
+
         .site-footer { border-top: 1px solid rgba(255,255,255,0.05); padding: 40px 0; text-align: center; font-family: 'Inter'; font-size: 0.8rem; color: var(--text-dimmed); letter-spacing: 2px; }
         #loadingState { text-align: center; color: var(--gold); letter-spacing: 2px; margin-top: 100px; font-family: 'Inter'; display: none; }
 
@@ -75,6 +89,7 @@
         @media (max-width: 768px) {
             .breadcrumb-nav { padding: 20px 5vw; font-size: 0.75rem;}
             .crumb-current { max-width: none; } 
+            
             .container { padding: 20px 5vw 80px 5vw; }
             .media-container { border-radius: 0; margin-left: -5vw; width: 100vw; margin-bottom: 30px; border-left: none; border-right: none;}
             .story-tag { font-size: 0.75rem; margin-bottom: 15px; }
@@ -86,6 +101,7 @@
             .cta-text { font-size: 0.85rem; line-height: 1.6;}
             .cta-btn { width: 100%; text-align: center; }
             .action-bar { margin-top: 30px; padding-top: 20px; justify-content: space-around; width: 100%;}
+            
             .back-to-top { bottom: 25px; right: 25px; width: 44px; height: 44px; font-size: 1.1rem; box-shadow: 0 4px 15px rgba(0,0,0,0.5);}
         }
     </style>
@@ -153,6 +169,10 @@
         © 2026 DAVID EXPEDITION.
     </footer>
 
+    <div class="lightbox-overlay" id="globalLightbox">
+        <img src="" class="lightbox-img" id="lightboxImg">
+    </div>
+
     <div id="toast">提示信息</div>
 
     <script>
@@ -195,6 +215,24 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
+        // 绑定全屏灯箱事件
+        function bindLightbox() {
+            const lightbox = document.getElementById('globalLightbox');
+            const lightboxImg = document.getElementById('lightboxImg');
+            
+            document.querySelectorAll('.story-content img').forEach(img => {
+                img.addEventListener('click', function() {
+                    lightboxImg.src = this.src;
+                    lightbox.classList.add('active');
+                });
+            });
+
+            lightbox.addEventListener('click', function() {
+                this.classList.remove('active');
+                setTimeout(() => { lightboxImg.src = ''; }, 400); // 延迟清空防闪烁
+            });
+        }
+
         document.addEventListener("DOMContentLoaded", function() {
             const loaderTimeout = setTimeout(() => { document.body.classList.add('loaded'); }, 2500);
             function removeLoader() { clearTimeout(loaderTimeout); setTimeout(() => { document.body.classList.add('loaded'); }, 300); }
@@ -221,7 +259,6 @@
                 return;
             }
 
-            // 【极致修复】动态植入真实 SEO 网页标题
             document.title = `${story.title} | DAVID EXPEDITION`;
 
             document.getElementById('r_breadcrumb_title').innerText = story.title;
@@ -236,8 +273,6 @@
 
             if (story.bilibili_bvid && story.bilibili_bvid.trim() !== "") {
                 let vid = story.bilibili_bvid.trim();
-                
-                // 【极致修复】防呆设计：如果运营人员傻傻地粘贴了完整的网址，智能提取 BV 号
                 if (!vid.endsWith('.mp4')) {
                     const bvMatch = vid.match(/(BV[a-zA-Z0-9]+)/);
                     if (bvMatch) vid = bvMatch[1];
@@ -263,6 +298,9 @@
             }
 
             document.getElementById('mainContent').style.display = 'block';
+            
+            // 激活灯箱
+            bindLightbox();
             removeLoader();
         });
     </script>
