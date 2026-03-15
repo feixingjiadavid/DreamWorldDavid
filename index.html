@@ -33,6 +33,7 @@
         .nav-brand a { color: var(--text-primary); text-decoration: none; font-weight: 700; font-size: 1.2rem; letter-spacing: 2px; transition: color 0.3s ease; position: relative; z-index: 101;}
         .nav-brand a:hover { color: var(--gold); } 
         
+        /* 瘦身后的 5 大核心导航 */
         .nav-links { display: flex; gap: 40px; align-items: center; font-family: var(--font-zh); font-size: 0.95rem;}
         .nav-links a { color: var(--text-dimmed); text-decoration: none; position: relative; padding-bottom: 6px; transition: color 0.3s ease; letter-spacing: 1px; white-space: nowrap;}
         .nav-links a:hover, .nav-links a.active { color: var(--text-primary); }
@@ -96,7 +97,6 @@
         .btn-view-more { display: inline-block; padding: 14px 35px; background: transparent; border: 1px solid rgba(255,255,255,0.2); color: var(--text-primary); font-family: var(--font-zh); font-size: 0.95rem; font-weight: 500; letter-spacing: 2px; border-radius: 40px; text-decoration: none; transition: all 0.3s ease; }
         .btn-view-more:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-3px); }
 
-        /* 核心修复：纯净版左右分栏底部 */
         .footer-contact-section { margin-top: 100px; padding: 60px 6vw; background: #0A0A0A; border-radius: 20px; border: 1px solid rgba(255,255,255,0.03); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 40px;}
         .fc-left { display: flex; flex-direction: column; gap: 15px;}
         .fc-title { font-size: 3rem; font-weight: 900; margin: 0; letter-spacing: 2px; color: #fff;}
@@ -107,7 +107,6 @@
         .qr-item { display: flex; flex-direction: column; align-items: center; gap: 12px;}
         .qr-label { font-size: 0.8rem; color: #888; letter-spacing: 2px; text-transform: uppercase; font-weight: 700; font-family: 'Noto Sans SC', sans-serif;}
         
-        /* 二维码尺寸控制在150px，保证左右对齐时绝不折行 */
         .qr-box { width: 150px; height: 150px; background: #111; border-radius: 12px; padding: 12px; border: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: center; align-items: center; transition: 0.3s;}
         .qr-box:hover { border-color: #38bdf8; box-shadow: 0 10px 30px rgba(0,0,0,0.8); transform: translateY(-5px);}
         .qr-box img { width: 100%; height: 100%; object-fit: contain; border-radius: 6px;}
@@ -116,7 +115,6 @@
 
         @media (max-width: 1024px) {
             .video-grid { grid-template-columns: 1fr; }
-            /* 平板及以下屏幕才允许折叠居中 */
             .footer-contact-section { flex-direction: column; text-align: center; justify-content: center; gap: 50px;}
             .fc-left { align-items: center;}
             .qr-matrix { flex-wrap: wrap; justify-content: center; gap: 30px;}
@@ -165,14 +163,6 @@
             .qr-box { width: 120px; height: 120px; }
         }
     </style>
-
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LJQMME1NDE"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-LJQMME1NDE');
-    </script>
 </head>
 <body>
 
@@ -186,8 +176,8 @@
                 <a href="stories.html">旅行故事</a>
                 <a href="guides.html">攻略指南</a>
                 <a href="toolkit.html">资料下载</a>
-                <a href="spots.html">极境坐标</a>
-                <a href="consult.html">智能路书</a>
+                <a href="radar.html">避坑雷达</a>
+                <a href="hub.html">极境导航</a>
             </div>
             <button class="mobile-menu-btn" id="menuToggle">☰</button>
         </nav>
@@ -197,8 +187,8 @@
             <a href="stories.html">STORIES / 旅行故事</a>
             <a href="guides.html">GUIDES / 攻略指南</a>
             <a href="toolkit.html">TOOLKIT / 资料下载</a>
-            <a href="spots.html">SPOTS / 极境坐标</a>
-            <a href="consult.html">BESPOKE / 智能路书</a>
+            <a href="radar.html">RADAR / 避坑雷达</a>
+            <a href="hub.html">HUB / 极境导航</a>
         </div>
 
         <a href="stories.html" class="teaser-strip">
@@ -220,11 +210,10 @@
                     <span class="status-text">正在筹备 2026 探险计划</span>
                     <span class="status-location">📍 NEXT DROP: 极境深处</span>
                 </div>
-
                 <h1 class="philosophy-statement" id="renderDeclare">世界不缺走马观花的打卡，<br>我用珍贵的<span class="highlight">年假</span>逃离日常，<br>去记录这个世界隐秘的<span class="highlight no-wrap">B面</span></h1>
             </div>
             <div class="philosophy-body">
-                <p class="philosophy-desc" id="renderBio">“互联网大厂打工人，用年假去拍世界的B面”——这是我的真实身份，也是创作的底色。作为一名冷门目的地的记录者，我用心讲述每一次旅程，拒绝平庸的叙事逻辑。无论是法罗群岛的极夜风暴，还是冰岛的无人区冰川，在这里，我将用真实的镜头和纯粹的文字，将极境最原本的故事带回现实。</p>
+                <p class="philosophy-desc" id="renderBio">“互联网大厂打工人，用年假去拍世界的B面”——这是我的真实身份，也是创作的底色。在这里，我将用真实的镜头和纯粹的文字，将极境最原本的故事带回现实。</p>
                 <div class="philosophy-signature">
                     <div id="renderName" style="display:inline;">DAVID.</div>
                     <span id="renderTags">// 记录者</span>
@@ -247,55 +236,42 @@
                 <div class="section-title-en">EXPEDITION GUIDES</div>
             </div>
             <div class="video-grid" id="guidesGrid"></div>
-            <div class="view-more-container"><a href="guides.html" class="btn-view-more">查阅完整攻略知识库 ↗</a></div>
+            <div class="view-more-container"><a href="guides.html" class="btn-view-more">查阅完整攻略指南 ↗</a></div>
         </div>
 
         <section class="footer-contact-section">
             <div class="fc-left">
                 <h2 class="fc-title">联系我们</h2>
-                <a href="#" class="fc-email" id="renderEmail">Awaiting Database...</a>
+                <a href="#" class="fc-email" id="renderEmail">davidxxxu@gmail.com</a>
             </div>
             <div class="qr-matrix">
                 <div class="qr-item">
-                    <div class="qr-box"><img src="https://images.unsplash.com/photo-1520106212299-d99c443e4568?q=80&w=400" id="qrXhs" style="display:block;" alt="QR"></div>
+                    <div class="qr-box"><img src="https://images.unsplash.com/photo-1520106212299-d99c443e4568?q=80&w=400" id="qrXhs" alt="小红书"></div>
                     <span class="qr-label">小红书</span>
                 </div>
                 <div class="qr-item">
-                    <div class="qr-box"><img src="https://images.unsplash.com/photo-1510798831971-661eb04b3739?q=80&w=400" id="qrBili" style="display:block;" alt="QR"></div>
-                    <span class="qr-label">Bilibili</span>
+                    <div class="qr-box"><img src="https://images.unsplash.com/photo-1510798831971-661eb04b3739?q=80&w=400" id="qrBili" alt="Bilibili"></div>
+                    <span class="qr-label">BILIBILI</span>
                 </div>
                 <div class="qr-item">
-                    <div class="qr-box"><img src="https://images.unsplash.com/photo-1522031309322-68b321a30896?q=80&w=400" id="qrDouyin" style="display:block;" alt="QR"></div>
+                    <div class="qr-box"><img src="https://images.unsplash.com/photo-1522031309322-68b321a30896?q=80&w=400" id="qrDouyin" alt="抖音"></div>
                     <span class="qr-label">抖音</span>
                 </div>
             </div>
         </section>
+
     </div>
 
     <footer class="site-footer" id="renderFooter">© 2026 戴维的梦想世界. ALL RIGHTS RESERVED.</footer>
 
     <script>
-        function getFastCdnUrl(url) {
-            if (!url) return '';
-            if (url.startsWith('images/')) return `https://cdn.jsdelivr.net/gh/feixingjiadavid/DreamWorldDavid/${url}`;
-            return url;
-        }
+        function getFastCdnUrl(url) { if (!url) return ''; return url.startsWith('images/') ? `https://cdn.jsdelivr.net/gh/feixingjiadavid/DreamWorldDavid/${url}` : url; }
 
         const menuToggle = document.getElementById('menuToggle');
         const mobileOverlay = document.getElementById('mobileOverlay');
-        let isMenuOpen = false;
-
         menuToggle.addEventListener('click', () => {
-            isMenuOpen = !isMenuOpen;
-            if(isMenuOpen) {
-                mobileOverlay.classList.add('active');
-                menuToggle.innerText = '✕';
-                document.body.style.overflow = 'hidden';
-            } else {
-                mobileOverlay.classList.remove('active');
-                menuToggle.innerText = '☰';
-                document.body.style.overflow = 'auto';
-            }
+            mobileOverlay.classList.toggle('active');
+            menuToggle.innerText = mobileOverlay.classList.contains('active') ? '✕' : '☰';
         });
 
         document.addEventListener("DOMContentLoaded", function() {
@@ -304,10 +280,7 @@
             if (typeof dbData === 'undefined') return;
             const db = dbData;
             
-            function parseHighlighting(rawText) {
-                if(!rawText) return '';
-                return rawText.replace(/\[(.*?)\]/g, '<span class="highlight">$1</span>').replace(/\n/g, '<br>');
-            }
+            function parseHighlighting(rawText) { if(!rawText) return ''; return rawText.replace(/\[(.*?)\]/g, '<span class="highlight">$1</span>').replace(/\n/g, '<br>'); }
 
             if (db.global) {
                 const g = db.global;
@@ -316,20 +289,16 @@
                 if(g.footer && g.footer.trim() !== '') document.getElementById('renderFooter').innerText = g.footer;
                 
                 if(g.tags && g.tags.trim() !== '') {
-                    let t = g.tags.trim();
-                    if(!t.startsWith('//')) t = '// ' + t;
-                    document.getElementById('renderTags').innerText = t;
+                    let t = g.tags.trim(); if(!t.startsWith('//')) t = '// ' + t; document.getElementById('renderTags').innerText = t;
                 }
-
                 if(g.signatureName && g.signatureName.trim() !== '') document.getElementById('renderName').innerText = g.signatureName;
                 if(g.heroDeclare && g.heroDeclare.trim() !== '') document.getElementById('renderDeclare').innerHTML = parseHighlighting(g.heroDeclare);
                 if(g.bio && g.bio.trim() !== '') document.getElementById('renderBio').innerText = g.bio;
-
-                if(g.email) { const eEl = document.getElementById('renderEmail'); eEl.innerText = g.email; eEl.href = `mailto:${g.email}`; }
+                if(g.email && g.email.trim() !== '') { const eEl = document.getElementById('renderEmail'); eEl.innerText = g.email; eEl.href = `mailto:${g.email}`; }
                 
-                if(g.qrXhs) { document.getElementById('qrXhs').src = getFastCdnUrl(g.qrXhs); } 
-                if(g.qrBili) { document.getElementById('qrBili').src = getFastCdnUrl(g.qrBili); }
-                if(g.qrDouyin) { document.getElementById('qrDouyin').src = getFastCdnUrl(g.qrDouyin); }
+                if(g.qrXhs && g.qrXhs.trim() !== '') document.getElementById('qrXhs').src = getFastCdnUrl(g.qrXhs);
+                if(g.qrBili && g.qrBili.trim() !== '') document.getElementById('qrBili').src = getFastCdnUrl(g.qrBili);
+                if(g.qrDouyin && g.qrDouyin.trim() !== '') document.getElementById('qrDouyin').src = getFastCdnUrl(g.qrDouyin);
             }
 
             function getFeaturedItems(allArray, featId1, featId2) {
