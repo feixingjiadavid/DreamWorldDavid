@@ -28,7 +28,7 @@
         .search-wrapper { position: relative; width: 100%; max-width: 400px; }
         #storySearch { width: 100%; background: transparent; border: none; border-bottom: 2px solid rgba(255,255,255,0.1); padding: 12px 0; color: #fff; font-size: 1.1rem; outline: none; transition: border-color 0.3s; font-family: 'Noto Sans SC', sans-serif;}
         #storySearch:focus { border-color: var(--gold); }
-        .search-wrapper::after { content: 'SEARCH'; position: absolute; right: 0; top: 15px; font-size: 0.7rem; color: var(--dim); letter-spacing: 2px; font-family: 'Inter'; }
+        .search-wrapper::after { content: 'SEARCH'; position: absolute; right: 0; top: 15px; font-size: 0.7rem; color: var(--text-dimmed); letter-spacing: 2px; font-family: 'Inter'; }
 
         .story-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px; }
 
@@ -45,6 +45,11 @@
         .play-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.8); width: 60px; height: 60px; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.3); border-radius: 50%; display: flex; justify-content: center; align-items: center; z-index: 3; opacity: 0; transition: all 0.4s ease; backdrop-filter: blur(4px); pointer-events: none;}
         .play-icon::after { content: '▶'; color: #fff; font-size: 1.2rem; margin-left: 4px; }
         .story-card:hover .play-icon { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+
+        /* 加载更多按钮样式 */
+        .load-more-container { text-align: center; margin-top: 60px; display: none; }
+        .btn-load-more { display: inline-block; padding: 14px 40px; background: transparent; border: 1px solid rgba(255,255,255,0.2); color: var(--text-primary); font-family: 'Noto Sans SC', sans-serif; font-size: 0.95rem; font-weight: 500; letter-spacing: 2px; border-radius: 40px; cursor: pointer; transition: var(--transition); outline: none;}
+        .btn-load-more:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-3px); }
 
         @media (max-width: 900px) {
             .page-header { flex-direction: column; align-items: flex-start; }
@@ -65,6 +70,7 @@
             .card-title { font-size: 1.4rem; }
             .play-icon { width: 50px; height: 50px; }
             .play-icon::after { font-size: 1rem; margin-left: 3px; }
+            .btn-load-more { width: 100%; padding: 12px 0; font-size: 0.85rem; }
         }
     </style>
 
@@ -95,6 +101,10 @@
         </header>
 
         <div class="story-grid" id="storyGrid"></div>
+        
+        <div class="load-more-container" id="loadMoreBox">
+            <button class="btn-load-more" id="loadMoreBtn">探索更多记录 ↓</button>
+        </div>
     </main>
 
     <script>
@@ -107,26 +117,37 @@
         document.addEventListener("DOMContentLoaded", function() {
             const grid = document.getElementById('storyGrid');
             const searchInput = document.getElementById('storySearch');
+            const loadMoreBox = document.getElementById('loadMoreBox');
+            const loadMoreBtn = document.getElementById('loadMoreBtn');
             
             if (typeof dbData === 'undefined' || !dbData.stories) {
                 grid.innerHTML = '<p style="color:var(--text-dimmed); font-family:Inter;">未检测到云端数据节点，请确保后台已发布文章。</p>';
                 return;
             }
 
-            let allStories = dbData.stories;
-            allStories.sort((a, b) => new Date(b.date) - new Date(a.date));
+            // 核心分页逻辑变量
+            let allStories = dbData.stories.sort((a, b) => new Date(b.date) - new Date(a.date));
+            let currentDisplayList = [...allStories];
+            let currentPage = 1;
+            const itemsPerPage = 6; // 每次加载6篇
 
-            const renderCards = (stories) => {
-                grid.innerHTML = ''; 
-                if (stories.length === 0) {
+            // 渲染引擎 (支持追加或重置)
+            const renderCards = (page, append = false) => {
+                if (!append) grid.innerHTML = ''; 
+                
+                if (currentDisplayList.length === 0) {
                     grid.innerHTML = '<p style="color:var(--text-dimmed);">未能找到相关探险记录。</p>';
+                    loadMoreBox.style.display = 'none';
                     return;
                 }
-                stories.forEach(story => {
+
+                const startIndex = (page - 1) * itemsPerPage;
+                const endIndex = page * itemsPerPage;
+                const itemsToRender = currentDisplayList.slice(startIndex, endIndex);
+
+                itemsToRender.forEach(story => {
                     const hasVideo = story.bilibili_bvid && story.bilibili_bvid.trim() !== '';
                     const playIconHtml = hasVideo ? `<div class="play-icon"></div>` : '';
-                    
-                    // 核心接管：优先读取真实的“行程日期”
                     const displayDate = (story.trip_date && story.trip_date.trim() !== '') ? story.trip_date : story.date;
                     
                     const cardHTML = `
@@ -142,14 +163,30 @@
                     `;
                     grid.insertAdjacentHTML('beforeend', cardHTML);
                 });
+
+                // 判断是否还有更多数据
+                if (endIndex >= currentDisplayList.length) {
+                    loadMoreBox.style.display = 'none';
+                } else {
+                    loadMoreBox.style.display = 'block';
+                }
             };
 
-            renderCards(allStories);
+            // 初始渲染第一页
+            renderCards(1);
 
+            // 点击加载更多
+            loadMoreBtn.addEventListener('click', () => {
+                currentPage++;
+                renderCards(currentPage, true);
+            });
+
+            // 实时搜索过滤 (重置分页)
             searchInput.addEventListener('input', (e) => {
                 const term = e.target.value.toLowerCase();
-                const filtered = allStories.filter(story => story.title.toLowerCase().includes(term));
-                renderCards(filtered);
+                currentDisplayList = allStories.filter(story => story.title.toLowerCase().includes(term));
+                currentPage = 1;
+                renderCards(1, false);
             });
         });
     </script>
