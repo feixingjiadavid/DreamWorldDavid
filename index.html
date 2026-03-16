@@ -33,7 +33,6 @@
         .nav-brand a { color: var(--text-primary); text-decoration: none; font-weight: 700; font-size: 1.2rem; letter-spacing: 2px; transition: color 0.3s ease; position: relative; z-index: 101;}
         .nav-brand a:hover { color: var(--gold); } 
         
-        /* 瘦身后的 5 大核心导航 */
         .nav-links { display: flex; gap: 40px; align-items: center; font-family: var(--font-zh); font-size: 0.95rem;}
         .nav-links a { color: var(--text-dimmed); text-decoration: none; position: relative; padding-bottom: 6px; transition: color 0.3s ease; letter-spacing: 1px; white-space: nowrap;}
         .nav-links a:hover, .nav-links a.active { color: var(--text-primary); }
@@ -157,12 +156,25 @@
             
             .btn-view-more { padding: 12px 20px; font-size: 0.85rem; width: 100%; text-align: center; border-radius: 30px;}
 
-            .footer-contact-section { padding: 50px 20px; margin-top: 60px; gap: 40px;}
-            .fc-title { font-size: 2rem;}
-            .fc-email { font-size: 1.2rem; }
-            .qr-box { width: 120px; height: 120px; }
+            .footer-contact-section { padding: 40px 20px; margin-top: 50px; gap: 30px;}
+            .fc-title { font-size: 1.6rem;}
+            .fc-email { font-size: 1.1rem; }
+
+            /* 核心修复：移动端二维码强制水平不换行，且等比自适应 */
+            .qr-matrix { flex-wrap: nowrap; justify-content: center; gap: 15px; width: 100%;}
+            .qr-item { flex: 1; max-width: 90px; }
+            .qr-box { width: 100%; height: auto; aspect-ratio: 1 / 1; padding: 8px; }
+            .qr-label { font-size: 0.65rem; letter-spacing: 0px;}
         }
     </style>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LJQMME1NDE"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-LJQMME1NDE');
+    </script>
 </head>
 <body>
 
@@ -210,10 +222,11 @@
                     <span class="status-text">正在筹备 2026 探险计划</span>
                     <span class="status-location">📍 NEXT DROP: 极境深处</span>
                 </div>
+
                 <h1 class="philosophy-statement" id="renderDeclare">世界不缺走马观花的打卡，<br>我用珍贵的<span class="highlight">年假</span>逃离日常，<br>去记录这个世界隐秘的<span class="highlight no-wrap">B面</span></h1>
             </div>
             <div class="philosophy-body">
-                <p class="philosophy-desc" id="renderBio">“互联网大厂打工人，用年假去拍世界的B面”——这是我的真实身份，也是创作的底色。在这里，我将用真实的镜头和纯粹的文字，将极境最原本的故事带回现实。</p>
+                <p class="philosophy-desc" id="renderBio">“互联网大厂打工人，用年假去拍世界的B面”——这是我的真实身份，也是创作的底色。作为一名冷门目的地的记录者，我用心讲述每一次旅程，拒绝平庸的叙事逻辑。无论是法罗群岛的极夜风暴，还是冰岛的无人区冰川，在这里，我将用真实的镜头和纯粹的文字，将极境最原本的故事带回现实。</p>
                 <div class="philosophy-signature">
                     <div id="renderName" style="display:inline;">DAVID.</div>
                     <span id="renderTags">// 记录者</span>
@@ -236,42 +249,55 @@
                 <div class="section-title-en">EXPEDITION GUIDES</div>
             </div>
             <div class="video-grid" id="guidesGrid"></div>
-            <div class="view-more-container"><a href="guides.html" class="btn-view-more">查阅完整攻略指南 ↗</a></div>
+            <div class="view-more-container"><a href="guides.html" class="btn-view-more">查阅完整攻略知识库 ↗</a></div>
         </div>
 
         <section class="footer-contact-section">
             <div class="fc-left">
                 <h2 class="fc-title">联系我们</h2>
-                <a href="#" class="fc-email" id="renderEmail">davidxxxu@gmail.com</a>
+                <a href="#" class="fc-email" id="renderEmail">Awaiting Database...</a>
             </div>
             <div class="qr-matrix">
                 <div class="qr-item">
-                    <div class="qr-box"><img src="https://images.unsplash.com/photo-1520106212299-d99c443e4568?q=80&w=400" id="qrXhs" alt="小红书"></div>
+                    <div class="qr-box"><img src="https://images.unsplash.com/photo-1520106212299-d99c443e4568?q=80&w=400" id="qrXhs" style="display:block;" alt="QR"></div>
                     <span class="qr-label">小红书</span>
                 </div>
                 <div class="qr-item">
-                    <div class="qr-box"><img src="https://images.unsplash.com/photo-1510798831971-661eb04b3739?q=80&w=400" id="qrBili" alt="Bilibili"></div>
-                    <span class="qr-label">BILIBILI</span>
+                    <div class="qr-box"><img src="https://images.unsplash.com/photo-1510798831971-661eb04b3739?q=80&w=400" id="qrBili" style="display:block;" alt="QR"></div>
+                    <span class="qr-label">Bilibili</span>
                 </div>
                 <div class="qr-item">
-                    <div class="qr-box"><img src="https://images.unsplash.com/photo-1522031309322-68b321a30896?q=80&w=400" id="qrDouyin" alt="抖音"></div>
+                    <div class="qr-box"><img src="https://images.unsplash.com/photo-1522031309322-68b321a30896?q=80&w=400" id="qrDouyin" style="display:block;" alt="QR"></div>
                     <span class="qr-label">抖音</span>
                 </div>
             </div>
         </section>
-
     </div>
 
     <footer class="site-footer" id="renderFooter">© 2026 戴维的梦想世界. ALL RIGHTS RESERVED.</footer>
 
     <script>
-        function getFastCdnUrl(url) { if (!url) return ''; return url.startsWith('images/') ? `https://cdn.jsdelivr.net/gh/feixingjiadavid/DreamWorldDavid/${url}` : url; }
+        function getFastCdnUrl(url) {
+            if (!url) return '';
+            if (url.startsWith('images/')) return `https://cdn.jsdelivr.net/gh/feixingjiadavid/DreamWorldDavid/${url}`;
+            return url;
+        }
 
         const menuToggle = document.getElementById('menuToggle');
         const mobileOverlay = document.getElementById('mobileOverlay');
+        let isMenuOpen = false;
+
         menuToggle.addEventListener('click', () => {
-            mobileOverlay.classList.toggle('active');
-            menuToggle.innerText = mobileOverlay.classList.contains('active') ? '✕' : '☰';
+            isMenuOpen = !isMenuOpen;
+            if(isMenuOpen) {
+                mobileOverlay.classList.add('active');
+                menuToggle.innerText = '✕';
+                document.body.style.overflow = 'hidden';
+            } else {
+                mobileOverlay.classList.remove('active');
+                menuToggle.innerText = '☰';
+                document.body.style.overflow = 'auto';
+            }
         });
 
         document.addEventListener("DOMContentLoaded", function() {
@@ -280,7 +306,10 @@
             if (typeof dbData === 'undefined') return;
             const db = dbData;
             
-            function parseHighlighting(rawText) { if(!rawText) return ''; return rawText.replace(/\[(.*?)\]/g, '<span class="highlight">$1</span>').replace(/\n/g, '<br>'); }
+            function parseHighlighting(rawText) {
+                if(!rawText) return '';
+                return rawText.replace(/\[(.*?)\]/g, '<span class="highlight">$1</span>').replace(/\n/g, '<br>');
+            }
 
             if (db.global) {
                 const g = db.global;
@@ -289,16 +318,20 @@
                 if(g.footer && g.footer.trim() !== '') document.getElementById('renderFooter').innerText = g.footer;
                 
                 if(g.tags && g.tags.trim() !== '') {
-                    let t = g.tags.trim(); if(!t.startsWith('//')) t = '// ' + t; document.getElementById('renderTags').innerText = t;
+                    let t = g.tags.trim();
+                    if(!t.startsWith('//')) t = '// ' + t;
+                    document.getElementById('renderTags').innerText = t;
                 }
+
                 if(g.signatureName && g.signatureName.trim() !== '') document.getElementById('renderName').innerText = g.signatureName;
                 if(g.heroDeclare && g.heroDeclare.trim() !== '') document.getElementById('renderDeclare').innerHTML = parseHighlighting(g.heroDeclare);
                 if(g.bio && g.bio.trim() !== '') document.getElementById('renderBio').innerText = g.bio;
-                if(g.email && g.email.trim() !== '') { const eEl = document.getElementById('renderEmail'); eEl.innerText = g.email; eEl.href = `mailto:${g.email}`; }
+
+                if(g.email) { const eEl = document.getElementById('renderEmail'); eEl.innerText = g.email; eEl.href = `mailto:${g.email}`; }
                 
-                if(g.qrXhs && g.qrXhs.trim() !== '') document.getElementById('qrXhs').src = getFastCdnUrl(g.qrXhs);
-                if(g.qrBili && g.qrBili.trim() !== '') document.getElementById('qrBili').src = getFastCdnUrl(g.qrBili);
-                if(g.qrDouyin && g.qrDouyin.trim() !== '') document.getElementById('qrDouyin').src = getFastCdnUrl(g.qrDouyin);
+                if(g.qrXhs) { document.getElementById('qrXhs').src = getFastCdnUrl(g.qrXhs); } 
+                if(g.qrBili) { document.getElementById('qrBili').src = getFastCdnUrl(g.qrBili); }
+                if(g.qrDouyin) { document.getElementById('qrDouyin').src = getFastCdnUrl(g.qrDouyin); }
             }
 
             function getFeaturedItems(allArray, featId1, featId2) {
