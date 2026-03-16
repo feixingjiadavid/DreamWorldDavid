@@ -44,7 +44,7 @@
         .hub-layout { display: grid; grid-template-columns: 250px 1fr; gap: 60px; align-items: start;}
         
         .hub-sidebar { position: sticky; top: 120px; display: flex; flex-direction: column; gap: 10px;}
-        .hub-nav-link { color: #888; text-decoration: none; font-size: 0.95rem; padding: 12px 20px; border-radius: 8px; transition: var(--transition); border-left: 2px solid transparent;}
+        .hub-nav-link { color: #888; text-decoration: none; font-size: 0.95rem; padding: 12px 20px; border-radius: 8px; transition: var(--transition); border-left: 2px solid transparent; cursor: pointer; user-select: none;}
         .hub-nav-link:hover { color: #fff; background: rgba(255,255,255,0.03);}
         .hub-nav-link.active { color: #f59e0b; background: rgba(245, 158, 11, 0.1); border-left-color: #f59e0b; font-weight: 700;}
 
@@ -144,6 +144,7 @@
             menuToggle.innerText = mobileOverlay.classList.contains('active') ? '✕' : '☰';
         });
 
+        // 默认数据，新加了“住宿与其他”
         const defaultHubs = [
             { category: '核心引擎', title: '智能路线自动演算', icon: '🛣️', url: 'consult.html', desc: '【本站核心】选择你的探险条件，算法将自动绘制地图轨迹并提供行程防坑点。', isEngine: true },
             { category: '签证与使馆', title: '申根签预约 (VFS)', icon: '🛂', url: 'https://visa.vfsglobal.com/', desc: 'VFS Global 官方预约中心，规避虚假中介。' },
@@ -159,7 +160,7 @@
             
             let hubs = [defaultHubs[0]]; // 强制保留第一个核心引擎
 
-            // 核心修复：将后台存的大类(含links数组)解构成扁平数组，彻底解决 undefined 报错
+            // 读取后台数据
             if (typeof dbData !== 'undefined' && dbData.hubs && dbData.hubs.length > 0) {
                 dbData.hubs.sort((a,b) => new Date(b.date) - new Date(a.date)).forEach(hubCat => {
                     if(hubCat.links && hubCat.links.length > 0) {
@@ -184,29 +185,36 @@
                 return acc;
             }, {});
 
+            let sidebarHtml = '';
+            let contentHtml = '';
             let isFirst = true;
+
             for (const category in grouped) {
-                const catId = 'cat-' + category.replace(/\s+/g, '-');
+                // 核心修复：更安全的 ID 生成规则，支持全中文不乱码
+                const safeCatId = 'cat-' + Array.from(category).map(c => c.charCodeAt(0).toString(16)).join('');
                 
-                sidebar.innerHTML += `<a href="#${catId}" class="hub-nav-link ${isFirst ? 'active' : ''}">${category}</a>`;
+                sidebarHtml += `<a data-target="${safeCatId}" class="hub-nav-link ${isFirst ? 'active' : ''}">${category}</a>`;
                 
                 let cardsHtml = '';
                 grouped[category].forEach(link => {
                     const cardClass = link.isEngine ? 'link-card engine-card' : 'link-card';
                     const targetAttr = link.isEngine ? '' : 'target="_blank"';
+                    // 核心修复：如果 url 是 undefined，给个兜底 #，绝对不报 404
+                    const safeUrl = (link.url && link.url !== 'undefined') ? link.url : '#';
+                    
                     cardsHtml += `
-                        <a href="${link.url}" ${targetAttr} class="${cardClass}">
+                        <a href="${safeUrl}" ${targetAttr} class="${cardClass}">
                             <div class="lc-icon">${link.icon || '🔗'}</div>
                             <div class="lc-info">
-                                <h3 class="lc-title">${link.title}</h3>
-                                <p class="lc-desc">${link.desc}</p>
+                                <h3 class="lc-title">${link.title || '未命名'}</h3>
+                                <p class="lc-desc">${link.desc || ''}</p>
                             </div>
                         </a>
                     `;
                 });
 
-                content.innerHTML += `
-                    <div class="hub-section" id="${catId}">
+                contentHtml += `
+                    <div class="hub-section" id="${safeCatId}">
                         <h2 class="hub-section-title">${category}</h2>
                         <div class="links-grid">${cardsHtml}</div>
                     </div>
@@ -214,17 +222,42 @@
                 isFirst = false;
             }
 
-            const sections = document.querySelectorAll('.hub-section');
+            sidebar.innerHTML = sidebarHtml;
+            content.innerHTML = contentHtml;
+
+            // 核心修复：重新编写极度顺滑且准确的 JS 跳转和高亮监听逻辑
             const navLinks = document.querySelectorAll('.hub-nav-link');
+            const sections = document.querySelectorAll('.hub-section');
+
+            // 处理点击侧边栏的跳转与高亮
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // 移除所有的 active，给当前点击的加上
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // 获取目标 ID 并进行精准滚动 (减去顶部 fixed header 的高度)
+                    const targetId = this.getAttribute('data-target');
+                    const targetSec = document.getElementById(targetId);
+                    if(targetSec) {
+                        const topPos = targetSec.getBoundingClientRect().top + window.scrollY - 100;
+                        window.scrollTo({ top: topPos, behavior: 'smooth' });
+                    }
+                });
+            });
+
+            // 处理页面滚动时的自动高亮
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        navLinks.forEach(link => link.classList.remove('active'));
-                        const activeLink = document.querySelector(`.hub-nav-link[href="#${entry.target.id}"]`);
+                        navLinks.forEach(l => l.classList.remove('active'));
+                        const activeLink = document.querySelector(`.hub-nav-link[data-target="${entry.target.id}"]`);
                         if (activeLink) activeLink.classList.add('active');
                     }
                 });
-            }, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
+            }, { rootMargin: '-120px 0px -60% 0px', threshold: 0 });
+            
             sections.forEach(sec => observer.observe(sec));
         });
     </script>
